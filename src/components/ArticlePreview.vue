@@ -1,30 +1,24 @@
 <template>
-  <div class="ArticlePreview">
+  <div class="ArticlePreview" :class="className">
     <div class="ArticlePreview-Header">
-      <div class="ArticlePreview-Date">
-        Вчера в 17:36
+      <div class="ArticlePreview-Time">
+        {{ time }}
       </div>
       <div class="ArticlePreview-Author">
-        Евгений Кучерявый
+        {{ author }}
       </div>
     </div>
     <div class="ArticlePreview-Title">
-      Устраняем уязвимости: как защитить сайт от SQL-инъекции
+      {{ title }}
     </div>
-    <div class="ArticlePreview-Text">
-      Заводишь сайт, наполняешь его контентом, запускаешь рекламную кампанию —
-      трафик стабильно растет, пользователи активно комментируют и делятся
-      статьями. Всё хорошо до того момента, пока в один не предвещающий беды
-      день на сайте не оказывается ни одной статьи. Заходишь в лог запросов и
-      видишь, что кто-то сделал DROP.
-    </div>
+    <div class="ArticlePreview-Text" v-html="text"></div>
     <div class="ArticlePreview-Social Social">
       <div class="Social-Item">
         <svg class="Social-Icon Icon Icon--like">
           <use xlink:href="./../assets/icons-sprite.svg#like"></use>
         </svg>
         <div class="Social-Text">
-          56
+          {{ likeCount }}
         </div>
       </div>
       <div class="Social-Item">
@@ -32,7 +26,7 @@
           <use xlink:href="./../assets/icons-sprite.svg#like"></use>
         </svg>
         <div class="Social-Text">
-          16
+          {{ dislikeCount }}
         </div>
       </div>
       <div class="Social-Item">
@@ -40,7 +34,7 @@
           <use xlink:href="./../assets/icons-sprite.svg#comments"></use>
         </svg>
         <div class="Social-Text">
-          2
+          {{ commentCount }}
         </div>
       </div>
       <div class="Social-Item">
@@ -48,12 +42,63 @@
           <use xlink:href="./../assets/icons-sprite.svg#views"></use>
         </svg>
         <div class="Social-Text">
-          157
+          {{ viewCount }}
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    className: {
+      type: String,
+      required: false
+    },
+    time: {
+      type: String,
+      required: true,
+      default: ""
+    },
+    author: {
+      type: String,
+      required: true,
+      default: ""
+    },
+    title: {
+      type: String,
+      required: true,
+      default: ""
+    },
+    text: {
+      type: String,
+      required: true,
+      default: ""
+    },
+    likeCount: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    dislikeCount: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    commentCount: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    viewCount: {
+      type: Number,
+      required: true,
+      default: 0
+    }
+  }
+};
+</script>
 
 <style lang="scss">
 .ArticlePreview {

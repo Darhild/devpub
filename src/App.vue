@@ -92,4 +92,8 @@ body {
   font-size: 2.5rem;
   font-weight: 700;
 }
+
+.ServerInfo {
+  font-size: 1.4rem;
+}
 </style>

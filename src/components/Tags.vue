@@ -4,20 +4,25 @@
       Темы
     </div>
     <div class="Tags-Content">
-      <div
-        class="Tag"
-        v-for="tag in tags"
-        :key="tag.id"
-        :style="{
-          marginBottom: marginBottom * tag.weight + 'px',
-          marginLeft: marginLeft * tag.weight + 'px',
-          paddingRight: padding * tag.weight + 'px',
-          paddingLeft: padding * tag.weight + 'px',
-          fontSize: fontSize * tag.weight + 'rem'
-        }"
-      >
-        #{{ tag.name }}
+      <div class="ServerInfo" v-if="isLoading">
+        Loading...
       </div>
+      <template v-else>
+        <div
+          class="Tag"
+          v-for="tag in tags"
+          :key="tag.id"
+          :style="{
+            marginBottom: marginBottom * tag.weight + 'px',
+            marginLeft: marginLeft * tag.weight + 'px',
+            paddingRight: padding * tag.weight + 'px',
+            paddingLeft: padding * tag.weight + 'px',
+            fontSize: fontSize * tag.weight + 'rem'
+          }"
+        >
+          #{{ tag.name }}
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -37,15 +42,21 @@ export default {
       fontSize: 3,
       marginLeft: 50,
       marginBottom: 15,
-      padding: 25
+      padding: 25,
+      isLoading: true
     };
   },
 
   mounted() {
     axios
       .get(`${SERVER_URL}/api/tag`)
-      .then(res => (this.tags = res.data))
-      .catch(e => this.errors.push(e));
+      .then(res => {
+        this.tags = res.data;
+      })
+      .catch(e => {
+        this.errors.push(e);
+      })
+      .finally(() => (this.isLoading = false));
   }
 };
 </script>

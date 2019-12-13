@@ -22,5 +22,15 @@ export default {
 .MainPage {
   display: grid;
   grid-template-columns: 7fr 3fr;
+
+  @media (max-width: $screen-tablet) {
+    grid-template-columns: 1fr;
+  }
+
+  &-Tags {
+    @media (max-width: $screen-tablet) {
+      display: none;
+    }
+  }
 }
 </style>
