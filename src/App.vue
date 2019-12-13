@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header />
-    <router-view/>
+    <router-view />
     <Footer />
   </div>
 </template>
@@ -9,7 +9,6 @@
 <script>
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-
 
 export default {
   name: "app",
@@ -24,15 +23,20 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap");
 
 :root {
-  --color-primary: #4B4BEE;
-  --color-secondary: #EC4141;
+  --color-primary: #4b4bee;
+  --color-secondary: #ec4141;
 
-  --color-layout-primary: #F2F2F2;
+  --color-layout-primary: #f2f2f2;
   --color-layout-dark: #171727;
+  --color-lightest: #fff;
   --color-white: #fff;
-  --color-balck: #000;
+  --color-darkest: #000;
+  --color-black: #000;
 
   --text-faded: #rgba(23, 23, 39, 0.4);
+
+  --color-hover: #9595f5;
+  --color-active: #6767ed;
 }
 
 html {
@@ -60,7 +64,7 @@ body {
 }
 
 * {
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 .Link {

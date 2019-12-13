@@ -1,37 +1,37 @@
 <template>
-    <header class="Header">
-      <div class="Logo Header-Logo">
-          <svg class="Social-Icon Social-Vk">
-              <use xlink:href="./../assets/icons-sprite.svg#logo"></use>
-          </svg>
-      </div>
-      <div class="Header-Content">
-        <div class="Header-Titles">
-          <div class="Header-Title">
-              DevPub
-          </div>
-          <div class="Header-Subtitle">
-              Рассказы разрабочиков
-          </div>
+  <header class="Header">
+    <div class="Logo Header-Logo">
+      <svg class="Social-Icon Social-Vk">
+        <use xlink:href="./../assets/icons-sprite.svg#logo"></use>
+      </svg>
+    </div>
+    <div class="Header-Content">
+      <div class="Header-Titles">
+        <div class="Header-Title">
+          DevPub
         </div>
-        <div class="Header-Section">
-          <div class="Header-Links">
-            <router-link to="/" class="Link Header-Link">
-                Главная
-            </router-link>
-            <router-link to="/calendar" class="Link Header-Link">
-                Календарь
-            </router-link>
-          </div>
-          <div class="Search Header-Search">
-              <input class="Input" type="text" placeholder="Найти" />
-          </div>
-          <router-link to="/login" class="Link Header-Login">
-            Войти
+        <div class="Header-Subtitle">
+          Рассказы разрабочиков
+        </div>
+      </div>
+      <div class="Header-Section">
+        <div class="Header-Links">
+          <router-link to="/" class="Link Header-Link">
+            Главная
+          </router-link>
+          <router-link to="/calendar" class="Link Header-Link">
+            Календарь
           </router-link>
         </div>
+        <div class="Search Header-Search">
+          <input class="Input" type="text" placeholder="Найти" />
+        </div>
+        <router-link to="/login" class="Link Header-Login">
+          Войти
+        </router-link>
       </div>
-    </header>
+    </div>
+  </header>
 </template>
 
 <style lang="scss">
@@ -50,13 +50,13 @@
     display: flex;
     width: 100%;
 
-    @media(max-width: $screen-tablet) {
+    @media (max-width: $screen-tablet) {
       flex-direction: column;
     }
   }
 
   &-Titles {
-    @media(max-width: $screen-tablet) {
+    @media (max-width: $screen-tablet) {
       display: none;
     }
   }
@@ -66,7 +66,7 @@
     font-size: 2rem;
     font-weight: 700;
 
-    @media(max-width: $screen-tablet) {
+    @media (max-width: $screen-tablet) {
       margin-right: 15px;
     }
   }
@@ -80,7 +80,7 @@
     align-items: center;
     margin-left: auto;
 
-    @media(max-width: $screen-tablet) {
+    @media (max-width: $screen-tablet) {
       margin-left: 0;
     }
   }
@@ -94,7 +94,7 @@
     font-size: 1.4rem;
     color: var(--text-white);
 
-    @media(max-width: 900px) {
+    @media (max-width: 900px) {
       margin-right: 15px;
     }
 
@@ -106,7 +106,7 @@
   &-Search {
     margin-right: 117px;
 
-    @media(max-width: 900px) {
+    @media (max-width: 900px) {
       margin-right: 25px;
     }
   }
@@ -120,5 +120,4 @@
   width: 41px;
   height: 41px;
 }
-
 </style>

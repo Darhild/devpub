@@ -12,7 +12,11 @@
       Устраняем уязвимости: как защитить сайт от SQL-инъекции
     </div>
     <div class="ArticlePreview-Text">
-      Заводишь сайт, наполняешь его контентом, запускаешь рекламную кампанию — трафик стабильно растет, пользователи активно комментируют и делятся статьями. Всё хорошо до того момента, пока в один не предвещающий беды день на сайте не оказывается ни одной статьи. Заходишь в лог запросов и видишь, что кто-то сделал DROP.
+      Заводишь сайт, наполняешь его контентом, запускаешь рекламную кампанию —
+      трафик стабильно растет, пользователи активно комментируют и делятся
+      статьями. Всё хорошо до того момента, пока в один не предвещающий беды
+      день на сайте не оказывается ни одной статьи. Заходишь в лог запросов и
+      видишь, что кто-то сделал DROP.
     </div>
     <div class="ArticlePreview-Social Social">
       <div class="Social-Item">
@@ -54,7 +58,7 @@
 <style lang="scss">
 .ArticlePreview {
   padding: 15px 10px 15px 15px;
-  background-color:var(--color-layout-primary);
+  background-color: var(--color-layout-primary);
   border-radius: 10px;
 
   &-Header {
@@ -98,7 +102,7 @@
     font-size: 2.2rem;
     font-weight: 500;
 
-    @media(max-width: $screen-tablet) {
+    @media (max-width: $screen-tablet) {
       font-size: 1.6rem;
     }
   }
@@ -108,7 +112,7 @@
   width: 22px;
   height: 22px;
 
-  @media(max-width: $screen-tablet) {
+  @media (max-width: $screen-tablet) {
     width: 16px;
     height: 16px;
   }
@@ -125,7 +129,7 @@
   &--views {
     width: 34px;
 
-    @media(max-width: $screen-tablet) {
+    @media (max-width: $screen-tablet) {
       width: 25px;
     }
   }

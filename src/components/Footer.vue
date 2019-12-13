@@ -16,7 +16,9 @@
         <a href="tel:+79039566655" class="Link">+7 903 956-66-55</a>
       </div>
       <div class="Footer-Item">
-        <a href="mailto:dmitry@kondratiev.com" class="Link">dmitry@kondratiev.com</a>
+        <a href="mailto:dmitry@kondratiev.com" class="Link"
+          >dmitry@kondratiev.com</a
+        >
       </div>
       <div class="Footer-Item">
         (c) Дмитрий Кондратьев, 2010-2019
@@ -33,7 +35,7 @@
   padding: 13px 30px 30px 68px;
   border-top: 1px solid var(--color-layout-primary);
 
-  @media(max-width: $screen-tablet) {
+  @media (max-width: $screen-tablet) {
     flex-direction: column;
     align-items: center;
   }
@@ -45,7 +47,7 @@
     line-height: 1.2;
     color: var(--color-black);
 
-    @media(max-width: $screen-tablet) {
+    @media (max-width: $screen-tablet) {
       margin-right: 15px;
       margin-bottom: 10px;
       text-align: center;
@@ -61,7 +63,7 @@
   }
 
   &-Links {
-    @media(max-width: $screen-tablet) {
+    @media (max-width: $screen-tablet) {
       display: flex;
       margin-bottom: 10px;
     }
