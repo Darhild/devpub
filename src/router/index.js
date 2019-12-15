@@ -1,7 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Login from "@/components/Login.vue";
+import Login from "@/views/Login.vue";
 import Main from "@/views/Main.vue";
+import Article from "@/views/Article.vue";
+import Calendar from "@/views/Calendar.vue";
+import Settings from "@/views/Settings.vue";
+import Profile from "@/views/Profile.vue";
+import LoginSignIn from "@/components/LoginSignIn.vue";
+import LoginRestore from "@/components/LoginRestore.vue";
+import LoginRegistration from "@/components/LoginRegistration.vue";
 
 Vue.use(VueRouter);
 
@@ -12,9 +19,43 @@ const routes = [
     component: Main
   },
   {
+    path: "/post/:id",
+    name: "article",
+    component: Article
+  },
+  {
+    path: "/calendar",
+    name: "calendar",
+    component: Calendar
+  },
+  {
     path: "/login",
     name: "login",
-    component: Login
+    component: Login,
+    children: [
+      {
+        path: "",
+        component: LoginSignIn
+      },
+      {
+        path: "registration",
+        component: LoginRegistration
+      },
+      {
+        path: "restore-password",
+        component: LoginRestore
+      }
+    ]
+  },
+  {
+    path: "/settings",
+    name: "settings",
+    component: Settings
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: Profile
   }
 
   /*

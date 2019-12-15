@@ -51,10 +51,10 @@ export default {
     axios
       .get(`${SERVER_URL}/api/tag`)
       .then(res => {
-        this.tags = res.data;
+        this.tags = res.data.tags;
       })
       .catch(e => {
-        this.errors.push(e);
+        console.log(e);
       })
       .finally(() => (this.isLoading = false));
   }

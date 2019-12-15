@@ -5,9 +5,24 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    tags: {}
+    isAuth: true
   },
-  mutations: {},
-  actions: {},
+
+  getters: {
+    authStatus: state => state.isAuth
+  },
+
+  mutations: {
+    logout: state => {
+      state.isAuth = false;
+    }
+  },
+
+  actions: {
+    logout({ commit }) {
+      commit("logout");
+    }
+  },
+
   modules: {}
 });

@@ -26,13 +26,30 @@
         <div class="Search Header-Search">
           <input class="Input" type="text" placeholder="Найти" />
         </div>
-        <router-link to="/login" class="Link Header-Login">
+        <UserSection v-if="isAuth" />
+        <router-link v-else to="/login" class="Link Header-Login">
           Войти
         </router-link>
       </div>
     </div>
   </header>
 </template>
+
+<script>
+import UserSection from "@/components/UserSection.vue";
+
+export default {
+  components: {
+    UserSection
+  },
+
+  computed: {
+    isAuth() {
+      return this.$store.getters.authStatus;
+    }
+  }
+};
+</script>
 
 <style lang="scss">
 .Header {
@@ -103,15 +120,8 @@
     }
   }
 
-  &-Search {
-    margin-right: 117px;
-
-    @media (max-width: 900px) {
-      margin-right: 25px;
-    }
-  }
-
   &-Login {
+    margin-left: 117px;
     font-size: 1.4rem;
   }
 }

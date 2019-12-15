@@ -1,10 +1,12 @@
 <template>
   <nav class="Nav" :class="className">
     <div
-      class="Nav-Item"
-      :class="`${className}-Item`"
       v-for="(item, index) in navItems"
       :key="index"
+      :class="[
+        activeItem === index ? 'Nav-Item Nav-Item--state_active' : 'Nav-Item'
+      ]"
+      @click="onClick(index)"
     >
       {{ item }}
     </div>
@@ -14,8 +16,27 @@
 <script>
 export default {
   props: {
-    className: String,
-    navItems: Array
+    className: {
+      type: String,
+      required: false
+    },
+    navItems: {
+      type: Array,
+      required: true
+    }
+  },
+
+  data() {
+    return {
+      activeItem: 0
+    };
+  },
+
+  methods: {
+    onClick(index) {
+      this.activeItem = index;
+      this.$emit("set-value", index);
+    }
   }
 };
 </script>
@@ -31,6 +52,14 @@ export default {
     cursor: pointer;
 
     &:hover {
+      margin: 0;
+      padding: 7px 22px;
+      color: var(--color-lightest);
+      background-color: var(--color-primary);
+      border-radius: 20px;
+    }
+
+    &--state_active {
       margin: 0;
       padding: 7px 22px;
       color: var(--color-lightest);

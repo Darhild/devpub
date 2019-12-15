@@ -1,6 +1,10 @@
 <template>
   <div class="Articles" :class="className">
-    <BaseNavbar className="Articles-Nav" :navItems="navItems" />
+    <BaseNavbar
+      className="Articles-Nav"
+      :navItems="navItems"
+      v-on:set-value="selectActiveProp"
+    />
     <div class="Articles-Content">
       <div class="ServerInfo" v-if="isErrored">
         Sorry, some error happened :(
@@ -10,10 +14,12 @@
           Loading...
         </div>
         <template v-else>
-          <ArticlePreview
+          <BaseArticle
             v-for="item in articles"
             :key="item.id"
             :className="'Articles-ArticlePreview'"
+            :isPreview="true"
+            :id="item.id"
             :time="item.time"
             :author="item.user.name"
             :title="item.title"
@@ -33,12 +39,12 @@
 import axios from "axios";
 import { SERVER_URL } from "./../env";
 import BaseNavbar from "@/components/BaseNavbar.vue";
-import ArticlePreview from "@/components/ArticlePreview.vue";
+import BaseArticle from "@/components/BaseArticle.vue";
 
 export default {
   components: {
     BaseNavbar,
-    ArticlePreview
+    BaseArticle
   },
 
   props: {
@@ -48,11 +54,18 @@ export default {
   data() {
     return {
       navItems: ["Новые", "Самые обсуждаемые", "Лучшие", "Старые"],
+      activeProp: 0,
       articles: [],
       articlesNumber: 4,
       isLoading: true,
       isErrored: false
     };
+  },
+
+  methods: {
+    selectActiveProp(value) {
+      this.activeProp = value;
+    }
   },
 
   mounted() {

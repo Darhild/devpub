@@ -1,18 +1,34 @@
 <template>
-  <div class="ArticlePreview" :class="className">
-    <div class="ArticlePreview-Header">
-      <div class="ArticlePreview-Time">
+  <div class="Article" :class="className">
+    <div class="Article-Header" :class="{ 'ArticlePreview-Header': isPreview }">
+      <div class="Article-Time" :class="{ 'ArticlePreview-Time': isPreview }">
         {{ time }}
       </div>
-      <div class="ArticlePreview-Author">
+      <div
+        class="Article-Author"
+        :class="{ 'ArticlePreview-Author': isPreview }"
+      >
         {{ author }}
+        <span v-if="!isPreview">&nbsp;-&nbsp;</span>
       </div>
     </div>
-    <div class="ArticlePreview-Title">
+    <router-link
+      v-if="isPreview"
+      :to="{ name: 'article', params: { id: `${id}` } }"
+      class="ArticlePreview-Title"
+    >
+      {{ title }}
+    </router-link>
+    <div v-else class="Article-Title">
       {{ title }}
     </div>
-    <div class="ArticlePreview-Text" v-html="text"></div>
-    <div class="ArticlePreview-Social Social">
+    <div class="Article-Text">
+      <template v-if="isPreview">
+        {{ text | formatText }}
+      </template>
+      <span v-else v-html="htmlText"></span>
+    </div>
+    <div class="Article-Social ArticlePreview-Social Social">
       <div class="Social-Item">
         <svg class="Social-Icon Icon Icon--like">
           <use xlink:href="./../assets/icons-sprite.svg#like"></use>
@@ -56,6 +72,15 @@ export default {
       type: String,
       required: false
     },
+    isPreview: {
+      type: Boolean,
+      required: false
+    },
+    id: {
+      type: Number,
+      required: true,
+      default: 0
+    },
     time: {
       type: String,
       required: true,
@@ -96,12 +121,26 @@ export default {
       required: true,
       default: 0
     }
+  },
+
+  computed: {
+    htmlText() {
+      const regex = /(&lt;)(.*?)(&gt;)/gi;
+      return this.text.replace(regex, "<$2>");
+    }
+  },
+
+  filters: {
+    formatText(str) {
+      const regex = /&lt;.*?&gt;/gi;
+      return str.replace(regex, "").substr(0, 200);
+    }
   }
 };
 </script>
 
 <style lang="scss">
-.ArticlePreview {
+.Article {
   padding: 15px 10px 15px 15px;
   background-color: var(--color-layout-primary);
   border-radius: 10px;
@@ -109,20 +148,47 @@ export default {
   &-Header {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     margin-bottom: 8px;
     font-size: 1.4rem;
   }
 
+  &-Time {
+    order: 2;
+  }
+
+  &-Author {
+    order: 1;
+    font-weight: 700;
+  }
+
   &-Title {
     margin-bottom: 10px;
-    font-size: 1.4rem;
+    font-size: 2.5rem;
     font-weight: 500;
+    color: var(--color-darkest);
   }
 
   &-Text {
     margin-bottom: 17px;
     font-size: 1.4rem;
+  }
+
+  &--full {
+    margin-bottom: 100px;
+  }
+}
+
+.ArticlePreview {
+  &-Header {
+    justify-content: space-between;
+  }
+
+  &-Title {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--color-darkest);
   }
 }
 
@@ -149,33 +215,6 @@ export default {
 
     @media (max-width: $screen-tablet) {
       font-size: 1.6rem;
-    }
-  }
-}
-
-.Icon {
-  width: 22px;
-  height: 22px;
-
-  @media (max-width: $screen-tablet) {
-    width: 16px;
-    height: 16px;
-  }
-
-  &--like {
-    fill: var(--color-primary);
-  }
-
-  &--dislike {
-    fill: var(--color-secondary);
-    transform: rotate(180deg);
-  }
-
-  &--views {
-    width: 34px;
-
-    @media (max-width: $screen-tablet) {
-      width: 25px;
     }
   }
 }
