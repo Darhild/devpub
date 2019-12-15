@@ -1,5 +1,5 @@
 <template>
-  <button class="Button" :class="className">
+  <button class="Button" :class="className" @click="onclick">
     <slot />
   </button>
 </template>
@@ -14,6 +14,16 @@ export default {
     size: {
       type: String,
       required: false
+    },
+    onClickButton: {
+      type: Function,
+      required: true
+    }
+  },
+
+  methods: {
+    onclick() {
+      this.onClickButton();
     }
   }
 };

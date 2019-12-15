@@ -36,8 +36,10 @@ export default {
   --color-border: #c4c4c4;
 
   --text-faded: rgba(23, 23, 39, 0.4);
+  --text-editor: #b3b3b3;
 
   --color-hover: #9595f5;
+  --color-hover-editor: #fbbaba;
   --color-active: #6767ed;
 }
 
