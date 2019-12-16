@@ -57,6 +57,7 @@ export default {
     sendText() {
       const text = this.$refs.editor.getContent();
       this.$emit("comment-is-send", text);
+      this.$refs.editor.setContent("");
     }
   }
 };
