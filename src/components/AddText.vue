@@ -10,33 +10,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import Vueditor from "vueditor";
+import config from "@/plugins/vueditor";
 import "vueditor/dist/style/vueditor.min.css";
-
-const config = {
-  toolbar: [
-    "link",
-    "unLink",
-    "|",
-    "table",
-    "picture",
-    "|",
-    "fullscreen",
-    "|",
-    "sourceCode",
-    "|",
-    "bold",
-    "italic",
-    "strikeThrough",
-    "removeFormat",
-    "|",
-    "insertUnorderedList",
-    "insertOrderedList",
-    "indent",
-    "outdent",
-    "|",
-    "element"
-  ]
-};
 
 Vue.use(Vuex);
 Vue.use(Vueditor, config);

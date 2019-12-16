@@ -4,7 +4,7 @@ import Login from "@/views/Login.vue";
 import Main from "@/views/Main.vue";
 import Article from "@/views/Article.vue";
 import Calendar from "@/views/Calendar.vue";
-import EditText from "@/views/EditText.vue";
+import EditPost from "@/views/EditPost.vue";
 import Settings from "@/views/Settings.vue";
 import Profile from "@/views/Profile.vue";
 import LoginSignIn from "@/components/LoginSignIn.vue";
@@ -25,9 +25,15 @@ const routes = [
     component: Article
   },
   {
+    path: "/add",
+    name: "add",
+    component: EditPost,
+    props: { editPost: false }
+  },
+  {
     path: "/edit/:id",
     name: "edit",
-    component: EditText
+    component: EditPost
   },
   {
     path: "/calendar",

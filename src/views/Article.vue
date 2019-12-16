@@ -20,17 +20,21 @@
       :commentCount="article.commentCount"
       :viewCount="article.viewCount"
     />
-    <div class="AddComment">
-      <AddText
-        :className="'AddComment-Edit'"
-        :sendText="sendComment"
-        v-on:comment-is-send="onCommentSend"
-      />
-      <div class="AddComment-Send">
-        <BaseButton :onClickButton="onClickButton">
-          Отправить
-        </BaseButton>
+    <div v-if="!isLoading" class="Comments">
+      <div class="Title Comments-Title">
+        Комментарии
       </div>
+      <Comment
+        v-for="comment in article.comments"
+        :key="comment.id"
+        :id="comment.id"
+        :author="comment.user.name"
+        :time="comment.time"
+        :text="comment.text"
+        :commentWithForm="commentWithForm"
+        @comment-is-send="onSendComment"
+        @form-is-opened="onShowForm"
+      />
     </div>
   </div>
 </template>
@@ -39,19 +43,18 @@
 import axios from "axios";
 import { SERVER_URL } from "./../env";
 import BaseArticle from "@/components/BaseArticle.vue";
-import BaseButton from "@/components/BaseButton.vue";
-import AddText from "@/components/AddText.vue";
+import Comment from "@/components/Comment.vue";
 
 export default {
   components: {
     BaseArticle,
-    AddText,
-    BaseButton
+    Comment
   },
 
   data() {
     return {
       article: {},
+      commentWithForm: 0,
       isLoading: true,
       isErrored: false,
       sendComment: false
@@ -63,11 +66,13 @@ export default {
       this.sendComment = true;
     },
 
-    onCommentSend(text) {
-      this.sendComment = false;
+    onShowForm(id) {
+      this.commentWithForm = id;
+    },
 
+    onSendComment({ text, parentId }) {
       axios.post(`${SERVER_URL}/api/comment`, {
-        parent_id: "",
+        parent_id: parentId,
         post_id: this.article.id,
         text
       });
@@ -93,15 +98,9 @@ export default {
 </script>
 
 <style lang="scss">
-.AddComment {
-  margin-bottom: 55px;
-
-  &-Edit {
-    margin-bottom: 16px;
-  }
-
-  &-Send {
-    text-align: right;
+.Comments {
+  &-Title {
+    margin-bottom: 25px;
   }
 }
 </style>

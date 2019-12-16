@@ -66,6 +66,8 @@
 </template>
 
 <script>
+import { formatToHtml } from "@/utils";
+
 export default {
   props: {
     className: {
@@ -125,8 +127,7 @@ export default {
 
   computed: {
     htmlText() {
-      const regex = /(&lt;)(.*?)(&gt;)/gi;
-      return this.text.replace(regex, "<$2>");
+      return formatToHtml(this.text);
     }
   },
 

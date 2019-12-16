@@ -1,7 +1,12 @@
 <template>
   <div class="EditText PageWrapper" :class="className">
     <div class="Title EditText-Title">
-      Редактирование публикации
+      <template v-if="editPost">
+        Редактирование публикации
+      </template>
+      <template v-else>
+        Новая публикация
+      </template>
     </div>
     <div class="EditText-Section EditText-Info">
       <div class="EditText-Date EditText-Section--size_half">
@@ -9,16 +14,12 @@
           Дата публикации
         </div>
         <div class="EditText-Input">
-          <input v-model="date" class="Input" type="text" />
+          <input v-model="date" class="Input" type="datetime-local" />
         </div>
       </div>
       <div class="EditText-Hide CheckForm">
         <label class="CheckForm-Label">
-          <input
-            v-model="active"
-            class="CheckForm-Input"
-            type="checkbox"
-          />
+          <input v-model="active" class="CheckForm-Input" type="checkbox" />
           <div class="CheckForm-Value">
             <div class="CheckForm-Info">
               Публикация скрыта
@@ -39,12 +40,15 @@
       <Vueditor ref="editor"></Vueditor>
     </div>
     <div class="EditText-Tags">
-      <div class="EditText-Section EditText-Section--size_half">
+      <div
+        class="EditText-Section EditText-Section--size_half EditText-AddTags"
+      >
         <div class="EditText-Label">
           Теги:
         </div>
         <div class="EditText-Input">
           <input
+            v-model="addedTag"
             @keyup.enter="onAddTag($event.target.value)"
             @keyup.188.prevent="onAddTag($event.target.value)"
             class="Input"
@@ -54,56 +58,34 @@
       </div>
       <div class="EditText-TagsArea">
         <div v-for="(tag, index) in tags" :key="index" class="Tag EditText-Tag">
-          #{{ tag }}
+          <span class="Tag-Text">#{{ tag }}</span>
+          <svg class="Tag-Delete" @click="onDeleteTag(tag)">
+            <use xlink:href="./../assets/icons-sprite.svg#delete"></use>
+          </svg>
         </div>
       </div>
     </div>
     <div class="EditText-Buttons">
-      <BaseButton>
+      <BaseButton :onClickButton="onCancel">
         Отменить
       </BaseButton>
-      <BaseButton>
+      <BaseButton :onClickButton="onSave">
         Сохранить
       </BaseButton>
     </div>
   </div>
-
 </template>
 
 <script>
 import axios from "axios";
 import { SERVER_URL } from "./../env";
+import { formatDate, formatToHtml } from "@/utils";
 import Vue from "vue";
 import Vuex from "vuex";
 import Vueditor from "vueditor";
 import BaseButton from "@/components/BaseButton.vue";
 import "vueditor/dist/style/vueditor.min.css";
-
-const config = {
-  toolbar: [
-    "link",
-    "unLink",
-    "|",
-    "table",
-    "picture",
-    "|",
-    "fullscreen",
-    "|",
-    "sourceCode",
-    "|",
-    "bold",
-    "italic",
-    "strikeThrough",
-    "removeFormat",
-    "|",
-    "insertUnorderedList",
-    "insertOrderedList",
-    "indent",
-    "outdent",
-    "|",
-    "element"
-  ]
-};
+import config from "@/plugins/vueditor";
 
 Vue.use(Vuex);
 Vue.use(Vueditor, config);
@@ -113,6 +95,11 @@ export default {
     className: {
       type: String,
       required: false
+    },
+    editPost: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
 
@@ -126,50 +113,74 @@ export default {
       article: {},
       title: "",
       date: "",
-      tags: [],
-      isLoading: true,
-      isErrored: false,
+      addedTag: "",
+      tags: []
     };
-  },
-
-  watch: {
-    sendText() {
-      const text = this.$refs.editor.getContent();
-      this.$emit("comment-is-send", text);
-      this.$refs.editor.setContent("");
-    }
   },
 
   methods: {
     onAddTag(value) {
-      this.tags.push(value.replace(",", ""))
+      if (!this.tags.includes(value)) this.tags.push(value.replace(",", ""));
+      this.addedTag = "";
+    },
+
+    onDeleteTag(value) {
+      this.tags = this.tags.filter(tag => tag !== value);
+    },
+
+    onCancel() {
+      this.$router.go(-1);
+    },
+
+    onSave() {
+      const text = this.$refs.editor.getContent();
+      let url = `${SERVER_URL}/api/post`;
+      let action = "post";
+      let date = this.date;
+
+      if (this.editPost) {
+        url += `/${this.article.id}`;
+        action = "put";
+      }
+
+      if (!this.editPost && new Date(date) < new Date()) {
+        date = new Date();
+      } else date = date.replace("T", " ");
+
+      axios[action](url, {
+        time: this.date,
+        active: this.active,
+        title: this.title,
+        tags: this.tags.toString(),
+        text
+      });
+
+      this.$refs.editor.setContent("");
+    },
+
+    getPostContent() {
+      axios
+        .get(`${SERVER_URL}/api/post`)
+        .then(res => {
+          const article = res.data.find(
+            article => article.id == this.$route.params.id
+          );
+
+          this.article = article;
+          this.title = article.title;
+          this.date = formatDate(new Date(article.time));
+          this.tags = [...article.tags];
+          this.$refs.editor.setContent(formatToHtml(article.text));
+        })
+        .catch(e => {
+          this.errors.push(e);
+        });
     }
   },
 
   mounted() {
-    this.isLoading = true;
-    axios
-      .get(`${SERVER_URL}/api/post`)
-      .then(res => {
-        const article = res.data.find(
-          article => article.id == this.$route.params.id
-        );
-        this.article = article;
-        this.title = article.title;
-        this.date = new Date(article.time).toLocaleDateString('ru-RU', {
-          hour: 'numeric', minute: 'numeric'
-        });
-        this.tags = [...article.tags];
-
-        const regex = /(&lt;)(.*?)(&gt;)/gi;
-        const html = article.text.replace(regex, "<$2>");
-        this.$refs.editor.setContent(html);
-      })
-      .catch(e => {
-        this.errors.push(e);
-        this.isErrored = true;
-      })
-      .finally(() => (this.isLoading = false));
+    if (this.editPost) this.getPostContent();
+    else this.date = formatDate(new Date());
   }
 };
 </script>
@@ -192,7 +203,7 @@ export default {
   }
 
   &-Info {
-    @media(max-width: $screen-tablet) {
+    @media (max-width: $screen-tablet) {
       display: block;
     }
   }
@@ -211,7 +222,7 @@ export default {
     align-items: center;
     margin-right: 10px;
 
-    @media(max-width: $screen-tablet) {
+    @media (max-width: $screen-tablet) {
       margin-bottom: 20px;
     }
 
@@ -223,7 +234,7 @@ export default {
   &-Label--width_fixed {
     width: 130px;
 
-    @media(max-width: $screen-tablet) {
+    @media (max-width: $screen-tablet) {
       width: auto;
     }
   }
@@ -257,10 +268,14 @@ export default {
   &-Tags {
     display: flex;
 
-    @media(max-width: $screen-tablet) {
+    @media (max-width: $screen-tablet) {
       display: block;
       margin-bottom: 25px;
     }
+  }
+
+  &-AddTags {
+    flex-shrink: 0;
   }
 
   &-TagsArea {
@@ -270,7 +285,7 @@ export default {
   &-Tag {
     margin-right: 15px;
     margin-bottom: 10px;
-    padding: 7px 16px;
+    padding: 8px 8px 7px 16px;
     font-size: 1.2rem;
   }
 
@@ -278,13 +293,25 @@ export default {
     display: flex;
     justify-content: space-between;
   }
+
+  .ve-design {
+    height: 250px;
+  }
+
+  .ve-code {
+    min-height: 250px;
+  }
 }
 
-.ve-design {
-  height: 250px;
-}
+.Tag {
+  &-Text {
+    display: inline-block;
+    margin-right: 15px;
+  }
 
-.ve-code {
-  min-height: 250px;
+  &-Delete {
+    width: 8px;
+    height: 8px;
+  }
 }
 </style>

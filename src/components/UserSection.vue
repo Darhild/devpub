@@ -10,6 +10,9 @@
       <router-link to="/profile" class="Link UserSection-Item">
         Профиль
       </router-link>
+      <router-link to="/add" class="Link UserSection-Item">
+        Новая публикация
+      </router-link>
       <router-link to="/posts" class="Link UserSection-Item">
         Мои публикации
       </router-link>
