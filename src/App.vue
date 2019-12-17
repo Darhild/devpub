@@ -89,6 +89,14 @@ a {
   }
 }
 
+.ArticlesContent {
+  width: 70%;
+
+  @media (max-width: $screen-tablet) {
+    width: 100%;
+  }
+}
+
 .Link {
   color: inherit;
   text-decoration: none;

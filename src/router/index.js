@@ -7,6 +7,7 @@ import Calendar from "@/views/Calendar.vue";
 import EditPost from "@/views/EditPost.vue";
 import Settings from "@/views/Settings.vue";
 import Profile from "@/views/Profile.vue";
+import Articles from "@/components/Articles.vue";
 import LoginSignIn from "@/components/LoginSignIn.vue";
 import LoginRestore from "@/components/LoginRestore.vue";
 import LoginRegistration from "@/components/LoginRegistration.vue";
@@ -18,6 +19,16 @@ const routes = [
     path: "/",
     name: "main",
     component: Main
+  },
+  {
+    path: "/moderation",
+    name: "moderation",
+    component: Articles,
+    props: {
+      navItems: ["Новые", "Отклоненные", "Утвержденные"],
+      forModeration: true,
+      className: "ArticlesContent Articles--noborder"
+    }
   },
   {
     path: "/post/:id",

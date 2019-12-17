@@ -1,6 +1,6 @@
 <template>
   <main class="MainPage">
-    <Articles className="MainPage-Articles" />
+    <Articles :navItems="navItems" :className="MainPage - Articles" />
     <Tags className="MainPage-Tags" />
   </main>
 </template>
@@ -14,6 +14,12 @@ export default {
   components: {
     Articles,
     Tags
+  },
+
+  data() {
+    return {
+      navItems: ["Новые", "Самые обсуждаемые", "Лучшие", "Старые"]
+    };
   }
 };
 </script>

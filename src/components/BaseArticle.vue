@@ -28,51 +28,35 @@
       </template>
       <span v-else v-html="htmlText"></span>
     </div>
-    <div class="Article-Social ArticlePreview-Social Social">
-      <div class="Social-Item">
-        <svg class="Social-Icon Icon Icon--like">
-          <use xlink:href="./../assets/icons-sprite.svg#like"></use>
-        </svg>
-        <div class="Social-Text">
-          {{ likeCount }}
-        </div>
-      </div>
-      <div class="Social-Item">
-        <svg class="Social-Icon Icon Icon--dislike">
-          <use xlink:href="./../assets/icons-sprite.svg#like"></use>
-        </svg>
-        <div class="Social-Text">
-          {{ dislikeCount }}
-        </div>
-      </div>
-      <div class="Social-Item">
-        <svg class="Social-Icon Icon Icon--comments">
-          <use xlink:href="./../assets/icons-sprite.svg#comments"></use>
-        </svg>
-        <div class="Social-Text">
-          {{ commentCount }}
-        </div>
-      </div>
-      <div class="Social-Item">
-        <svg class="Social-Icon Icon Icon--views">
-          <use xlink:href="./../assets/icons-sprite.svg#views"></use>
-        </svg>
-        <div class="Social-Text">
-          {{ viewCount }}
-        </div>
-      </div>
-    </div>
+    <ModerationBlock
+      v-if="forModeration"
+      className="ArticlePreview-Moderation"
+      @moderated="onModerated"
+    />
+    <SocialBlock v-else className="Article-Social ArticlePreview-Social" />
   </div>
 </template>
 
 <script>
 import { formatToHtml } from "@/utils";
+import SocialBlock from "@/components/SocialBlock.vue";
+import ModerationBlock from "@/components/ModerationBlock.vue";
 
 export default {
+  components: {
+    SocialBlock,
+    ModerationBlock
+  },
+
   props: {
     className: {
       type: String,
       required: false
+    },
+    forModeration: {
+      type: Boolean,
+      required: false,
+      default: false
     },
     isPreview: {
       type: Boolean,
@@ -136,6 +120,15 @@ export default {
       const regex = /&lt;.*?&gt;/gi;
       return str.replace(regex, "").substr(0, 200);
     }
+  },
+
+  methods: {
+    onModerated(status) {
+      this.$emit("moderated", {
+        id: this.id,
+        status
+      });
+    }
   }
 };
 </script>
@@ -190,33 +183,6 @@ export default {
     font-size: 1.4rem;
     font-weight: 500;
     color: var(--color-darkest);
-  }
-}
-
-.Social {
-  display: flex;
-
-  &-Item {
-    display: flex;
-    align-items: center;
-    margin-right: 32px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-
-  &-Icon {
-    margin-right: 6px;
-  }
-
-  &-Text {
-    font-size: 2.2rem;
-    font-weight: 500;
-
-    @media (max-width: $screen-tablet) {
-      font-size: 1.6rem;
-    }
   }
 }
 </style>

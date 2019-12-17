@@ -5,7 +5,13 @@
       :navItems="navItems"
       v-on:set-value="selectActiveProp"
     />
-    <div class="Articles-Content">
+    <div
+      :class="[
+        forModeration || myPosts
+          ? 'Articles-Content Articles-Content--noborder'
+          : 'Articles-Content'
+      ]"
+    >
       <div class="ServerInfo" v-if="isErrored">
         Sorry, some error happened :(
       </div>
@@ -19,6 +25,7 @@
             :key="item.id"
             :className="'Articles-ArticlePreview'"
             :isPreview="true"
+            :forModeration="forModeration"
             :id="item.id"
             :time="item.time"
             :author="item.user.name"
@@ -28,6 +35,7 @@
             :dislikeCount="item.dislikeCount"
             :commentCount="item.commentCount"
             :viewCount="item.viewCount"
+            @moderated="onModerated"
           />
         </template>
       </template>
@@ -48,12 +56,28 @@ export default {
   },
 
   props: {
-    className: String
+    className: {
+      type: String,
+      required: false
+    },
+    navItems: {
+      type: Array,
+      required: true
+    },
+    forModeration: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    myPosts: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   },
 
   data() {
     return {
-      navItems: ["Новые", "Самые обсуждаемые", "Лучшие", "Старые"],
       activeProp: 0,
       articles: [],
       articlesNumber: 4,
@@ -65,15 +89,35 @@ export default {
   methods: {
     selectActiveProp(value) {
       this.activeProp = value;
+    },
+
+    onModerated(post) {
+      axios
+        .post(`${SERVER_URL}/api/moderation`, {
+          post_id: post.id,
+          decision: post.status
+        })
+        .then(() => {})
+        .catch(e => console.log(e));
     }
   },
 
   mounted() {
     this.isLoading = true;
+    let url = `${SERVER_URL}/api/post`;
+
+    if (this.forModeration) {
+      url += "/moderation";
+    } else if (this.myPosts) {
+      url += "/my";
+    }
+
     axios
-      .get(`${SERVER_URL}/api/post?mode=recent&limit=${this.articlesNumber}`)
+      .get(url)
       .then(res => {
-        this.articles = res.data;
+        if (this.forModeration) {
+          this.articles = res.data.posts;
+        } else this.articles = res.data;
       })
       .catch(e => {
         this.errors.push(e);
@@ -104,6 +148,10 @@ export default {
       padding-top: 0;
       padding-right: 0;
       border-right: none;
+    }
+
+    &--noborder {
+      border: none;
     }
   }
 
