@@ -1,6 +1,6 @@
 <template>
-  <div class="Comment">
-    <div class="Commet-Header">
+  <div class="Comment" :class="className">
+    <div class="Comment-Header">
       <div class="Comment-Author">
         {{ author }}
       </div>
@@ -11,35 +11,27 @@
     <div class="Comment-Content">
       <span v-html="htmlText"></span>
     </div>
-    <div class="Comment-Send">
-      <BaseButton :onClickButton="onReplyComment">
+    <div v-if="!showCommentForm" class="Comment-Send">
+      <BaseButton
+        :onClickButton="onReplyComment"
+        :className="'Button--size_xs'"
+      >
         Ответить
       </BaseButton>
     </div>
-    <div v-if="showCommentForm" class="AddComment">
-      <AddText
-        :className="'AddComment-Edit'"
-        :sendText="sendComment"
-        @comment-is-send="onSendComment"
-      />
-      <div class="AddComment-Send">
-        <BaseButton :onClickButton="(sendComment = true)">
-          Отправить
-        </BaseButton>
-      </div>
-    </div>
+    <AddComment v-if="showCommentForm" @comment-is-send="onSendComment" />
   </div>
 </template>
 
 <script>
 import { formatToHtml } from "@/utils";
-import AddText from "@/components/AddText.vue";
+import AddComment from "@/components/AddComment.vue";
 import BaseButton from "@/components/BaseButton.vue";
 
 export default {
   components: {
-    BaseButton,
-    AddText
+    AddComment,
+    BaseButton
   },
 
   props: {
@@ -66,13 +58,16 @@ export default {
     commentWithForm: {
       type: Number,
       required: false
+    },
+    className: {
+      type: String,
+      required: false
     }
   },
 
   data() {
     return {
-      showCommentForm: false,
-      sendComment: false
+      showCommentForm: false
     };
   },
 
@@ -84,7 +79,7 @@ export default {
 
   watch: {
     commentWithForm() {
-      if (this.commentWithForm !== this.id) this.showCommentForm = false;
+      this.toggleForm();
     },
 
     showCommentForm() {
@@ -100,23 +95,68 @@ export default {
     },
 
     onSendComment(text) {
+      console.log(text);
       this.$emit("comment-is-send", {
         parentId: this.id,
         text
       });
 
       this.showCommentForm = false;
+    },
+
+    toggleForm() {
+      if (this.commentWithForm === this.id) this.showCommentForm = true;
+      else this.showCommentForm = false;
     }
+  },
+
+  mounted() {
+    this.toggleForm();
   }
 };
 </script>
 
 <style lang="scss">
-.AddComment {
-  margin-bottom: 55px;
+.Comment {
+  font-size: 1.4rem;
 
-  &-Edit {
-    margin-bottom: 16px;
+  &-Header {
+    position: relative;
+    max-width: 60%;
+    margin-bottom: 17px;
+    padding-left: 47px;
+
+    @media (max-width: $screen-tablet) {
+      max-width: 100%;
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      background-color: var(--color-border);
+    }
+  }
+
+  &-Author {
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  &-Date {
+    color: var(--text-color);
+  }
+
+  &-Content {
+    max-width: 60%;
+    margin-bottom: 10px;
+
+    @media (max-width: $screen-tablet) {
+      max-width: 100%;
+    }
   }
 
   &-Send {

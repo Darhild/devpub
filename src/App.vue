@@ -36,6 +36,7 @@ export default {
   --color-border: #c4c4c4;
 
   --text-faded: rgba(23, 23, 39, 0.4);
+  --text-lighter: rgba(23, 23, 39, 0.7);
   --text-editor: #b3b3b3;
 
   --color-hover: #9595f5;

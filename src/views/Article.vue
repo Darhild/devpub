@@ -20,7 +20,7 @@
       :commentCount="article.commentCount"
       :viewCount="article.viewCount"
     />
-    <div v-if="!isLoading" class="Comments">
+    <div v-if="!isLoading && article.comments" class="Comments">
       <div class="Title Comments-Title">
         Комментарии
       </div>
@@ -31,11 +31,16 @@
         :author="comment.user.name"
         :time="comment.time"
         :text="comment.text"
+        :className="'Comments-Comment'"
         :commentWithForm="commentWithForm"
         @comment-is-send="onSendComment"
         @form-is-opened="onShowForm"
       />
     </div>
+    <AddComment
+      v-if="!isLoading && !article.comments"
+      @comment-is-send="onSendComment"
+    />
   </div>
 </template>
 
@@ -44,11 +49,13 @@ import axios from "axios";
 import { SERVER_URL } from "./../env";
 import BaseArticle from "@/components/BaseArticle.vue";
 import Comment from "@/components/Comment.vue";
+import AddComment from "@/components/AddComment.vue";
 
 export default {
   components: {
     BaseArticle,
-    Comment
+    Comment,
+    AddComment
   },
 
   data() {
@@ -56,26 +63,38 @@ export default {
       article: {},
       commentWithForm: 0,
       isLoading: true,
-      isErrored: false,
-      sendComment: false
+      isErrored: false
     };
   },
 
   methods: {
-    onClickButton() {
-      this.sendComment = true;
-    },
-
     onShowForm(id) {
       this.commentWithForm = id;
     },
 
-    onSendComment({ text, parentId }) {
-      axios.post(`${SERVER_URL}/api/comment`, {
-        parent_id: parentId,
+    onSendComment(data) {
+      let comment = data;
+
+      if (typeof data !== "object") {
+        comment = {
+          parent_id: "",
+          text: data
+        };
+      }
+
+      console.log({
+        parent_id: comment.parentId,
         post_id: this.article.id,
-        text
+        text: comment.text
       });
+
+      axios.post(`${SERVER_URL}/api/comment`, {
+        parent_id: comment.parentId,
+        post_id: this.article.id,
+        text: comment.text
+      });
+
+      this.$store.commit("commentIsSend");
     }
   },
 
@@ -87,6 +106,9 @@ export default {
         this.article = res.data.find(
           article => article.id == this.$route.params.id
         );
+        this.commentWithForm = this.article.comments
+          ? this.article.comments[this.article.comments.length - 1].id
+          : 0;
       })
       .catch(e => {
         this.errors.push(e);
@@ -101,6 +123,10 @@ export default {
 .Comments {
   &-Title {
     margin-bottom: 25px;
+  }
+
+  &-Comment {
+    margin-bottom: 16px;
   }
 }
 </style>

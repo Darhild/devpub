@@ -7,32 +7,29 @@
 </template>
 
 <script>
-import Vue from "vue";
-import Vuex from "vuex";
-import Vueditor from "vueditor";
-import config from "@/plugins/vueditor";
 import "vueditor/dist/style/vueditor.min.css";
-
-Vue.use(Vuex);
-Vue.use(Vueditor, config);
 
 export default {
   props: {
     className: {
       type: String,
       required: false
-    },
-    sendText: {
-      type: Boolean,
-      required: true
+    }
+  },
+
+  computed: {
+    shouldSendComment() {
+      return this.$store.getters.shouldSendComment;
     }
   },
 
   watch: {
-    sendText() {
-      const text = this.$refs.editor.getContent();
-      this.$emit("comment-is-send", text);
-      this.$refs.editor.setContent("");
+    shouldSendComment() {
+      if (this.shouldSendComment) {
+        const text = this.$refs.editor.getContent();
+        this.$emit("comment-is-send", text);
+        this.$refs.editor.setContent("");
+      }
     }
   }
 };

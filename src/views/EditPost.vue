@@ -80,15 +80,7 @@
 import axios from "axios";
 import { SERVER_URL } from "./../env";
 import { formatDate, formatToHtml } from "@/utils";
-import Vue from "vue";
-import Vuex from "vuex";
-import Vueditor from "vueditor";
 import BaseButton from "@/components/BaseButton.vue";
-import "vueditor/dist/style/vueditor.min.css";
-import config from "@/plugins/vueditor";
-
-Vue.use(Vuex);
-Vue.use(Vueditor, config);
 
 export default {
   props: {

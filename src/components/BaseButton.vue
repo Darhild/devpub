@@ -46,5 +46,10 @@ export default {
   &:active {
     background-color: var(--color-active);
   }
+
+  &--size_xs {
+    padding: 4px 16px;
+    font-size: 1rem;
+  }
 }
 </style>
