@@ -8,7 +8,7 @@
       ]"
       @click="onClick(index)"
     >
-      {{ item }}
+      {{ item.name }}
     </div>
   </nav>
 </template>
@@ -35,7 +35,7 @@ export default {
   methods: {
     onClick(index) {
       this.activeItem = index;
-      this.$emit("set-value", index);
+      this.$emit("set-nav-value", index);
     }
   }
 };

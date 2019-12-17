@@ -1,6 +1,6 @@
 <template>
   <main class="MainPage">
-    <Articles :navItems="navItems" :className="MainPage - Articles" />
+    <Articles :navItems="navItems" :className="'MainPage-Articles'" />
     <Tags className="MainPage-Tags" />
   </main>
 </template>
@@ -18,7 +18,24 @@ export default {
 
   data() {
     return {
-      navItems: ["Новые", "Самые обсуждаемые", "Лучшие", "Старые"]
+      navItems: [
+        {
+          name: "Новые",
+          value: "recent"
+        },
+        {
+          name: "Самые обсуждаемые",
+          value: "popular"
+        },
+        {
+          name: "Самые обсуждаемые",
+          value: "best"
+        },
+        {
+          name: "Старые",
+          value: "early"
+        }
+      ]
     };
   }
 };

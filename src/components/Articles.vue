@@ -3,7 +3,7 @@
     <BaseNavbar
       className="Articles-Nav"
       :navItems="navItems"
-      v-on:set-value="selectActiveProp"
+      @set-nav-value="selectActiveNavProp"
     />
     <div
       :class="[
@@ -78,7 +78,7 @@ export default {
 
   data() {
     return {
-      activeProp: 0,
+      activeNavProp: 0,
       articles: [],
       articlesNumber: 4,
       isLoading: true,
@@ -86,9 +86,41 @@ export default {
     };
   },
 
+  watch: {
+    activeNavProp() {
+      this.selectMethod();
+    }
+  },
+
   methods: {
-    selectActiveProp(value) {
-      this.activeProp = value;
+    selectActiveNavProp(value) {
+      this.activeNavProp = value;
+    },
+
+    selectMethod() {
+      if (this.forModeration) this.getArticles("status", "/moderation");
+      else if (this.myPosts) this.getArticles("status", "/my");
+      else this.getArticles("mode");
+    },
+
+    getArticles(prop, url = "") {
+      this.isLoading = true;
+      const value = this.navItems[this.activeNavProp].value;
+
+      axios
+        .get(
+          `${SERVER_URL}/api/post${url}?limit=${this.articlesNumber}&${prop}=${value}`
+        )
+        .then(res => {
+          this.forModeration
+            ? (this.articles = res.data.posts)
+            : (this.articles = res.data);
+        })
+        .catch(e => {
+          this.errors.push(e);
+          this.isErrored = true;
+        })
+        .finally(() => (this.isLoading = false));
     },
 
     onModerated(post) {
@@ -103,27 +135,7 @@ export default {
   },
 
   mounted() {
-    this.isLoading = true;
-    let url = `${SERVER_URL}/api/post`;
-
-    if (this.forModeration) {
-      url += "/moderation";
-    } else if (this.myPosts) {
-      url += "/my";
-    }
-
-    axios
-      .get(url)
-      .then(res => {
-        if (this.forModeration) {
-          this.articles = res.data.posts;
-        } else this.articles = res.data;
-      })
-      .catch(e => {
-        this.errors.push(e);
-        this.isErrored = true;
-      })
-      .finally(() => (this.isLoading = false));
+    this.selectMethod();
   }
 };
 </script>

@@ -25,8 +25,48 @@ const routes = [
     name: "moderation",
     component: Articles,
     props: {
-      navItems: ["Новые", "Отклоненные", "Утвержденные"],
+      navItems: [
+        {
+          name: "Новые",
+          value: "new"
+        },
+        {
+          name: "Отклоненные",
+          value: "declined"
+        },
+        {
+          name: "Утвержденные",
+          value: "accepted"
+        }
+      ],
       forModeration: true,
+      className: "ArticlesContent Articles--noborder"
+    }
+  },
+  {
+    path: "/my",
+    name: "my",
+    component: Articles,
+    props: {
+      navItems: [
+        {
+          name: "Скрытые",
+          value: "inactive"
+        },
+        {
+          name: "Активные",
+          value: "pending"
+        },
+        {
+          name: "Отклонённые",
+          value: "declined"
+        },
+        {
+          name: "Опубликованные",
+          value: "published"
+        }
+      ],
+      myPosts: true,
       className: "ArticlesContent Articles--noborder"
     }
   },

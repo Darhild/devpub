@@ -31,9 +31,17 @@
     <ModerationBlock
       v-if="forModeration"
       className="ArticlePreview-Moderation"
+      :id="id"
       @moderated="onModerated"
     />
-    <SocialBlock v-else className="Article-Social ArticlePreview-Social" />
+    <SocialBlock
+      v-else
+      className="Article-Social ArticlePreview-Social"
+      :likeCount="likeCount"
+      :dislikeCount="dislikeCount"
+      :commentCount="commentCount"
+      :viewCount="viewCount"
+    />
   </div>
 </template>
 

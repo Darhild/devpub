@@ -26,7 +26,10 @@
         <div class="Search Header-Search">
           <input class="Input" type="text" placeholder="Найти" />
         </div>
-        <UserSection v-if="isAuth" />
+        <UserSection
+          v-if="isAuth"
+          :postsForModeration="postsForModeration"
+        />
         <router-link v-else to="/login" class="Link Header-Login">
           Войти
         </router-link>
@@ -36,6 +39,8 @@
 </template>
 
 <script>
+import axios from "axios";
+import { SERVER_URL } from "./../env";
 import UserSection from "@/components/UserSection.vue";
 
 export default {
@@ -43,10 +48,25 @@ export default {
     UserSection
   },
 
+  data() {
+    return {
+      postsForModeration: 0,
+    }
+  },
+
   computed: {
     isAuth() {
       return this.$store.getters.authStatus;
     }
+  },
+
+  mounted() {
+    axios
+      .get(`${SERVER_URL}/api/post/moderation`)
+      .then(res => (this.postsForModeration = res.data.count))
+      .catch(e => {
+        this.errors.push(e);
+      });
   }
 };
 </script>

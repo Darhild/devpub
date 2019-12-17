@@ -41,6 +41,26 @@ export default {
     className: {
       type: String,
       required: false
+    },
+    likeCount: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    dislikeCount: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    commentCount: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    viewCount: {
+      type: Number,
+      required: true,
+      default: 0
     }
   }
 };
