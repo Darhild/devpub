@@ -35,7 +35,23 @@
         class="CalendarMonth-Day"
       ></div>
       <div v-for="(day, index) in days" :key="index" class="CalendarMonth-Day">
-        {{ day }}
+        <router-link
+          v-if="getPostsCountByDate(day)"
+          :to="{ name: 'mainPage', params: { date: formatDate(day) } }"
+          class="CalendarMonth-Link"
+        >
+          <div class="CalendarMonth-PostsCount">
+            {{ getPostsCountByDate(day) }}
+          </div>
+          <div class="CalendarMonth-DayNum">
+            {{ day }}
+          </div>
+        </router-link>
+        <template v-else>
+          <div class="CalendarMonth-DayNum">
+            {{ day }}
+          </div>
+        </template>
       </div>
       <div
         v-for="num in postOffset"
@@ -47,6 +63,8 @@
 </template>
 
 <script>
+import { formatDate } from "@/utils";
+
 export default {
   props: {
     year: {
@@ -55,6 +73,10 @@ export default {
     },
     month: {
       type: Number,
+      required: true
+    },
+    posts: {
+      type: Object,
       required: true
     }
   },
@@ -119,6 +141,17 @@ export default {
           this.days = this.year % 4 === 0 ? 29 : 28;
       }
       this.weeks = Math.ceil((this.days + this.offset + 1) / 7);
+    },
+
+    formatDate(day) {
+      return formatDate(this.year, this.month + 1, day);
+    },
+
+    getPostsCountByDate(day) {
+      let { year, month } = this;
+      month = month + 1;
+      const key = formatDate(year, month, day);
+      return this.posts[key];
     }
   },
 
@@ -145,14 +178,14 @@ export default {
 
   &-Day {
     position: relative;
-    justify-self: start;
-    display: table-cell;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 32px;
     height: 30px;
     padding: 2px;
     font-size: 0.6rem;
     font-weight: 500;
-    text-align: right;
     vertical-align: bottom;
     color: var(--color-primary);
     border-right: 1px solid var(--color-border);
@@ -190,6 +223,42 @@ export default {
 
     &:nth-last-child(-n + 7):after {
       border: none;
+    }
+  }
+
+  &-Link {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  &-DayNum {
+    margin-top: auto;
+    text-align: right;
+  }
+
+  &-PostsCount {
+    width: 10px;
+    height: 10px;
+    text-align: center;
+    line-height: 10px;
+    color: var(--color-lightest);
+    background-color: var(--color-secondary);
+    border-radius: 50%;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 7px;
+      height: 7px;
+      background: linear-gradient(
+        to top right,
+        var(--color-lightest) 50%,
+        var(--color-highlight) 50%
+      );
     }
   }
 

@@ -3,9 +3,8 @@
     <div
       v-for="(item, index) in navItems"
       :key="index"
-      :class="[
-        activeItem === index ? 'Nav-Item Nav-Item--state_active' : 'Nav-Item'
-      ]"
+      class="Nav-Item"
+      :class="returnClassObject(index)"
       @click="onClick(index)"
     >
       {{ item.name }}
@@ -23,6 +22,10 @@ export default {
     navItems: {
       type: Array,
       required: true
+    },
+    margin: {
+      type: String,
+      required: false
     }
   },
 
@@ -33,6 +36,13 @@ export default {
   },
 
   methods: {
+    returnClassObject(index) {
+      return {
+        "Nav-Item--state_active": this.activeItem === index,
+        "Nav-Item--margin-right": this.margin === "right"
+      };
+    },
+
     onClick(index) {
       this.activeItem = index;
       this.$emit("set-nav-value", index);
@@ -47,13 +57,15 @@ export default {
   justify-content: space-between;
 
   &-Item {
-    margin: 7px 22px;
+    padding: 7px 22px;
     font-size: 1.4rem;
     cursor: pointer;
 
+    &:last-child {
+      margin-right: 0;
+    }
+
     &:hover {
-      margin: 0;
-      padding: 7px 22px;
       color: var(--color-lightest);
       background-color: var(--color-primary);
       border-radius: 20px;
@@ -65,6 +77,10 @@ export default {
       color: var(--color-lightest);
       background-color: var(--color-primary);
       border-radius: 20px;
+    }
+
+    &--margin-right {
+      margin-right: 58px;
     }
   }
 }

@@ -1,4 +1,4 @@
-export const formatDate = d => {
+export const formatDateTime = d => {
   return `${d.getFullYear()}-${d
     .getMonth()
     .toString()
@@ -12,6 +12,12 @@ export const formatDate = d => {
     .getMinutes()
     .toString()
     .padStart(2, "0")}`;
+};
+
+export const formatDate = (year, month, day) => {
+  return `${year}-${month
+    .toString()
+    .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
 };
 
 export const formatToHtml = str => {

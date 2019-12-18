@@ -103,7 +103,7 @@ export default {
     axios
       .get(`${SERVER_URL}/api/post`)
       .then(res => {
-        this.article = res.data.find(
+        this.article = res.data.posts.find(
           article => article.id == this.$route.params.id
         );
         this.commentWithForm = this.article.comments

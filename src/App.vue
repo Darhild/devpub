@@ -28,6 +28,7 @@ export default {
 
   --color-layout-primary: #f2f2f2;
   --color-layout-dark: #171727;
+  --color-highlight: rgba(236, 65, 65, 0.4);
   --color-lightest: #fff;
   --color-light: rgba(0, 0, 0, 0.3);
   --color-white: #fff;

@@ -26,10 +26,7 @@
         <div class="Search Header-Search">
           <input class="Input" type="text" placeholder="Найти" />
         </div>
-        <UserSection
-          v-if="isAuth"
-          :postsForModeration="postsForModeration"
-        />
+        <UserSection v-if="isAuth" :postsForModeration="postsForModeration" />
         <router-link v-else to="/login" class="Link Header-Login">
           Войти
         </router-link>
@@ -50,8 +47,8 @@ export default {
 
   data() {
     return {
-      postsForModeration: 0,
-    }
+      postsForModeration: 0
+    };
   },
 
   computed: {

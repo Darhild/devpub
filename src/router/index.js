@@ -1,7 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "@/views/Login.vue";
-import Main from "@/views/Main.vue";
+import MainPage from "@/views/MainPage.vue";
+import Stat from "@/views/Stat.vue";
 import Article from "@/views/Article.vue";
 import Calendar from "@/views/Calendar.vue";
 import EditPost from "@/views/EditPost.vue";
@@ -17,8 +18,8 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "main",
-    component: Main
+    name: "mainPage",
+    component: MainPage
   },
   {
     path: "/moderation",
@@ -69,6 +70,12 @@ const routes = [
       myPosts: true,
       className: "ArticlesContent Articles--noborder"
     }
+  },
+  {
+    path: "/stat",
+    name: "stat",
+    component: Stat,
+    className: "ArticlesContent Articles--noborder"
   },
   {
     path: "/post/:id",
