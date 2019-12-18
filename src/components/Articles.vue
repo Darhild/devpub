@@ -136,6 +136,8 @@ export default {
 
     getArticles(prop, url = "", getByTag = false) {
       this.isLoading = true;
+      this.isErrored = false;
+
       const value = getByTag
         ? this.tagSelected
         : this.navItems[this.activeNavProp].value;

@@ -14,7 +14,7 @@ import Articles from "@/components/Articles.vue";
 import Tags from "@/components/Tags.vue";
 
 export default {
-  name: "main",
+  name: "mainPage",
   components: {
     Articles,
     Tags

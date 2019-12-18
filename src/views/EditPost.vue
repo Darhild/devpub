@@ -79,7 +79,7 @@
 <script>
 import axios from "axios";
 import { SERVER_URL } from "./../env";
-import { formatDate, formatToHtml } from "@/utils";
+import { formatDateTime, formatToHtml } from "@/utils";
 import BaseButton from "@/components/BaseButton.vue";
 
 export default {
@@ -160,7 +160,7 @@ export default {
 
           this.article = article;
           this.title = article.title;
-          this.date = formatDate(new Date(article.time));
+          this.date = formatDateTime(new Date(article.time));
           this.tags = [...article.tags];
           this.$refs.editor.setContent(formatToHtml(article.text));
         })
@@ -172,7 +172,7 @@ export default {
 
   mounted() {
     if (this.editPost) this.getPostContent();
-    else this.date = formatDate(new Date());
+    else this.date = formatDateTime(new Date());
   }
 };
 </script>

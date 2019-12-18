@@ -5,6 +5,7 @@
       :key="month"
       :year="year"
       :month="month - 1"
+      :posts="posts"
     />
   </div>
 </template>
@@ -20,6 +21,10 @@ export default {
   props: {
     year: {
       type: Number,
+      required: true
+    },
+    posts: {
+      type: Object,
       required: true
     }
   }

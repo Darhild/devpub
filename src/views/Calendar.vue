@@ -3,19 +3,21 @@
     <BaseNavbar
       className="Calendar-Nav"
       :navItems="years"
-      @set-value="selectActiveYear"
+      @set-nav-value="selectActiveYear"
     />
-    <CalendarTable :year="+years[activeYear]" />
+    <CalendarTable :year="years[activeYear].value" :posts="posts" />
   </div>
 </template>
 
 <script>
-//import axios from "axios";
-//import { SERVER_URL } from "./../env";
+import axios from "axios";
+import { SERVER_URL } from "./../env";
 import BaseNavbar from "@/components/BaseNavbar.vue";
 import CalendarTable from "@/components/CalendarTable.vue";
 
 export default {
+  name: "calendar",
+
   components: {
     BaseNavbar,
     CalendarTable
@@ -23,15 +25,41 @@ export default {
 
   data() {
     return {
-      years: ["2019", "2018", "2017", "2016", "2015", "2014"],
-      activeYear: 0
+      years: [],
+      activeYear: 0,
+      posts: {}
     };
   },
 
   methods: {
-    selectActiveYear(value) {
-      this.activeYear = value;
+    selectActiveYear(val) {
+      this.activeYear = val;
+      this.getPostsCount(this.years[val].value);
+    },
+
+    getPostsCount(year) {
+      axios
+        .get(`${SERVER_URL}/api/calendar?year=${year}`)
+        .then(res => (this.posts = res.data.posts))
+        .catch(e => {
+          console.log(e);
+        });
     }
+  },
+
+  mounted() {
+    axios
+      .get(`${SERVER_URL}/api/calendar`)
+      .then(res => {
+        this.years.push(...res.data.years);
+        this.years = this.years.map(year => {
+          return { name: year, value: year };
+        });
+        this.getPostsCount(this.years[0].value);
+      })
+      .catch(e => {
+        console.log(e);
+      });
   }
 };
 </script>
