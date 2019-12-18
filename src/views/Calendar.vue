@@ -3,7 +3,7 @@
     <BaseNavbar
       className="Calendar-Nav"
       :navItems="years"
-      v-on:set-value="selectActiveYear"
+      @set-value="selectActiveYear"
     />
     <CalendarTable :year="+years[activeYear]" />
   </div>
