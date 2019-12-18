@@ -1,7 +1,11 @@
 <template>
   <main class="MainPage">
-    <Articles :navItems="navItems" :className="'MainPage-Articles'" />
-    <Tags className="MainPage-Tags" />
+    <Articles
+      :navItems="navItems"
+      :className="'MainPage-Articles'"
+      :tagSelected="tagSelected"
+    />
+    <Tags className="MainPage-Tags" @select-tag="onClickTag" />
   </main>
 </template>
 
@@ -10,7 +14,7 @@ import Articles from "@/components/Articles.vue";
 import Tags from "@/components/Tags.vue";
 
 export default {
-  name: "app",
+  name: "main",
   components: {
     Articles,
     Tags
@@ -35,8 +39,15 @@ export default {
           name: "Старые",
           value: "early"
         }
-      ]
+      ],
+      tagSelected: ""
     };
+  },
+
+  methods: {
+    onClickTag(value) {
+      this.tagSelected = value;
+    }
   }
 };
 </script>

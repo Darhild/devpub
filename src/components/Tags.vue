@@ -19,6 +19,7 @@
             paddingLeft: padding * tag.weight + 'px',
             fontSize: fontSize * tag.weight + 'rem'
           }"
+          @click="onClickTag(tag.name)"
         >
           #{{ tag.name }}
         </div>
@@ -45,6 +46,12 @@ export default {
       padding: 25,
       isLoading: true
     };
+  },
+
+  methods: {
+    onClickTag(value) {
+      this.$emit("select-tag", value);
+    }
   },
 
   mounted() {

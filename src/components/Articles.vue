@@ -74,6 +74,10 @@ export default {
       type: Array,
       required: true
     },
+    tagSelected: {
+      type: String,
+      required: true
+    },
     forModeration: {
       type: Boolean,
       required: false,
@@ -94,7 +98,8 @@ export default {
       articlesNumber: 4,
       offset: 0,
       isLoading: true,
-      isErrored: false
+      isErrored: false,
+      errors: []
     };
   },
 
@@ -102,6 +107,16 @@ export default {
     moreArticles() {
       let dif = this.articlesCount - this.offset - this.articlesNumber;
       return dif > 0 ? dif : 0;
+    }
+  },
+
+  watch: {
+    $route() {
+      this.selectMethod();
+    },
+
+    tagSelected() {
+      this.getArticles("tag", "/byTag", true);
     }
   },
 
@@ -119,9 +134,11 @@ export default {
       else this.getArticles("mode");
     },
 
-    getArticles(prop, url = "") {
+    getArticles(prop, url = "", getByTag = false) {
       this.isLoading = true;
-      const value = this.navItems[this.activeNavProp].value;
+      const value = getByTag
+        ? this.tagSelected
+        : this.navItems[this.activeNavProp].value;
 
       axios
         .get(
