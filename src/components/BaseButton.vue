@@ -47,6 +47,21 @@ export default {
     background-color: var(--color-active);
   }
 
+  &--mode_add-load {
+    padding: 10px 25px;
+    color: var(--color-darkest);
+    background-color: var(--color-layout-primary);
+    border-radius: 10px;
+
+    &:hover {
+      background-color: var(--color-layout-primary);
+    }
+
+    &:active {
+      background-color: var(--color-layout-primary);
+    }
+  }
+
   &--size_xs {
     padding: 4px 16px;
     font-size: 1rem;

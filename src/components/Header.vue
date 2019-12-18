@@ -60,7 +60,7 @@ export default {
   mounted() {
     axios
       .get(`${SERVER_URL}/api/post/moderation`)
-      .then(res => (this.postsForModeration = res.data.count))
+      .then(res => (this.postsForModeration = +res.data.count))
       .catch(e => {
         this.errors.push(e);
       });

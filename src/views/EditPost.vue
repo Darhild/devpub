@@ -154,7 +154,7 @@ export default {
       axios
         .get(`${SERVER_URL}/api/post`)
         .then(res => {
-          const article = res.data.find(
+          const article = res.data.posts.find(
             article => article.id == this.$route.params.id
           );
 

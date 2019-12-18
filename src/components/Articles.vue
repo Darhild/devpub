@@ -37,6 +37,14 @@
             :viewCount="item.viewCount"
             @moderated="onModerated"
           />
+          <div class="Articles-Button">
+            <BaseButton
+              :className="'Button--mode_add-load'"
+              :onClickButton="onLoadMore"
+            >
+              Ещё публикации ({{ moreArticles }})
+            </BaseButton>
+          </div>
         </template>
       </template>
     </div>
@@ -48,11 +56,13 @@ import axios from "axios";
 import { SERVER_URL } from "./../env";
 import BaseNavbar from "@/components/BaseNavbar.vue";
 import BaseArticle from "@/components/BaseArticle.vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 export default {
   components: {
     BaseNavbar,
-    BaseArticle
+    BaseArticle,
+    BaseButton
   },
 
   props: {
@@ -80,21 +90,27 @@ export default {
     return {
       activeNavProp: 0,
       articles: [],
+      articlesCount: 0,
       articlesNumber: 4,
+      offset: 0,
       isLoading: true,
       isErrored: false
     };
   },
 
-  watch: {
-    activeNavProp() {
-      this.selectMethod();
+  computed: {
+    moreArticles() {
+      let dif = this.articlesCount - this.offset - this.articlesNumber;
+      return dif > 0 ? dif : 0;
     }
   },
 
   methods: {
     selectActiveNavProp(value) {
+      this.articles = [];
+      this.offset = 0;
       this.activeNavProp = value;
+      this.selectMethod();
     },
 
     selectMethod() {
@@ -109,18 +125,24 @@ export default {
 
       axios
         .get(
-          `${SERVER_URL}/api/post${url}?limit=${this.articlesNumber}&${prop}=${value}`
+          `${SERVER_URL}/api/post${url}?offset=${this.offset}&limit=${this.articlesNumber}&${prop}=${value}`
         )
         .then(res => {
-          this.forModeration
-            ? (this.articles = res.data.posts)
-            : (this.articles = res.data);
+          this.articles.push(...res.data.posts);
+          this.articlesCount = res.data.count;
         })
         .catch(e => {
           this.errors.push(e);
           this.isErrored = true;
         })
         .finally(() => (this.isLoading = false));
+    },
+
+    onLoadMore() {
+      if (this.articlesCount > this.offset + this.articlesNumber) {
+        this.offset += this.articlesNumber;
+        this.selectMethod();
+      }
     },
 
     onModerated(post) {
@@ -169,6 +191,11 @@ export default {
 
   &-ArticlePreview {
     margin-bottom: 20px;
+  }
+
+  &-Button {
+    margin-right: 112px;
+    text-align: right;
   }
 }
 </style>

@@ -7,7 +7,7 @@
       <router-link class="Link Footer-Item" to="/calendar">
         Календарь
       </router-link>
-      <router-link class="Link Footer-Item" to="/stats">
+      <router-link class="Link Footer-Item" to="/stat">
         Статистика
       </router-link>
     </div>
