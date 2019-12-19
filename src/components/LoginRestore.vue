@@ -1,15 +1,11 @@
 <template>
-  <form class="Login-Form Form">
-    <div class="Form-Row">
-      <div class="Form-Label">
-        Email или логин
-      </div>
-      <div class="Form-Value">
-        <input class="Input" type="text" />
-      </div>
-    </div>
+  <form class="Login-Form Form" @submit.prevent="onSubmit">
+    <InputEmail @field-validated="onValidateField" />
     <div class="Form-Submit">
-      <BaseButton>
+      <BaseButton
+        :onClickButton="onSubmit"
+        :disabled="submitStatus !== 'success'"
+      >
         Далее
       </BaseButton>
     </div>
@@ -17,11 +13,22 @@
 </template>
 
 <script>
+import formSubmit from "@/mixins/formSubmit";
+import InputEmail from "@/components/InputEmail.vue";
 import BaseButton from "@/components/BaseButton.vue";
 
 export default {
   components: {
-    BaseButton
+    BaseButton,
+    InputEmail
+  },
+
+  mixins: [formSubmit],
+
+  data() {
+    return {
+      requiredFields: "email"
+    };
   }
 };
 </script>

@@ -7,10 +7,15 @@
       <input
         v-model="email"
         class="Input"
-        :class="{ 'Input--state_invalid': this.$v.email.$invalid }"
+        :class="{
+          'Input--state_invalid': $v.email.$dirty && $v.email.$invalid
+        }"
         type="email"
+        @input="onInput"
       />
-      <div v-if="errorMessage" class="Input-Error">{{ errorMessage }}</div>
+      <div v-if="$v.email.$dirty && errorMessage" class="Input-Error">
+        {{ errorMessage }}
+      </div>
     </div>
   </div>
 </template>
@@ -43,6 +48,13 @@ export default {
     email: {
       required,
       email
+    }
+  },
+
+  methods: {
+    onInput() {
+      this.$v.email.$touch();
+      this.$emit("field-validated", { email: !this.$v.email.$invalid });
     }
   }
 };

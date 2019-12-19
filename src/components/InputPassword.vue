@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <form>
     <div class="Form-Row">
       <div class="Form-Label">
         Пароль
@@ -8,10 +8,16 @@
         <input
           v-model="password"
           class="Input"
-          :class="{ 'Input--state_invalid': this.$v.password.$invalid }"
+          :class="{
+            'Input--state_invalid': $v.password.$dirty && $v.password.$invalid
+          }"
           type="password"
+          @input="onInput('password')"
         />
-        <div v-if="errorMessagePassword" class="Input-Error">
+        <div
+          v-if="$v.password.$dirty && errorMessagePassword"
+          class="Input-Error"
+        >
           {{ errorMessagePassword }}
         </div>
       </div>
@@ -22,17 +28,24 @@
       </div>
       <div class="Form-Value">
         <input
-          v-model="samePassword"
+          v-model="repeatPassword"
           class="Input"
-          :class="{ 'Input--state_invalid': this.$v.repeatPassword.$invalid }"
+          :class="{
+            'Input--state_invalid':
+              $v.repeatPassword.$dirty && $v.repeatPassword.$invalid
+          }"
           type="password"
+          @input="onInput('repeatPassword')"
         />
-        <div v-if="errorMessageRepeat" class="Input-Error">
+        <div
+          v-if="$v.repeatPassword.$dirty && errorMessageRepeat"
+          class="Input-Error"
+        >
           {{ errorMessageRepeat }}
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>
@@ -58,10 +71,6 @@ export default {
     errorMessagePassword() {
       if (!this.$v.password.minLength) {
         return `Пароль слишком короткий`;
-      }
-
-      if (this.withRepeat && !this.$v.repeatPassword.sameAsPassword) {
-        return "Пароли не совпадают!";
       }
 
       if (!this.$v.password.required) {
@@ -92,6 +101,18 @@ export default {
     repeatPassword: {
       required,
       sameAsPassword: sameAs("password")
+    }
+  },
+
+  methods: {
+    onInput(value) {
+      this.$v[value].$touch();
+      if (value === "password")
+        this.$emit("field-validated", { password: !this.$v.password.$invalid });
+      else
+        this.$emit("field-validated", {
+          repeatPassword: !this.$v.repeatPassword.$invalid
+        });
     }
   }
 };

@@ -1,8 +1,8 @@
 <template>
   <div class="Login-SignIn">
     <form class="Login-Form Form" @submit.prevent="onSubmit">
-      <InputEmail />
-      <InputPassword :withRepeat="false" />
+      <InputEmail @field-validated="onValidateField" />
+      <InputPassword :withRepeat="false" @field-validated="onValidateField" />
       <div class="Form-Submit">
         <BaseButton
           :onClickButton="onSubmit"
@@ -36,15 +36,13 @@ export default {
     InputPassword
   },
 
-  computed: {
-    submitStatus() {
-      console.log(this.$v);
-      if (!this.$v.$invalid) return "success";
-      return "error";
-    }
-  },
+  mixins: [formSubmit],
 
-  mixins: [formSubmit]
+  data() {
+    return {
+      requiredFields: "email,password"
+    };
+  }
 };
 </script>
 

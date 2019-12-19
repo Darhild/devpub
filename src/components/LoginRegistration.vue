@@ -1,7 +1,7 @@
 <template>
-  <form class="Login-Form Form">
-    <InputEmail />
-    <InputPassword />
+  <form class="Login-Form Form" @submit.prevent="onSubmit">
+    <InputEmail @field-validated="onValidateField" />
+    <InputPassword @field-validated="onValidateField" />
     <div class="Form-Row">
       <div class="Form-Label">
         Код с картинки
@@ -16,7 +16,10 @@
       </div>
     </div>
     <div class="Form-Submit">
-      <BaseButton>
+      <BaseButton
+        :onClickButton="onSubmit"
+        :disabled="submitStatus !== 'success'"
+      >
         Зарегистрироваться
       </BaseButton>
     </div>
@@ -24,7 +27,7 @@
 </template>
 
 <script>
-//import { formValidation } from "@/mixins/formValidation";
+import formSubmit from "@/mixins/formSubmit";
 import BaseButton from "@/components/BaseButton.vue";
 import InputEmail from "@/components/InputEmail.vue";
 import InputPassword from "@/components/InputPassword.vue";
@@ -34,6 +37,14 @@ export default {
     BaseButton,
     InputEmail,
     InputPassword
-  }
+  },
+
+  data() {
+    return {
+      requiredFields: "email,password,repeatPassword"
+    };
+  },
+
+  mixins: [formSubmit]
 };
 </script>
