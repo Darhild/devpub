@@ -111,6 +111,10 @@ export default {
   },
 
   computed: {
+    searchQuery() {
+      return this.$store.getters.searchQuery;
+    },
+
     moreArticles() {
       let dif = this.articlesCount - this.offset - this.articlesNumber;
       return dif > 0 ? dif : 0;
@@ -136,6 +140,10 @@ export default {
 
     tagSelected() {
       this.getArticles("tag", "/byTag", true);
+    },
+
+    searchQuery() {
+      this.getArticles("query", "/search", false, true);
     }
   },
 
@@ -154,7 +162,7 @@ export default {
       else this.getArticles("mode");
     },
 
-    getArticles(prop, url = "", getByTag = false) {
+    getArticles(prop, url = "", getByTag = false, isSearch = false) {
       this.isLoading = true;
       this.isErrored = false;
       let value;
@@ -163,6 +171,8 @@ export default {
         value = this.tagSelected;
       } else if (this.postByDate) {
         value = this.postByDate;
+      } else if (isSearch) {
+        value = this.searchQuery;
       } else value = this.navItems[this.activeNavProp].value;
 
       axios

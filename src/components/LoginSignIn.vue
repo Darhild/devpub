@@ -3,10 +3,10 @@
     <form class="Login-Form Form">
       <div class="Form-Row">
         <div class="Form-Label">
-          Email или логин
+          Email
         </div>
         <div class="Form-Value">
-          <input class="Input" type="text" />
+          <input class="Input" type="email" />
         </div>
       </div>
       <div class="Form-Row">

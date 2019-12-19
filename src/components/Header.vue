@@ -24,7 +24,13 @@
           </router-link>
         </div>
         <div class="Search Header-Search">
-          <input class="Input" type="text" placeholder="Найти" />
+          <input
+            v-model="search"
+            class="Input"
+            type="text"
+            placeholder="Найти"
+            @keyup.enter="onSearch"
+          />
         </div>
         <UserSection v-if="isAuth" :postsForModeration="postsForModeration" />
         <router-link v-else to="/login" class="Link Header-Login">
@@ -47,13 +53,20 @@ export default {
 
   data() {
     return {
-      postsForModeration: 0
+      postsForModeration: 0,
+      search: ""
     };
   },
 
   computed: {
     isAuth() {
       return this.$store.getters.authStatus;
+    }
+  },
+
+  methods: {
+    onSearch() {
+      this.$store.commit("setSearchQuery", this.search);
     }
   },
 

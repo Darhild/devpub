@@ -7,12 +7,14 @@ export default new Vuex.Store({
   state: {
     isAuth: true,
     shouldSendComment: false,
-    commentToSend: {}
+    commentToSend: {},
+    search: ""
   },
 
   getters: {
     authStatus: state => state.isAuth,
-    shouldSendComment: state => state.shouldSendComment
+    shouldSendComment: state => state.shouldSendComment,
+    searchQuery: state => state.search
   },
 
   mutations: {
@@ -24,6 +26,9 @@ export default new Vuex.Store({
     },
     commentIsSend: state => {
       state.shouldSendComment = false;
+    },
+    setSearchQuery: (state, payload) => {
+      state.search = payload;
     }
   },
 
