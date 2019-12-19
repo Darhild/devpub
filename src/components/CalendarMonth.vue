@@ -144,7 +144,7 @@ export default {
     },
 
     formatDate(day) {
-      return formatDate(this.year, this.month, day);
+      return formatDate(this.year, this.month + 1, day);
     },
 
     getPostsCountByDate(day) {

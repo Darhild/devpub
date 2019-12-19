@@ -4,6 +4,7 @@
       :navItems="navItems"
       :className="'MainPage-Articles'"
       :tagSelected="tagSelected"
+      :postByDate="postByDate"
     />
     <Tags className="MainPage-Tags" @select-tag="onClickTag" />
   </main>
@@ -42,6 +43,12 @@ export default {
       ],
       tagSelected: ""
     };
+  },
+
+  computed: {
+    postByDate() {
+      return this.$route.params.date ? this.$route.params.date : "";
+    }
   },
 
   methods: {

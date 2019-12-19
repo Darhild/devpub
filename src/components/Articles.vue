@@ -20,6 +20,9 @@
           Loading...
         </div>
         <template v-else>
+          <div v-if="postByDate" class="Title Articles-Title">
+            Публикации {{ formatedDate }}
+          </div>
           <BaseArticle
             v-for="item in articles"
             :key="item.id"
@@ -87,6 +90,10 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    postByDate: {
+      type: String,
+      required: true
     }
   },
 
@@ -107,6 +114,18 @@ export default {
     moreArticles() {
       let dif = this.articlesCount - this.offset - this.articlesNumber;
       return dif > 0 ? dif : 0;
+    },
+
+    formatedDate() {
+      if (this.postByDate) {
+        return new Date(this.postByDate).toLocaleString("ru-RU", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit"
+        });
+      }
+
+      return false;
     }
   },
 
@@ -131,16 +150,20 @@ export default {
     selectMethod() {
       if (this.forModeration) this.getArticles("status", "/moderation");
       else if (this.myPosts) this.getArticles("status", "/my");
+      else if (this.postByDate) this.getArticles("date", "/byDate");
       else this.getArticles("mode");
     },
 
     getArticles(prop, url = "", getByTag = false) {
       this.isLoading = true;
       this.isErrored = false;
+      let value;
 
-      const value = getByTag
-        ? this.tagSelected
-        : this.navItems[this.activeNavProp].value;
+      if (getByTag) {
+        value = this.tagSelected;
+      } else if (this.postByDate) {
+        value = this.postByDate;
+      } else value = this.navItems[this.activeNavProp].value;
 
       axios
         .get(
@@ -191,6 +214,11 @@ export default {
 
   &-Nav {
     padding: 0 34px 23px 16px;
+  }
+
+  &-Title {
+    margin-top: 75px;
+    margin-bottom: 40px;
   }
 
   &-Content {
