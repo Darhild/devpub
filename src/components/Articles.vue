@@ -111,6 +111,10 @@ export default {
   },
 
   computed: {
+    isSearch() {
+      return this.$store.getters.searchStatus;
+    },
+
     searchQuery() {
       return this.$store.getters.searchQuery;
     },
@@ -143,7 +147,10 @@ export default {
     },
 
     searchQuery() {
-      this.getArticles("query", "/search", false, true);
+      if (this.searchQuery) {
+        this.getArticles("query", "/search", false);
+        this.$store.commit("clearSearchQuery");
+      }
     }
   },
 
@@ -159,10 +166,13 @@ export default {
       if (this.forModeration) this.getArticles("status", "/moderation");
       else if (this.myPosts) this.getArticles("status", "/my");
       else if (this.postByDate) this.getArticles("date", "/byDate");
-      else this.getArticles("mode");
+      else if (this.searchQuery) {
+        this.getArticles("query", "/search", false);
+        this.$store.commit("clearSearchQuery");
+      } else this.getArticles("mode");
     },
 
-    getArticles(prop, url = "", getByTag = false, isSearch = false) {
+    getArticles(prop, url = "", getByTag = false) {
       this.isLoading = true;
       this.isErrored = false;
       let value;
@@ -171,7 +181,7 @@ export default {
         value = this.tagSelected;
       } else if (this.postByDate) {
         value = this.postByDate;
-      } else if (isSearch) {
+      } else if (this.searchQuery) {
         value = this.searchQuery;
       } else value = this.navItems[this.activeNavProp].value;
 

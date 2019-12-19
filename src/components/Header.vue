@@ -66,7 +66,13 @@ export default {
 
   methods: {
     onSearch() {
-      this.$store.commit("setSearchQuery", this.search);
+      if (this.search) {
+        this.$store.commit("setSearchQuery", this.search);
+        this.search = "";
+        if (this.$route.name !== "mainPage") {
+          this.$router.push({ name: "mainPage" });
+        }
+      }
     }
   },
 

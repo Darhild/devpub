@@ -8,12 +8,14 @@ export default new Vuex.Store({
     isAuth: true,
     shouldSendComment: false,
     commentToSend: {},
+    isSearch: false,
     search: ""
   },
 
   getters: {
     authStatus: state => state.isAuth,
     shouldSendComment: state => state.shouldSendComment,
+    searchStatus: state => state.isSearch,
     searchQuery: state => state.search
   },
 
@@ -29,10 +31,17 @@ export default new Vuex.Store({
     },
     setSearchQuery: (state, payload) => {
       state.search = payload;
+    },
+    clearSearchQuery: state => {
+      state.search = "";
     }
   },
 
-  actions: {},
+  actions: {
+    setSearchQuery({ commit }, payload) {
+      commit("setSearchQuery", payload);
+    }
+  },
 
   modules: {}
 });
