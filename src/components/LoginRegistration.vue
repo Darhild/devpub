@@ -1,37 +1,7 @@
 <template>
   <form class="Login-Form Form">
-    <div class="Form-Row">
-      <div class="Form-Label">
-        Email
-      </div>
-      <div class="Form-Value">
-        <input class="Input" type="email" />
-      </div>
-    </div>
-    <div class="Form-Row">
-      <div class="Form-Label">
-        Логин
-      </div>
-      <div class="Form-Value">
-        <input class="Input" type="text" />
-      </div>
-    </div>
-    <div class="Form-Row">
-      <div class="Form-Label">
-        Пароль
-      </div>
-      <div class="Form-Value">
-        <input class="Input" type="password" />
-      </div>
-    </div>
-    <div class="Form-Row">
-      <div class="Form-Label">
-        Повторите пароль
-      </div>
-      <div class="Form-Value">
-        <input class="Input" type="password" />
-      </div>
-    </div>
+    <InputEmail />
+    <InputPassword />
     <div class="Form-Row">
       <div class="Form-Label">
         Код с картинки
@@ -54,11 +24,16 @@
 </template>
 
 <script>
+//import { formValidation } from "@/mixins/formValidation";
 import BaseButton from "@/components/BaseButton.vue";
+import InputEmail from "@/components/InputEmail.vue";
+import InputPassword from "@/components/InputPassword.vue";
 
 export default {
   components: {
-    BaseButton
+    BaseButton,
+    InputEmail,
+    InputPassword
   }
 };
 </script>

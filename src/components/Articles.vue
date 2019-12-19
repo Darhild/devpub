@@ -148,8 +148,7 @@ export default {
 
     searchQuery() {
       if (this.searchQuery) {
-        this.getArticles("query", "/search", false);
-        this.$store.commit("clearSearchQuery");
+        this.onSearch();
       }
     }
   },
@@ -166,10 +165,8 @@ export default {
       if (this.forModeration) this.getArticles("status", "/moderation");
       else if (this.myPosts) this.getArticles("status", "/my");
       else if (this.postByDate) this.getArticles("date", "/byDate");
-      else if (this.searchQuery) {
-        this.getArticles("query", "/search", false);
-        this.$store.commit("clearSearchQuery");
-      } else this.getArticles("mode");
+      else if (this.searchQuery) this.onSearch();
+      else this.getArticles("mode");
     },
 
     getArticles(prop, url = "", getByTag = false) {
@@ -198,6 +195,13 @@ export default {
           this.isErrored = true;
         })
         .finally(() => (this.isLoading = false));
+    },
+
+    onSearch() {
+      this.getArticles("query", "/search", false);
+      if (!this.moreArticles) {
+        this.$store.commit("clearSearchQuery");
+      }
     },
 
     onLoadMore() {

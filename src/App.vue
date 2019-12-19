@@ -118,6 +118,17 @@ a {
     font-size: 1.2rem;
     color: var(--text-faded);
   }
+
+  &-Error {
+    margin-top: 5px;
+    font-size: 1.2rem;
+    color: var(--color-secondary);
+  }
+
+  &--state_invalid {
+    padding: 3px 15px;
+    border: 1px solid var(--color-secondary);
+  }
 }
 
 .Title {

@@ -1,5 +1,10 @@
 <template>
-  <button class="Button" :class="className" @click="onclick">
+  <button
+    class="Button"
+    :class="className"
+    :disabled="disabled"
+    @click="onclick"
+  >
     <slot />
   </button>
 </template>
@@ -18,6 +23,11 @@ export default {
     onClickButton: {
       type: Function,
       required: true
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -45,6 +55,11 @@ export default {
 
   &:active {
     background-color: var(--color-active);
+  }
+
+  &:disabled {
+    color: var(--color-darkest);
+    background-color: var(--color-layout-primary);
   }
 
   &--mode_add-load {

@@ -1,24 +1,13 @@
 <template>
   <div class="Login-SignIn">
-    <form class="Login-Form Form">
-      <div class="Form-Row">
-        <div class="Form-Label">
-          Email
-        </div>
-        <div class="Form-Value">
-          <input class="Input" type="email" />
-        </div>
-      </div>
-      <div class="Form-Row">
-        <div class="Form-Label">
-          Пароль
-        </div>
-        <div class="Form-Value">
-          <input class="Input" type="password" />
-        </div>
-      </div>
+    <form class="Login-Form Form" @submit.prevent="onSubmit">
+      <InputEmail />
+      <InputPassword :withRepeat="false" />
       <div class="Form-Submit">
-        <BaseButton>
+        <BaseButton
+          :onClickButton="onSubmit"
+          :disabled="submitStatus !== 'success'"
+        >
           Войти
         </BaseButton>
       </div>
@@ -35,12 +24,27 @@
 </template>
 
 <script>
+import formSubmit from "@/mixins/formSubmit";
 import BaseButton from "@/components/BaseButton.vue";
+import InputEmail from "@/components/InputEmail.vue";
+import InputPassword from "@/components/InputPassword.vue";
 
 export default {
   components: {
-    BaseButton
-  }
+    BaseButton,
+    InputEmail,
+    InputPassword
+  },
+
+  computed: {
+    submitStatus() {
+      console.log(this.$v);
+      if (!this.$v.$invalid) return "success";
+      return "error";
+    }
+  },
+
+  mixins: [formSubmit]
 };
 </script>
 
