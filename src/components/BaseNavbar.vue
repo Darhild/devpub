@@ -67,7 +67,7 @@ export default {
 
     &:hover {
       color: var(--color-lightest);
-      background-color: var(--color-primary);
+      background-color: var(--color-hover);
       border-radius: 20px;
     }
 
@@ -77,6 +77,10 @@ export default {
       color: var(--color-lightest);
       background-color: var(--color-primary);
       border-radius: 20px;
+
+      &:hover {
+        background-color: var(--color-primary);
+      }
     }
 
     &--margin-right {
