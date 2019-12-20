@@ -72,8 +72,7 @@ export default {
 
   computed: {
     ...mapGetters(["user"])
-  },
-
+  }
 };
 </script>
 
