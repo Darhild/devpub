@@ -54,7 +54,8 @@ export default {
   methods: {
     onInput() {
       this.$v.email.$touch();
-      this.$emit("field-validated", { email: !this.$v.email.$invalid });
+      let value = this.$v.email.$invalid ? false : this.email;
+      this.$emit("field-validated", { email: value });
     }
   }
 };

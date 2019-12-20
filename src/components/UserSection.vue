@@ -4,7 +4,11 @@
       <div class="UserSection-User">
         Дмитрий Петров
       </div>
-      <img class="UserSection-Avatar" src="@/assets/avatar.jpg" alt="" />
+      <img
+        class="UserSection-Avatar"
+        :src="require(`@/assets/${avatar}`)"
+        alt="avatar"
+      />
     </div>
     <div class="UserSection-Inner">
       <router-link to="/profile" class="Link UserSection-Item">
@@ -27,7 +31,7 @@
           Модерация
         </div>
         <div class="UserSection-ModerationNum">
-          {{ postsForModeration }}
+          {{ moderationCount }}
         </div>
       </router-link>
       <router-link to="/settings" class="Link UserSection-Item">
@@ -43,10 +47,15 @@
 <script>
 export default {
   props: {
-    postsForModeration: {
+    moderationCount: {
       type: Number,
       required: true,
       default: 0
+    },
+    avatar: {
+      type: String,
+      required: false,
+      default: "default.jpg"
     }
   },
 

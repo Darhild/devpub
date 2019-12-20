@@ -45,6 +45,18 @@ export default {
     };
   },
 
-  mixins: [formSubmit]
+  mixins: [formSubmit],
+
+  methods: {
+    onSubmit() {
+      this.$store
+        .dispatch("register", this.validatedFields)
+        .then(() => {
+          if (this.authErrors.length) alert(this.authErrors);
+          else this.$router.push("/login");
+        })
+        .catch(e => console.log(e));
+    }
+  }
 };
 </script>

@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store";
 import Login from "@/views/Login.vue";
 import MainPage from "@/views/MainPage.vue";
 import Stat from "@/views/Stat.vue";
@@ -120,12 +121,18 @@ const routes = [
   {
     path: "/settings",
     name: "settings",
-    component: Settings
+    component: Settings,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: "/profile",
     name: "profile",
-    component: Profile
+    component: Profile,
+    meta: {
+      requiresAuth: true
+    }
   }
 
   /*
@@ -144,6 +151,18 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isAuth) {
+      next();
+      return;
+    }
+    next("/");
+  } else {
+    next();
+  }
 });
 
 export default router;

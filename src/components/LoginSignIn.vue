@@ -42,6 +42,24 @@ export default {
     return {
       requiredFields: "email,password"
     };
+  },
+
+  computed: {
+    authErrors() {
+      return this.$store.getters.authErrors;
+    }
+  },
+
+  methods: {
+    onSubmit() {
+      this.$store
+        .dispatch("login", this.validatedFields)
+        .then(() => {
+          if (this.authErrors.length) alert(this.authErrors.login);
+          else this.$router.push("/");
+        })
+        .catch(e => console.log(e));
+    }
   }
 };
 </script>

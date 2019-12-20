@@ -107,11 +107,16 @@ export default {
   methods: {
     onInput(value) {
       this.$v[value].$touch();
+      let passValue = this.$v.password.$invalid ? false : this.password;
+      let repValue = this.$v.repeatPassword.$invalid
+        ? false
+        : this.repeatPassword;
+
       if (value === "password")
-        this.$emit("field-validated", { password: !this.$v.password.$invalid });
+        this.$emit("field-validated", { password: passValue });
       else
         this.$emit("field-validated", {
-          repeatPassword: !this.$v.repeatPassword.$invalid
+          repeatPassword: repValue
         });
     }
   }

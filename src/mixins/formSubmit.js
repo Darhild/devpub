@@ -9,7 +9,7 @@ export default {
     submitStatus() {
       if (
         Object.keys(this.validatedFields).toString() === this.requiredFields &&
-        Object.values(this.validatedFields).every(item => item === true)
+        Object.values(this.validatedFields).every(item => item !== false)
       )
         return "success";
       return "error";
@@ -19,10 +19,6 @@ export default {
   methods: {
     onValidateField(obj) {
       this.validatedFields = { ...this.validatedFields, ...obj };
-    },
-
-    onSubmit() {
-      console.log("submit");
     }
   }
 };

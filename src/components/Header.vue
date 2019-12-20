@@ -32,7 +32,11 @@
             @keyup.enter="onSearch"
           />
         </div>
-        <UserSection v-if="isAuth" :postsForModeration="postsForModeration" />
+        <UserSection
+          v-if="isAuth"
+          :avatar="user.photo"
+          :moderationCount="user.moderationCount"
+        />
         <router-link v-else to="/login" class="Link Header-Login">
           Войти
         </router-link>
@@ -42,8 +46,7 @@
 </template>
 
 <script>
-import axios from "axios";
-import { SERVER_URL } from "./../env";
+import { mapGetters } from "vuex";
 import UserSection from "@/components/UserSection.vue";
 
 export default {
@@ -59,9 +62,7 @@ export default {
   },
 
   computed: {
-    isAuth() {
-      return this.$store.getters.authStatus;
-    }
+    ...mapGetters(["isAuth", "user"])
   },
 
   methods: {
@@ -74,15 +75,6 @@ export default {
         }
       }
     }
-  },
-
-  mounted() {
-    axios
-      .get(`${SERVER_URL}/api/post/moderation`)
-      .then(res => (this.postsForModeration = res.data.count))
-      .catch(e => {
-        this.errors.push(e);
-      });
   }
 };
 </script>
