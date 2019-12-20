@@ -96,6 +96,25 @@ export default new Vuex.Store({
       } catch (e) {
         console.log(e);
       }
+    },
+
+    async restorePassword({ commit }, { email }) {
+      try {
+        const resp = await axios.post(`${SERVER_URL}/api/auth/restore`, {
+          email
+        });
+
+        if (resp.data.result === false) {
+          commit("setAuthErrors", {
+            restoreError: "Логин не найден"
+          });
+        }
+      } catch (e) {
+        console.log(e);
+        commit("setAuthErrors", {
+          restoreError: "Логин не найден"
+        });
+      }
     }
   },
 

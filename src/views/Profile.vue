@@ -25,15 +25,15 @@
           Email
         </div>
         <div class="Form-Value">
-          <input class="Input" type="email" />
+          <input class="Input" type="email" :placeholder="user.email" />
         </div>
       </div>
       <div class="Form-Row">
         <div class="Form-Label">
-          Логин
+          Имя
         </div>
         <div class="Form-Value">
-          <input class="Input" type="text" />
+          <input class="Input" type="text" :placeholder="user.name" />
         </div>
       </div>
       <div class="Form-Row">
@@ -62,12 +62,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import BaseButton from "@/components/BaseButton.vue";
 
 export default {
   components: {
     BaseButton
-  }
+  },
+
+  computed: {
+    ...mapGetters(["user"])
+  },
+
 };
 </script>
 

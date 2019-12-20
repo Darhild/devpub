@@ -43,6 +43,7 @@ export default {
   --color-hover: #9595f5;
   --color-hover-editor: #fbbaba;
   --color-active: #6767ed;
+  --color-visited: #121239;
 }
 
 html {
@@ -186,7 +187,6 @@ a {
   &-Row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     width: 100%;
     margin-bottom: 31px;
 

@@ -16,6 +16,17 @@
       <div v-if="$v.email.$dirty && errorMessage" class="Input-Error">
         {{ errorMessage }}
       </div>
+      <div v-if="restoreError" class="Login-Errors">
+        <div class="Input-Error">
+          {{ restoreError }}
+        </div>
+        <router-link
+          to="/login/registration"
+          class="Login-Link Login-Link--color_active"
+        >
+          Регистрация
+        </router-link>
+    </div>
     </div>
   </div>
 </template>
@@ -24,6 +35,14 @@
 import { required, email } from "vuelidate/lib/validators";
 
 export default {
+  props: {
+    restoreError: {
+      type: String,
+      required: false,
+      default: ""
+    }
+  },
+
   data() {
     return {
       email: ""

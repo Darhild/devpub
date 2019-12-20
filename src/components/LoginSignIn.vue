@@ -63,19 +63,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-.Login {
-  &-Links {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 25px;
-    border-top: 1px solid var(--color-layout-primary);
-  }
-
-  &-Link {
-    font-size: 1.4rem;
-    color: var(--color-light);
-  }
-}
-</style>

@@ -12,6 +12,7 @@ import Profile from "@/views/Profile.vue";
 import Articles from "@/components/Articles.vue";
 import LoginSignIn from "@/components/LoginSignIn.vue";
 import LoginRestore from "@/components/LoginRestore.vue";
+import LoginChange from "@/components/LoginChange.vue";
 import LoginRegistration from "@/components/LoginRegistration.vue";
 
 Vue.use(VueRouter);
@@ -115,6 +116,10 @@ const routes = [
       {
         path: "restore-password",
         component: LoginRestore
+      },
+      {
+        path: "change-password",
+        component: LoginChange
       }
     ]
   },
