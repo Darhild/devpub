@@ -56,7 +56,7 @@ export default {
   border: none;
 }
 
-.ve-toolbar div {
+.vueditor .ve-toolbar div {
   display: flex;
   justify-content: center;
   align-items: center;
