@@ -47,7 +47,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import UserSection from "@/components/UserSection.vue";
+const UserSection = () =>
+  import(/* webpackChunkName: "userSection" */ "@/components/UserSection.vue");
 
 export default {
   components: {

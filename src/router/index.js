@@ -1,19 +1,34 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "@/store";
-import Login from "@/views/Login.vue";
-import MainPage from "@/views/MainPage.vue";
-import Stat from "@/views/Stat.vue";
-import Article from "@/views/Article.vue";
-import Calendar from "@/views/Calendar.vue";
-import EditPost from "@/views/EditPost.vue";
-import Settings from "@/views/Settings.vue";
-import Profile from "@/views/Profile.vue";
-import Articles from "@/components/Articles.vue";
-import LoginSignIn from "@/components/LoginSignIn.vue";
-import LoginRestore from "@/components/LoginRestore.vue";
-import LoginChange from "@/components/LoginChange.vue";
-import LoginRegistration from "@/components/LoginRegistration.vue";
+const MainPage = () =>
+  import(/* webpackChunkName: "mainPage" */ "@/views/MainPage.vue");
+const Login = () => import(/* webpackChunkName: "login" */ "@/views/Login.vue");
+const Stat = () => import(/* webpackChunkName: "stat" */ "@/views/Stat.vue");
+const Article = () =>
+  import(/* webpackChunkName: "article" */ "@/views/Article.vue");
+const Calendar = () =>
+  import(/* webpackChunkName: "calendar" */ "@/views/Calendar.vue");
+const EditPost = () =>
+  import(/* webpackChunkName: "editPost" */ "@/views/EditPost.vue");
+const Settings = () =>
+  import(/* webpackChunkName: "settings" */ "@/views/Settings.vue");
+const Profile = () =>
+  import(/* webpackChunkName: "profile" */ "@/views/Profile.vue");
+const Articles = () =>
+  import(/* webpackChunkName: "articles" */ "@/components/Articles.vue");
+const LoginSignIn = () =>
+  import(/* webpackChunkName: "loginSignIn" */ "@/components/LoginSignIn.vue");
+const LoginRestore = () =>
+  import(
+    /* webpackChunkName: "loginRestore" */ "@/components/LoginRestore.vue"
+  );
+const LoginChange = () =>
+  import(/* webpackChunkName: "loginChange" */ "@/components/LoginChange.vue");
+const LoginRegistration = () =>
+  import(
+    /* webpackChunkName: "loginRegistration" */ "@/components/LoginRegistration.vue"
+  );
 
 Vue.use(VueRouter);
 

@@ -57,9 +57,12 @@
 <script>
 import axios from "axios";
 import { SERVER_URL } from "./../env";
-import BaseNavbar from "@/components/BaseNavbar.vue";
-import BaseArticle from "@/components/BaseArticle.vue";
-import BaseButton from "@/components/BaseButton.vue";
+const BaseNavbar = () =>
+  import(/* webpackChunkName: "baseNavbar" */ "@/components/BaseNavbar.vue");
+const BaseArticle = () =>
+  import(/* webpackChunkName: "baseArticle" */ "@/components/BaseArticle.vue");
+const BaseButton = () =>
+  import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
 export default {
   components: {

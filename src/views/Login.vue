@@ -10,7 +10,8 @@
 </template>
 
 <script>
-import LoginHeader from "@/components/LoginHeader.vue";
+const LoginHeader = () =>
+  import(/* webpackChunkName: "loginHeader" */ "@/components/LoginHeader.vue");
 
 export default {
   components: {

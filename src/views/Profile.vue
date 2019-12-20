@@ -63,7 +63,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import BaseButton from "@/components/BaseButton.vue";
+const BaseButton = () =>
+  import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
 export default {
   components: {

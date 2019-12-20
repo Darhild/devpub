@@ -80,7 +80,8 @@
 import axios from "axios";
 import { SERVER_URL } from "./../env";
 import { formatDateTime, formatToHtml } from "@/utils";
-import BaseButton from "@/components/BaseButton.vue";
+const BaseButton = () =>
+  import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
 export default {
   props: {

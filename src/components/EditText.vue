@@ -71,7 +71,8 @@ import { SERVER_URL } from "./../env";
 import Vue from "vue";
 import Vuex from "vuex";
 import Vueditor from "vueditor";
-import BaseButton from "@/components/BaseButton.vue";
+const BaseButton = () =>
+  import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 import "vueditor/dist/style/vueditor.min.css";
 
 const config = {

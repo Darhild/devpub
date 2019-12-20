@@ -21,8 +21,10 @@
 
 <script>
 import formSubmit from "@/mixins/formSubmit";
-import InputEmail from "@/components/InputEmail.vue";
-import BaseButton from "@/components/BaseButton.vue";
+const InputEmail = () =>
+  import(/* webpackChunkName: "inputEmail" */ "@/components/InputEmail.vue");
+const BaseButton = () =>
+  import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
 export default {
   components: {

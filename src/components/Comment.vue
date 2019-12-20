@@ -25,8 +25,10 @@
 
 <script>
 import { formatToHtml } from "@/utils";
-import AddComment from "@/components/AddComment.vue";
-import BaseButton from "@/components/BaseButton.vue";
+const AddComment = () =>
+  import(/* webpackChunkName: "addComment" */ "@/components/AddComment.vue");
+const BaseButton = () =>
+  import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
 export default {
   components: {

@@ -13,8 +13,10 @@
 </template>
 
 <script>
-import AddText from "@/components/AddText.vue";
-import BaseButton from "@/components/BaseButton.vue";
+const AddText = () =>
+  import(/* webpackChunkName: "addText" */ "@/components/AddText.vue");
+const BaseButton = () =>
+  import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
 export default {
   components: {

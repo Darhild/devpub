@@ -11,8 +11,10 @@
 </template>
 
 <script>
-import Articles from "@/components/Articles.vue";
-import Tags from "@/components/Tags.vue";
+const Articles = () =>
+  import(/* webpackChunkName: "articles" */ "@/components/Articles.vue");
+const Tags = () =>
+  import(/* webpackChunkName: "tags" */ "@/components/Tags.vue");
 
 export default {
   name: "mainPage",

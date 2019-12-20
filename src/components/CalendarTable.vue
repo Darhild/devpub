@@ -11,7 +11,10 @@
 </template>
 
 <script>
-import CalendarMonth from "@/components/CalendarMonth.vue";
+const CalendarMonth = () =>
+  import(
+    /* webpackChunkName: "calendarMonth" */ "@/components/CalendarMonth.vue"
+  );
 
 export default {
   components: {

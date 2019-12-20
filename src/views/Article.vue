@@ -47,9 +47,12 @@
 <script>
 import axios from "axios";
 import { SERVER_URL } from "./../env";
-import BaseArticle from "@/components/BaseArticle.vue";
-import Comment from "@/components/Comment.vue";
-import AddComment from "@/components/AddComment.vue";
+const BaseArticle = () =>
+  import(/* webpackChunkName: "baseArticle" */ "@/components/BaseArticle.vue");
+const Comment = () =>
+  import(/* webpackChunkName: "comment" */ "@/components/Comment.vue");
+const AddComment = () =>
+  import(/* webpackChunkName: "addComment" */ "@/components/AddComment.vue");
 
 export default {
   components: {

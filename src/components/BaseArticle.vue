@@ -47,8 +47,12 @@
 
 <script>
 import { formatToHtml } from "@/utils";
-import SocialBlock from "@/components/SocialBlock.vue";
-import ModerationBlock from "@/components/ModerationBlock.vue";
+const SocialBlock = () =>
+  import(/* webpackChunkName: "socialBlock" */ "@/components/SocialBlock.vue");
+const ModerationBlock = () =>
+  import(
+    /* webpackChunkName: "moderationBlock" */ "@/components/ModerationBlock.vue"
+  );
 
 export default {
   components: {

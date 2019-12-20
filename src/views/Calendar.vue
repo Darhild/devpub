@@ -12,8 +12,12 @@
 <script>
 import axios from "axios";
 import { SERVER_URL } from "./../env";
-import BaseNavbar from "@/components/BaseNavbar.vue";
-import CalendarTable from "@/components/CalendarTable.vue";
+const BaseNavbar = () =>
+  import(/* webpackChunkName: "baseNavbar" */ "@/components/BaseNavbar.vue");
+const CalendarTable = () =>
+  import(
+    /* webpackChunkName: "calendarTable" */ "@/components/CalendarTable.vue"
+  );
 
 export default {
   name: "calendar",

@@ -52,7 +52,8 @@
 </template>
 
 <script>
-import BaseNavbar from "@/components/BaseNavbar.vue";
+const BaseNavbar = () =>
+  import(/* webpackChunkName: "baseNavbar" */ "@/components/BaseNavbar.vue");
 import axios from "axios";
 import { SERVER_URL } from "./../env";
 

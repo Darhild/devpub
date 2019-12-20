@@ -5,7 +5,8 @@
 </template>
 
 <script>
-import Articles from "@/components/Articles.vue";
+const Articles = () =>
+  import(/* webpackChunkName: "articles" */ "@/components/Articles.vue");
 
 export default {
   components: {
