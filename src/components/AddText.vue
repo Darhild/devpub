@@ -49,7 +49,7 @@ export default {
   border: none;
 }
 
-.ve-toolbar {
+.vueditor .ve-toolbar {
   display: flex;
   flex-wrap: wrap;
   background-color: var(--color-layout-primary);
