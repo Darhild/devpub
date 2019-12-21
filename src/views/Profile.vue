@@ -8,12 +8,24 @@
         Фотография
       </div>
       <div class="Avatar-PhotoSection">
-        <img class="Avatar-Image" src="@/assets/avatar.png" alt="" />
+        <div class="Avatar-Photo">
+          <img
+            ref="avatar"
+            class="Avatar-Img"
+            :src="require(`@/assets/${user.photo}`)"
+            alt=""
+          />
+        </div>
         <div class="Avatar-Edit">
           <div class="Avatar-Action">
-            Изменить
+            <label>
+              <input type="file" name="file" class="Avatar-Input" @change="onFileLoad"/>
+              <div class="Avatar-Change">
+                Изменить
+              </div>
+            </label>
           </div>
-          <div class="Avatar-Action">
+          <div class="Avatar-Action" @click="onDelete">
             Удалить
           </div>
         </div>
@@ -71,8 +83,24 @@ export default {
     BaseButton
   },
 
+  data() {
+    return {
+      avatar: null
+    }
+  },
+
   computed: {
     ...mapGetters(["user"])
+  },
+
+  methods: {
+    onFileLoad(event) {
+      this.$refs.avatar.src = URL.createObjectURL(event.target.files[0]);
+    },
+
+    onDelete() {
+      this.$refs.avatar.src = require("@/assets/default-3.png");
+    }
   }
 };
 </script>
@@ -103,6 +131,14 @@ export default {
     display: block;
   }
 
+  &-Input {
+    display: none;
+  }
+
+  &-Change {
+    cursor: pointer;
+  }
+
   &-Text {
     margin-right: 33px;
     font-size: 1.2rem;
@@ -116,10 +152,17 @@ export default {
     display: flex;
   }
 
-  &-Image {
-    display: block;
+  &-Photo {
+    width: 90px;
+    height: 90px;
     margin-right: 10px;
     border-radius: 10px;
+    overflow: hidden;
+  }
+
+  &-Img {
+    display: block;
+    width: 90px;
   }
 
   &-Action {

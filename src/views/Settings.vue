@@ -75,7 +75,7 @@ export default {
 
   computed: {
     isAuth() {
-      return this.$store.getters.authStatus;
+      return this.$store.getters.isAuth;
     }
   },
 
@@ -100,47 +100,6 @@ export default {
   &-ServerInfo {
     padding-top: 30px;
     padding-left: 30px;
-  }
-}
-
-.CheckForm {
-  &-Input {
-    display: none;
-    cursor: pointer;
-  }
-
-  &-Value {
-    position: relative;
-    margin-bottom: 15px;
-    padding-top: 2px;
-    padding-left: 25px;
-    font-size: 1.4rem;
-    cursor: pointer;
-
-    &:before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 18px;
-      height: 18px;
-      background-color: var(--color-layout-primary);
-      border-radius: 50%;
-      cursor: pointer;
-    }
-  }
-
-  &-Value:hover:before {
-    background-color: var(--color-hover);
-  }
-
-  &-Input:checked + .CheckForm-Value:before {
-    background-color: var(--color-active);
-  }
-
-  &-Title {
-    margin-bottom: 5px;
-    font-weight: 700;
   }
 }
 </style>
