@@ -72,9 +72,13 @@ export default {
 .Calendar {
   padding: 15px 20px 25px 15px;
 
-  &-Nav {
+  .Calendar-Nav {
     justify-content: flex-start;
     margin-bottom: 30px;
+
+    .Nav-Item {
+      margin-right: 15px;
+    }
   }
 }
 </style>

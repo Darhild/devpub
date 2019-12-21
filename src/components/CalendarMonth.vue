@@ -5,29 +5,29 @@
     </div>
     <div class="CalendarMonth-Table">
       <div class="CalendarMonth-Day CalendarMonth-Weekday">
-        monday
+        пн
       </div>
       <div class="CalendarMonth-Day CalendarMonth-Weekday">
-        tuesday
+        вт
       </div>
       <div class="CalendarMonth-Day CalendarMonth-Weekday">
-        wednesday
+        ср
       </div>
       <div class="CalendarMonth-Day CalendarMonth-Weekday">
-        thursday
+        чт
       </div>
       <div class="CalendarMonth-Day CalendarMonth-Weekday">
-        friday
+        пт
       </div>
       <div
         class="CalendarMonth-Day CalendarMonth-Weekday CalendarMonth-Weekday--Weekend"
       >
-        saturday
+        сб
       </div>
       <div
         class="CalendarMonth-Day CalendarMonth-Weekday CalendarMonth-Weekday--Weekend"
       >
-        sunday
+        вс
       </div>
       <div
         v-for="num in offset"
@@ -84,18 +84,18 @@ export default {
   data() {
     return {
       monthNames: {
-        0: "January",
-        1: "February",
-        2: "March",
-        3: "April",
-        4: "May",
-        5: "June",
-        6: "July",
-        7: "August",
-        8: "September",
-        9: "October",
-        10: "November",
-        11: "December"
+        0: "Январь",
+        1: "Февраль",
+        2: "Март",
+        3: "Апрель",
+        4: "Май",
+        5: "Июнь",
+        6: "Июль",
+        7: "Август",
+        8: "Сентябрь",
+        9: "Октябрь",
+        10: "Ноябрь",
+        11: "Декабрь"
       },
       weeks: 0,
       days: 0,
@@ -181,10 +181,10 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 32px;
-    height: 30px;
+    width: 40px;
+    height: 38px;
     padding: 2px;
-    font-size: 0.6rem;
+    font-size: 1rem;
     font-weight: 500;
     vertical-align: bottom;
     color: var(--color-primary);
@@ -239,10 +239,10 @@ export default {
   }
 
   &-PostsCount {
-    width: 10px;
-    height: 10px;
+    width: 15px;
+    height: 15px;
     text-align: center;
-    line-height: 10px;
+    line-height: 15px;
     color: var(--color-lightest);
     background-color: var(--color-secondary);
     border-radius: 50%;
@@ -263,7 +263,7 @@ export default {
   }
 
   &-Weekday {
-    height: 10px;
+    height: 15px;
     padding: 1px;
     text-align: center;
 

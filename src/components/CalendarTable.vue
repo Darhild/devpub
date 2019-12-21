@@ -37,21 +37,17 @@ export default {
 <style lang="scss">
 .Calendar-Table {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   grid-column-gap: 20px;
   grid-row-gap: 20px;
   justify-items: center;
 
   @media (max-width: $screen-desktop) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media (max-width: $screen-tablet) {
     grid-template-columns: 1fr 1fr;
   }
 
-  @media (max-width: $screen-mobile) {
+  @media (max-width: $screen-tablet) {
     grid-template-columns: 1fr;
   }
 }
