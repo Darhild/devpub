@@ -276,6 +276,7 @@ export default {
 
   &-Tags {
     display: flex;
+    align-items: flex-start;
 
     @media (max-width: $screen-tablet) {
       display: block;

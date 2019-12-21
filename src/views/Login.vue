@@ -1,5 +1,5 @@
 <template>
-  <main class="Login">
+  <main class="Login Wrapper">
     <div class="Login-Section">
       <LoginHeader>
         {{ title }}
@@ -31,16 +31,18 @@ export default {
 .Login {
   display: flex;
   justify-content: center;
+  max-width: 450px;
   padding-top: 53px;
+
+  @media (max-width: $screen-mobile) {
+    width: 100%;
+    padding-right: 25px;
+    padding-left: 25px;
+  }
 
   &-Section {
     padding-bottom: 25px;
-
-    @media (max-width: 500px) {
-      width: 100%;
-      padding-right: 25px;
-      padding-left: 25px;
-    }
+    width: 100%;
   }
 
   &-Form {

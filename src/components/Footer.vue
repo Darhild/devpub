@@ -34,14 +34,14 @@
   margin-top: auto;
   border-top: 1px solid var(--color-layout-primary);
 
-  @media (max-width: $screen-tablet) {
-    flex-direction: column;
-    align-items: center;
-  }
-
   &-Wrapper {
     display: flex;
     justify-content: space-between;
+
+    @media (max-width: $screen-tablet) {
+      flex-direction: column;
+      align-items: center;
+    }
   }
 
   &-Item {

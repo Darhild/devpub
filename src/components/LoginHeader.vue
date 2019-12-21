@@ -8,7 +8,6 @@
 
 <style lang="scss">
 .LoginHeader {
-  width: 450px;
   margin-bottom: 25px;
   border-bottom: 1px solid var(--color-layout-primary);
 

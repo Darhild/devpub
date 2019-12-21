@@ -25,13 +25,24 @@
             </router-link>
           </div>
           <div class="Search Header-Search">
-            <input
-              v-model="search"
-              class="Input"
-              type="text"
-              placeholder="Найти"
-              @keyup.enter="onSearch"
-            />
+            <div
+              v-if="searchIsOpen || windowWidth > 500"
+              class="Search-Wrapper"
+            >
+              <input
+                v-model="search"
+                class="Input Search-Input"
+                type="text"
+                placeholder="Найти"
+                @keyup.enter="onSearch"
+              />
+              <svg class="Search-Close" @click="onCloseSearch">
+                <use xlink:href="./../assets/icons-sprite.svg#delete"></use>
+              </svg>
+            </div>
+            <svg v-if="!searchIsOpen" class="Search-Icon" @click="onOpenSearch">
+              <use xlink:href="./../assets/icons-sprite.svg#search"></use>
+            </svg>
           </div>
           <UserSection
             v-if="isAuth"
@@ -60,7 +71,9 @@ export default {
   data() {
     return {
       postsForModeration: 0,
-      search: ""
+      search: "",
+      searchIsOpen: false,
+      windowWidth: window.innerWidth
     };
   },
 
@@ -77,6 +90,20 @@ export default {
           this.$router.push({ name: "mainPage" });
         }
       }
+    },
+
+    onOpenSearch() {
+      this.searchIsOpen = true;
+    },
+
+    onCloseSearch() {
+      this.searchIsOpen = false;
+    }
+  },
+
+  mounted() {
+    window.onresize = () => {
+      this.windowWidth = window.innerWidth;
     }
   }
 };
@@ -84,6 +111,7 @@ export default {
 
 <style lang="scss">
 .Header {
+  position: relative;
   color: var(--color-white);
   background-color: var(--color-layout-dark);
 
@@ -96,6 +124,10 @@ export default {
     margin-right: auto;
     margin-left: auto;
     padding: 15px 15px 15px 0;
+
+    @media (max-width: $screen-desktop) {
+      padding-left: 15px;
+    }
   }
 
   &-Logo {
@@ -139,19 +171,29 @@ export default {
     @media (max-width: $screen-tablet) {
       margin-left: 0;
     }
+
+    @media (max-width: $screen-tablet) {
+      justify-content: space-between;
+    }
   }
 
   &-Links {
     margin-right: 44px;
+
+    @media (max-width: $screen-mobile) {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &-Link {
     margin-right: 60px;
     font-size: 1.4rem;
+    line-height: 1.4;
     color: var(--text-white);
 
     @media (max-width: 900px) {
-      margin-right: 15px;
+      margin-right: 25px;
     }
 
     &:last-child {
@@ -159,8 +201,11 @@ export default {
     }
   }
 
+  &-Search {
+    margin-right: 25px;
+  }
+
   &-Login {
-    margin-left: 117px;
     font-size: 1.4rem;
   }
 }

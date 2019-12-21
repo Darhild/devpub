@@ -9,13 +9,11 @@
       <div class="Form-Label">
         Код с картинки
       </div>
-      <div class="Form-Value Form-Value--size_min">
+      <div class="Form-Value Form-Value--captcha">
         <div class="Form-Captcha">
           <img src="./../assets/captcha.png" alt="" />
         </div>
-        <div class="Form-Input--size_min">
-          <input class="Input" type="text" />
-        </div>
+        <input class="Input" type="text" />
       </div>
     </div>
     <div class="Form-Submit">

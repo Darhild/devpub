@@ -247,14 +247,28 @@ export default {
 
 <style lang="scss">
 .Articles {
-  padding: 14px 0 20px;
+  padding-bottom: 20px;
 
-  @media (max-width: $screen-tablet) {
-    padding-left: 20px;
-  }
+  .Nav {
+    margin-bottom: 25px;
 
-  &-Nav {
-    padding: 0 35px 25px 0;
+    @media (max-width: $screen-mobile) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      justify-items: center;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    &-Item {
+      @media (max-width: $screen-tablet) {
+        margin-right: 10px;
+      }
+
+      @media (max-width: $screen-mobile) {
+        margin-bottom: 5px;
+      }
+    }
   }
 
   &-Title {

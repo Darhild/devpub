@@ -70,15 +70,8 @@ export default {
 
 <style lang="scss">
 .Calendar {
-  padding: 15px 0 20px;
-
-  .Calendar-Nav {
-    justify-content: flex-start;
+  &-Nav {
     margin-bottom: 30px;
-
-    .Nav-Item {
-      margin-right: 15px;
-    }
   }
 }
 </style>

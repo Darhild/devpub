@@ -9,7 +9,6 @@
         :class="{ 'ArticlePreview-Author': isPreview }"
       >
         {{ author }}
-        <span v-if="!isPreview">&nbsp;-&nbsp;</span>
       </div>
     </div>
     <router-link
@@ -164,6 +163,7 @@ export default {
 
   &-Author {
     order: 1;
+    margin-right: 15px;
     font-weight: 700;
   }
 

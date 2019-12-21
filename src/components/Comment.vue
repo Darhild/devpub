@@ -153,12 +153,7 @@ export default {
   }
 
   &-Content {
-    max-width: 60%;
     margin-bottom: 10px;
-
-    @media (max-width: $screen-tablet) {
-      max-width: 100%;
-    }
   }
 
   &-Send {

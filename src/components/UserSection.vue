@@ -70,7 +70,6 @@ export default {
 <style lang="scss">
 .UserSection {
   position: relative;
-  margin-left: 25px;
   z-index: 10;
 
   &-Outer {
@@ -81,8 +80,13 @@ export default {
   &-User {
     margin-right: 15px;
     font-size: 1.4rem;
+    line-height: 1.4;
     color: var(--color-lightest);
     cursor: default;
+
+    @media (max-width: $screen-mobile) {
+      display: none;
+    }
   }
 
   &-Avatar {

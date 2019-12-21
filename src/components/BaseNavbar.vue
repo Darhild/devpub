@@ -54,12 +54,20 @@ export default {
 <style lang="scss">
 .Nav {
   display: flex;
-  justify-content: space-between;
 
   &-Item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 25px;
     padding: 7px 22px;
     font-size: 1.4rem;
+    text-align: center;
     cursor: pointer;
+
+    @media (max-width: $screen-mobile) {
+      margin-right: 10px;
+    }
 
     &:last-child {
       margin-right: 0;
@@ -72,8 +80,6 @@ export default {
     }
 
     &--state_active {
-      margin: 0;
-      padding: 7px 22px;
       color: var(--color-lightest);
       background-color: var(--color-primary);
       border-radius: 20px;
