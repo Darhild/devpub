@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isAuth" class="Settings PageWrapper">
+  <main v-if="isAuth" class="Settings Wrapper">
     <div class="Settings-Title Title">
       Настройки
     </div>
@@ -54,7 +54,7 @@
         </label>
       </form>
     </div>
-  </div>
+  </main>
   <div v-else class="Settings-ServerInfo ServerInfo">
     Sorry, you should login first
   </div>

@@ -1,27 +1,29 @@
 <template>
   <div class="Footer">
-    <div class="Footer-Links">
-      <router-link class="Link Footer-Item" to="/">
-        Главная
-      </router-link>
-      <router-link class="Link Footer-Item" to="/calendar">
-        Календарь
-      </router-link>
-      <router-link class="Link Footer-Item" to="/stat">
-        Статистика
-      </router-link>
-    </div>
-    <div class="Footer-Info">
-      <div class="Footer-Item">
-        <a href="tel:+79039566655" class="Link">+7 903 956-66-55</a>
+    <div class="Wrapper Footer-Wrapper">
+      <div class="Footer-Links">
+        <router-link class="Link Footer-Item" to="/">
+          Главная
+        </router-link>
+        <router-link class="Link Footer-Item" to="/calendar">
+          Календарь
+        </router-link>
+        <router-link class="Link Footer-Item" to="/stat">
+          Статистика
+        </router-link>
       </div>
-      <div class="Footer-Item">
-        <a href="mailto:dmitry@kondratiev.com" class="Link"
-          >dmitry@kondratiev.com</a
-        >
-      </div>
-      <div class="Footer-Item">
-        (c) Дмитрий Кондратьев, 2010-2019
+      <div class="Footer-Info">
+        <div class="Footer-Item">
+          <a href="tel:+79039566655" class="Link">+7 903 956-66-55</a>
+        </div>
+        <div class="Footer-Item">
+          <a href="mailto:dmitry@kondratiev.com" class="Link"
+            >dmitry@kondratiev.com</a
+          >
+        </div>
+        <div class="Footer-Item">
+          (c) Дмитрий Кондратьев, 2010-2019
+        </div>
       </div>
     </div>
   </div>
@@ -29,15 +31,17 @@
 
 <style lang="scss">
 .Footer {
-  display: flex;
-  justify-content: space-between;
   margin-top: auto;
-  padding: 13px 30px 30px 68px;
   border-top: 1px solid var(--color-layout-primary);
 
   @media (max-width: $screen-tablet) {
     flex-direction: column;
     align-items: center;
+  }
+
+  &-Wrapper {
+    display: flex;
+    justify-content: space-between;
   }
 
   &-Item {

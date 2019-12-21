@@ -1,5 +1,5 @@
 <template>
-  <div class="Profile PageWrapper">
+  <main class="Profile Wrapper">
     <div class="Title Profile-Title">
       Мой профиль
     </div>
@@ -70,7 +70,7 @@
         </BaseButton>
       </div>
     </form>
-  </div>
+  </main>
 </template>
 
 <script>

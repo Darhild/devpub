@@ -1,5 +1,5 @@
 <template>
-  <div class="PageWrapper">
+  <main class="Wrapper">
     <div v-if="isErrored" class="ServerInfo">
       Sorry, some error happened :(
     </div>
@@ -41,7 +41,7 @@
       v-if="!isLoading && !article.comments"
       @comment-is-send="onSendComment"
     />
-  </div>
+  </main>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="EditText PageWrapper" :class="className">
+  <main class="EditText Wrapper" :class="className">
     <div class="Title EditText-Title">
       <template v-if="editPost">
         Редактирование публикации
@@ -73,7 +73,7 @@
         Сохранить
       </BaseButton>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -107,8 +107,16 @@ export default {
       title: "",
       date: "",
       addedTag: "",
-      tags: []
+      tags: [],
+      errors: []
     };
+  },
+
+  watch: {
+    $route() {
+      if (this.editPost) this.getPostContent();
+      else this.clearContent();
+    }
   },
 
   methods: {
@@ -168,12 +176,20 @@ export default {
         .catch(e => {
           this.errors.push(e);
         });
+    },
+
+    clearContent() {
+      this.article = null;
+      this.title = "";
+      this.date = formatDateTime(new Date());
+      this.tags = [];
+      this.$refs.editor.setContent("");
     }
   },
 
   mounted() {
     if (this.editPost) this.getPostContent();
-    else this.date = formatDateTime(new Date());
+    else this.clearContent();
   }
 };
 </script>

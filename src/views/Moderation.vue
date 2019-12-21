@@ -1,7 +1,7 @@
 <template>
-  <div class="Moderation">
+  <main class="Moderation Wrapper">
     <Articles :navItems="navItems" :forModeration="true" }, />
-  </div>
+  </main>
 </template>
 
 <script>

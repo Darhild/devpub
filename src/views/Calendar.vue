@@ -1,12 +1,12 @@
 <template>
-  <div class="Calendar">
+  <main class="Calendar Wrapper">
     <BaseNavbar
       className="Calendar-Nav"
       :navItems="years"
       @set-nav-value="selectActiveYear"
     />
     <CalendarTable :year="years[activeYear].value" :posts="posts" />
-  </div>
+  </main>
 </template>
 
 <script>
@@ -70,7 +70,7 @@ export default {
 
 <style lang="scss">
 .Calendar {
-  padding: 15px 20px 25px 15px;
+  padding: 15px 0 20px;
 
   .Calendar-Nav {
     justify-content: flex-start;

@@ -70,7 +70,7 @@ export default {
 <style lang="scss">
 .UserSection {
   position: relative;
-  margin-left: 10px;
+  margin-left: 25px;
   z-index: 10;
 
   &-Outer {
@@ -79,7 +79,7 @@ export default {
   }
 
   &-User {
-    margin-right: 5px;
+    margin-right: 15px;
     font-size: 1.4rem;
     color: var(--color-lightest);
     cursor: default;

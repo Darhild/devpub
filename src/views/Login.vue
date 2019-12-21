@@ -1,12 +1,12 @@
 <template>
-  <div class="Login">
+  <main class="Login">
     <div class="Login-Section">
       <LoginHeader>
         {{ title }}
       </LoginHeader>
       <router-view />
     </div>
-  </div>
+  </main>
 </template>
 
 <script>

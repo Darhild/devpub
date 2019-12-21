@@ -70,11 +70,7 @@ a {
 #app {
   display: flex;
   flex-direction: column;
-  min-width: $screen-min;
-  max-width: $screen-desktop;
   min-height: 100vh;
-  margin-right: auto;
-  margin-left: auto;
   font-family: "Roboto", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -84,10 +80,15 @@ a {
   box-sizing: border-box;
 }
 
-.PageWrapper {
-  padding: 15px 30px 15px 50px;
+.Wrapper {
+  min-width: $screen-min;
+  max-width: $screen-desktop;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 15px 0 20px;
 
-  @media (max-width: $screen-mobile) {
+  @media (max-width: $screen-desktop) {
     padding-right: 15px;
     padding-left: 15px;
   }

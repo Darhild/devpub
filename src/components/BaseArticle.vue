@@ -147,7 +147,7 @@ export default {
 
 <style lang="scss">
 .Article {
-  padding: 15px 10px 15px 15px;
+  padding: 15px 15px;
   background-color: var(--color-layout-primary);
   border-radius: 10px;
 

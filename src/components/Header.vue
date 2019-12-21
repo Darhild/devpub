@@ -1,45 +1,47 @@
 <template>
   <header class="Header">
-    <div class="Logo Header-Logo">
-      <svg class="Social-Icon Social-Vk">
-        <use xlink:href="./../assets/icons-sprite.svg#logo"></use>
-      </svg>
-    </div>
-    <div class="Header-Content">
-      <div class="Header-Titles">
-        <div class="Header-Title">
-          DevPub
-        </div>
-        <div class="Header-Subtitle">
-          Рассказы разрабочиков
-        </div>
-      </div>
-      <div class="Header-Section">
-        <div class="Header-Links">
-          <router-link to="/" class="Link Header-Link">
-            Главная
-          </router-link>
-          <router-link to="/calendar" class="Link Header-Link">
-            Календарь
-          </router-link>
-        </div>
-        <div class="Search Header-Search">
-          <input
-            v-model="search"
-            class="Input"
-            type="text"
-            placeholder="Найти"
-            @keyup.enter="onSearch"
-          />
-        </div>
-        <UserSection
-          v-if="isAuth"
-          :avatar="user.photo"
-          :moderationCount="user.moderationCount"
-        />
-        <router-link v-else to="/login" class="Link Header-Login">
-          Войти
+    <div class="Header-Wrapper">
+      <router-link to="/" class="Header-Logo">
+        <svg class="Logo">
+          <use xlink:href="./../assets/icons-sprite.svg#logo"></use>
+        </svg>
+      </router-link>
+      <div class="Header-Content">
+        <router-link to="/" class="Header-Titles">
+          <div class="Header-Title">
+            DevPub
+          </div>
+          <div class="Header-Subtitle">
+            Рассказы разрабочиков
+          </div>
         </router-link>
+        <div class="Header-Section">
+          <div class="Header-Links">
+            <router-link to="/" class="Link Header-Link">
+              Главная
+            </router-link>
+            <router-link to="/calendar" class="Link Header-Link">
+              Календарь
+            </router-link>
+          </div>
+          <div class="Search Header-Search">
+            <input
+              v-model="search"
+              class="Input"
+              type="text"
+              placeholder="Найти"
+              @keyup.enter="onSearch"
+            />
+          </div>
+          <UserSection
+            v-if="isAuth"
+            :avatar="user.photo"
+            :moderationCount="user.moderationCount"
+          />
+          <router-link v-else to="/login" class="Link Header-Login">
+            Войти
+          </router-link>
+        </div>
       </div>
     </div>
   </header>
@@ -82,11 +84,19 @@ export default {
 
 <style lang="scss">
 .Header {
-  display: flex;
-  align-items: center;
-  padding: 15px 30px 15px 10px;
   color: var(--color-white);
   background-color: var(--color-layout-dark);
+
+  &-Wrapper {
+    display: flex;
+    align-items: center;
+    min-width: $screen-min;
+    max-width: $screen-desktop;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 15px 15px 15px 0;
+  }
 
   &-Logo {
     margin-right: 16px;

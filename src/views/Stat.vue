@@ -1,5 +1,5 @@
 <template>
-  <div class="Stat PageWrapper">
+  <main class="Stat Wrapper">
     <BaseNavbar
       className="Stat-Nav"
       :navItems="navItems"
@@ -48,7 +48,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>

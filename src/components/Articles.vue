@@ -1,5 +1,5 @@
 <template>
-  <div class="Articles" :class="className">
+  <div :class="classObject">
     <BaseNavbar
       className="Articles-Nav"
       :navItems="navItems"
@@ -82,7 +82,7 @@ export default {
     },
     tagSelected: {
       type: String,
-      required: true
+      required: false
     },
     forModeration: {
       type: Boolean,
@@ -96,7 +96,7 @@ export default {
     },
     postByDate: {
       type: String,
-      required: true
+      required: false
     }
   },
 
@@ -114,6 +114,20 @@ export default {
   },
 
   computed: {
+    classObject() {
+      let str = "Articles";
+
+      if (this.className) {
+        str += ` ${this.className}`;
+      }
+
+      if (this.myPosts || this.forModeration) {
+        str += " Wrapper";
+      }
+
+      return str;
+    },
+
     isSearch() {
       return this.$store.getters.searchStatus;
     },
@@ -233,23 +247,22 @@ export default {
 
 <style lang="scss">
 .Articles {
-  padding: 14px 20px 0 0;
+  padding: 14px 0 20px;
 
   @media (max-width: $screen-tablet) {
     padding-left: 20px;
   }
 
   &-Nav {
-    padding: 0 34px 23px 16px;
+    padding: 0 35px 25px 0;
   }
 
   &-Title {
-    margin-top: 75px;
     margin-bottom: 40px;
   }
 
   &-Content {
-    padding: 50px 7px 50px 0;
+    padding: 10px 7px 50px 0;
     border-right: 1px solid var(--color-layout-primary);
 
     @media (max-width: $screen-tablet) {

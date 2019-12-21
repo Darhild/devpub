@@ -16,7 +16,7 @@
         {{ dislikeCount }}
       </div>
     </div>
-    <div class="SocialBlock-Item">
+    <div class="SocialBlock-Item" title="Количество комментариев">
       <svg class="SocialBlock-Icon Icon Icon--comments">
         <use xlink:href="./../assets/icons-sprite.svg#comments"></use>
       </svg>
@@ -24,7 +24,7 @@
         {{ commentCount }}
       </div>
     </div>
-    <div class="SocialBlock-Item">
+    <div class="SocialBlock-Item" title="Количество просмотров">
       <svg class="SocialBlock-Icon Icon Icon--views">
         <use xlink:href="./../assets/icons-sprite.svg#views"></use>
       </svg>

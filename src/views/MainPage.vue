@@ -1,5 +1,5 @@
 <template>
-  <main class="MainPage">
+  <main class="MainPage Wrapper">
     <Articles
       :navItems="navItems"
       :className="'MainPage-Articles'"
@@ -35,7 +35,7 @@ export default {
           value: "popular"
         },
         {
-          name: "Самые обсуждаемые",
+          name: "Лучшие",
           value: "best"
         },
         {
