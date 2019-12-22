@@ -1,6 +1,7 @@
 <template>
   <div :class="classObject">
     <BaseNavbar
+      v-if="!postByDate"
       className="Articles-Nav"
       :navItems="navItems"
       @set-nav-value="selectActiveNavProp"

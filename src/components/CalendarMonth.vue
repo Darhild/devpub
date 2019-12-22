@@ -37,7 +37,10 @@
       <div v-for="(day, index) in days" :key="index" class="CalendarMonth-Day">
         <router-link
           v-if="getPostsCountByDate(day)"
-          :to="{ name: 'mainPage', params: { date: formatDate(day) } }"
+          :to="{
+            path: `/calendar/${formatDate(day)}`,
+            params: { date: formatDate(day) }
+          }"
           class="CalendarMonth-Link"
         >
           <div class="CalendarMonth-PostsCount">

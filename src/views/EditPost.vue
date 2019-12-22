@@ -269,7 +269,7 @@ export default {
 
   &-Text {
     margin-bottom: 20px;
-    padding: 27px 24px 65px 10px;
+    padding: 27px 10px 65px 10px;
     background-color: var(--color-layout-primary);
     border-radius: 20px;
   }
@@ -322,6 +322,7 @@ export default {
   &-Delete {
     width: 8px;
     height: 8px;
+    fill: var(--color-lightest);
   }
 }
 </style>

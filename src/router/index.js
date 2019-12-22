@@ -116,6 +116,11 @@ const routes = [
     component: Calendar
   },
   {
+    path: "/calendar/:date",
+    name: "mainPage",
+    component: MainPage
+  },
+  {
     path: "/login",
     name: "login",
     component: Login,

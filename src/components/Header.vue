@@ -104,7 +104,7 @@ export default {
   mounted() {
     window.onresize = () => {
       this.windowWidth = window.innerWidth;
-    }
+    };
   }
 };
 </script>

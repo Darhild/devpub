@@ -133,14 +133,14 @@ a {
       position: absolute;
       left: 0;
       top: 74px;
-      width: 100vw;
+      width: 100%;
       height: 46px;
       background-color: var(--color-layout-primary);
+      border-bottom: 1px solid var(--color-lightest);
     }
   }
 
   &-Input {
-    width: 100%;
     height: 100%;
   }
 
@@ -334,16 +334,15 @@ a {
   }
 }
 
-.ve-toolbar div:hover [class^="icon"],
-.ve-toolbar div:active [class^="icon"] {
-  opacity: 1;
-}
-
 .ve-select {
   height: 31px;
   margin: 0;
   border: none;
   border-radius: 5px;
+}
+
+.vueditor [class^="icon"] {
+  opacity: 1;
 }
 
 .ve-toolbar div:nth-child(1),

@@ -19,7 +19,12 @@
         <div class="Avatar-Edit">
           <div class="Avatar-Action">
             <label>
-              <input type="file" name="file" class="Avatar-Input" @change="onFileLoad"/>
+              <input
+                type="file"
+                name="file"
+                class="Avatar-Input"
+                @change="onFileLoad"
+              />
               <div class="Avatar-Change">
                 Изменить
               </div>
@@ -86,7 +91,7 @@ export default {
   data() {
     return {
       avatar: null
-    }
+    };
   },
 
   computed: {
