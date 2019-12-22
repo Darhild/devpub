@@ -120,7 +120,7 @@ export default {
       if (this.isAuth && !this.statIsInvisible) {
         param = this.navItems[this.activeNavProp].value;
       } else if (this.statIsInvisible) param = "my";
-      else this.statIsInvisible = "all";
+      else param = "all";
 
       axios
         .get(`${SERVER_URL}/api/statistics/${param}`)
