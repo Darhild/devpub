@@ -46,13 +46,8 @@ export default {
 
 <style lang="scss">
 .AddComment {
-  width: 95%;
   margin-top: 15px;
   margin-bottom: 55px;
-
-  @media (max-width: $screen-tablet) {
-    width: 100%;
-  }
 
   &-Title {
     margin-bottom: 25px;
