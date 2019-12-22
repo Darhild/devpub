@@ -83,7 +83,7 @@ export default {
     onCheck(value) {
       axios
         .put(`${SERVER_URL}/api/settings`, {
-          value: this[value]
+          [value]: this[value]
         })
         .catch(e => console.log(e));
     }
@@ -93,6 +93,8 @@ export default {
 
 <style lang="scss">
 .Settings {
+  padding-top: 15px;
+
   &-Title {
     margin-bottom: 21px;
   }

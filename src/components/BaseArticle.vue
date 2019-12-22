@@ -28,7 +28,7 @@
       <span v-else v-html="htmlText"></span>
     </div>
     <ModerationBlock
-      v-if="forModeration"
+      v-if="forModeration || myPosts"
       className="ArticlePreview-Moderation"
       :id="id"
       @moderated="onModerated"
@@ -65,6 +65,11 @@ export default {
       required: false
     },
     forModeration: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    myPosts: {
       type: Boolean,
       required: false,
       default: false
@@ -129,7 +134,7 @@ export default {
   filters: {
     formatText(str) {
       const regex = /&lt;.*?&gt;/gi;
-      return str.replace(regex, "").substr(0, 200);
+      return str.replace(regex, "");
     }
   },
 

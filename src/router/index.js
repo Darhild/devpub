@@ -103,12 +103,18 @@ const routes = [
     path: "/add",
     name: "add",
     component: EditPost,
-    props: { editPost: false }
+    props: { editPost: false },
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: "/edit/:id",
     name: "edit",
-    component: EditPost
+    component: EditPost,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: "/calendar",

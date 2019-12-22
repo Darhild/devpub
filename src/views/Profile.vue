@@ -112,6 +112,8 @@ export default {
 
 <style lang="scss">
 .Profile {
+  padding-top: 15px;
+
   &-Title {
     margin-bottom: 30px;
   }

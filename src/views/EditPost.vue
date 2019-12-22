@@ -196,6 +196,8 @@ export default {
 
 <style lang="scss">
 .EditText {
+  padding-top: 15px;
+
   &-Title {
     margin-bottom: 30px;
   }

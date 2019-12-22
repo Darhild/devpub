@@ -124,7 +124,7 @@ export default {
 
 <style lang="scss">
 .Article {
-  margin-top: 15px;
+  padding-top: 15px;
 }
 
 .Comments {

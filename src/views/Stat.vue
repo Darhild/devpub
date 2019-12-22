@@ -81,7 +81,8 @@ export default {
       likesCount: 0,
       dislikesCount: 0,
       viewsCount: 0,
-      firstPublication: ""
+      firstPublication: "",
+      errors: []
     };
   },
 
@@ -104,9 +105,11 @@ export default {
           }`
         )
         .then(res => {
-          this.forModeration
-            ? (this.articles = res.data.posts)
-            : (this.articles = res.data);
+          this.postsCount = res.data.postsCount;
+          this.likesCount = res.data.likesCount;
+          this.dislikesCount = res.data.dislikesCount;
+          this.viewsCount = res.data.viewsCount;
+          this.firstPublication = res.data.firstPublication;
         })
         .catch(e => {
           this.errors.push(e);
