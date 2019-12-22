@@ -32,6 +32,7 @@
 <style lang="scss">
 .Footer {
   margin-top: auto;
+  padding: 15px 0;
   border-top: 1px solid var(--color-layout-primary);
 
   &-Wrapper {

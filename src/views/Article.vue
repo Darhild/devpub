@@ -123,6 +123,10 @@ export default {
 </script>
 
 <style lang="scss">
+.Article {
+  margin-top: 15px;
+}
+
 .Comments {
   &-Title {
     margin-bottom: 25px;

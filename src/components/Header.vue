@@ -36,7 +36,11 @@
                 placeholder="Найти"
                 @keyup.enter="onSearch"
               />
-              <svg class="Search-Close" @click="onCloseSearch">
+              <svg
+                v-if="windowWidth < 500"
+                class="Search-Close"
+                @click="onCloseSearch"
+              >
                 <use xlink:href="./../assets/icons-sprite.svg#delete"></use>
               </svg>
             </div>

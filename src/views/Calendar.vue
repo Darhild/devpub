@@ -70,6 +70,8 @@ export default {
 
 <style lang="scss">
 .Calendar {
+  margin-bottom: 20px;
+
   &-Nav {
     margin-bottom: 30px;
   }

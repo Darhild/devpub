@@ -65,6 +65,8 @@ export default {
 .MainPage {
   display: grid;
   grid-template-columns: 7fr 3fr;
+  grid-template-rows: repeat(auto-fit, 100%);
+  flex-grow: 1;
 
   @media (max-width: $screen-tablet) {
     grid-template-columns: 1fr;

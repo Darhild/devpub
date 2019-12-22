@@ -86,7 +86,6 @@ a {
   width: 100%;
   margin-right: auto;
   margin-left: auto;
-  padding: 15px 0 20px;
 
   @media (max-width: $screen-desktop) {
     padding-right: 15px;

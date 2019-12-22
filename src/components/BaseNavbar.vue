@@ -54,6 +54,7 @@ export default {
 <style lang="scss">
 .Nav {
   display: flex;
+  margin-top: 15px;
 
   &-Item {
     display: flex;

@@ -70,7 +70,7 @@ export default {
 
 <style lang="scss">
 .Tags {
-  padding: 10px 0 18px 6px;
+  padding: 15px 0 18px 6px;
 
   &-Title {
     margin-bottom: 30px;

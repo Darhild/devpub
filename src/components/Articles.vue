@@ -41,7 +41,7 @@
             :viewCount="item.viewCount"
             @moderated="onModerated"
           />
-          <div class="Articles-Button">
+          <div v-if="moreArticles" class="Articles-Button">
             <BaseButton
               :className="'Button--mode_add-load'"
               :onClickButton="onLoadMore"
@@ -106,7 +106,7 @@ export default {
       activeNavProp: 0,
       articles: [],
       articlesCount: 0,
-      articlesNumber: 4,
+      articlesNumber: 10,
       offset: 0,
       isLoading: true,
       isErrored: false,
@@ -248,8 +248,6 @@ export default {
 
 <style lang="scss">
 .Articles {
-  padding-bottom: 20px;
-
   .Nav {
     margin-bottom: 25px;
 
@@ -273,10 +271,12 @@ export default {
   }
 
   &-Title {
+    margin-top: 5px;
     margin-bottom: 40px;
   }
 
   &-Content {
+    height: 100%;
     padding: 10px 7px 50px 0;
     border-right: 1px solid var(--color-layout-primary);
 
