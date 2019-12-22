@@ -19,6 +19,7 @@
       :dislikeCount="article.dislikeCount"
       :commentCount="article.commentCount"
       :viewCount="article.viewCount"
+      :tags="article.tags"
     />
     <div v-if="!isLoading && article.comments" class="Comments">
       <div class="Title Comments-Title">
@@ -85,12 +86,6 @@ export default {
         };
       }
 
-      console.log({
-        parent_id: comment.parentId,
-        post_id: this.article.id,
-        text: comment.text
-      });
-
       axios.post(`${SERVER_URL}/api/comment`, {
         parent_id: comment.parentId,
         post_id: this.article.id,
@@ -124,7 +119,7 @@ export default {
 
 <style lang="scss">
 .Article {
-  padding-top: 15px;
+  margin-top: 15px;
 }
 
 .Comments {

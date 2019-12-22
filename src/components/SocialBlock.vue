@@ -1,6 +1,6 @@
 <template>
   <div class="SocialBlock" :class="className">
-    <div class="SocialBlock-Item">
+    <div class="SocialBlock-Item" @click="$emit('like')">
       <svg class="SocialBlock-Icon Icon Icon--like">
         <use xlink:href="./../assets/icons-sprite.svg#like"></use>
       </svg>
@@ -8,7 +8,7 @@
         {{ likeCount }}
       </div>
     </div>
-    <div class="SocialBlock-Item">
+    <div class="SocialBlock-Item" @click="$emit('dislike')">
       <svg class="SocialBlock-Icon Icon Icon--dislike">
         <use xlink:href="./../assets/icons-sprite.svg#like"></use>
       </svg>
@@ -16,7 +16,11 @@
         {{ dislikeCount }}
       </div>
     </div>
-    <div class="SocialBlock-Item" title="Количество комментариев">
+    <div
+      v-if="isPreview"
+      class="SocialBlock-Item"
+      title="Количество комментариев"
+    >
       <svg class="SocialBlock-Icon Icon Icon--comments">
         <use xlink:href="./../assets/icons-sprite.svg#comments"></use>
       </svg>
@@ -38,6 +42,10 @@
 <script>
 export default {
   props: {
+    isPreview: {
+      type: Boolean,
+      required: false
+    },
     className: {
       type: String,
       required: false

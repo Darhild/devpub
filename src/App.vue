@@ -185,11 +185,13 @@ a {
 
   &--like {
     fill: var(--color-primary);
+    cursor: pointer;
   }
 
   &--dislike {
     fill: var(--color-secondary);
     transform: rotate(180deg);
+    cursor: pointer;
   }
 
   &--views {

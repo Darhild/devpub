@@ -33,18 +33,29 @@
       :id="id"
       @moderated="onModerated"
     />
-    <SocialBlock
-      v-else
-      className="Article-Social ArticlePreview-Social"
-      :likeCount="likeCount"
-      :dislikeCount="dislikeCount"
-      :commentCount="commentCount"
-      :viewCount="viewCount"
-    />
+    <div v-else class="Article-Footer">
+      <SocialBlock
+        className="Article-Social ArticlePreview-Social"
+        :isPreview="isPreview"
+        :likeCount="likes"
+        :dislikeCount="dislikes"
+        :commentCount="commentCount"
+        :viewCount="viewCount"
+        @like="onLike"
+        @dislike="onDislike"
+      />
+      <div v-if="!isPreview" class="Article-Tags">
+        <div v-for="(tag, index) in tags" :key="index" class="Tag Article-Tag">
+          #{{ tag }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import { SERVER_URL } from "../env";
 import { formatToHtml } from "@/utils";
 const SocialBlock = () =>
   import(/* webpackChunkName: "socialBlock" */ "@/components/SocialBlock.vue");
@@ -122,7 +133,18 @@ export default {
       type: Number,
       required: true,
       default: 0
+    },
+    tags: {
+      type: Array,
+      required: false
     }
+  },
+
+  data() {
+    return {
+      likes: 0,
+      dislikes: 0
+    };
   },
 
   computed: {
@@ -144,7 +166,34 @@ export default {
         id: this.id,
         status
       });
+    },
+
+    onLike() {
+      axios
+        .post(`${SERVER_URL}/api/post/like`, {
+          post_id: this.id
+        })
+        .then(res => {
+          if (res.data.result) this.likes++;
+        })
+        .catch(e => this.errors.push(e));
+    },
+
+    onDislike() {
+      axios
+        .post(`${SERVER_URL}/api/post/dislike`, {
+          post_id: this.id
+        })
+        .then(res => {
+          if (res.data.result) this.dislikes++;
+        })
+        .catch(e => this.errors.push(e));
     }
+  },
+
+  mounted() {
+    this.likes = this.likeCount;
+    this.dislikes = this.dislikeCount;
   }
 };
 </script>
@@ -182,6 +231,24 @@ export default {
   &-Text {
     margin-bottom: 17px;
     font-size: 1.4rem;
+  }
+
+  &-Tags {
+    margin-left: 15px;
+  }
+
+  &-Tag {
+    margin-right: 15px;
+    cursor: default;
+
+    &:hover {
+      background-color: var(--color-primary);
+    }
+  }
+
+  &-Footer {
+    display: flex;
+    align-self: flex-start;
   }
 
   &--full {

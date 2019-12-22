@@ -123,7 +123,6 @@ const routes = [
   },
   {
     path: "/calendar/:date",
-    name: "mainPage",
     component: MainPage
   },
   {

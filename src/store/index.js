@@ -98,6 +98,15 @@ export default new Vuex.Store({
       }
     },
 
+    async logout({ commit }) {
+      try {
+        const resp = await axios.get(`${SERVER_URL}/api/auth/logout`);
+        if (resp.data.result === true) commit("logout");
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
     async restorePassword({ commit }, { email }) {
       try {
         const resp = await axios.post(`${SERVER_URL}/api/auth/restore`, {

@@ -1,12 +1,19 @@
 <template>
   <main class="Stat Wrapper">
     <BaseNavbar
+      v-if="isAuth && !statIsInvisible"
       className="Stat-Nav"
       :navItems="navItems"
       :margin="'right'"
       @set-nav-value="selectActiveNavProp"
     />
-    <div class="Stat-Content">
+    <div v-if="!isAuth && !statIsInvisible" class="Stat-Title">
+      Статистика по всему блогу
+    </div>
+    <div v-if="isAuth && statIsInvisible" class="Stat-Title">
+      Мои публикации
+    </div>
+    <div v-if="isAuth || !statIsInvisible" class="Stat-Content">
       <div class="Stat-Row">
         <div class="Stat-Prop">
           Постов:
@@ -48,6 +55,9 @@
         </div>
       </div>
     </div>
+    <div v-if="!isAuth && statIsInvisible" class="ServerInfo Stat-Info">
+      Извините, публичная статистика этого сайта недоступна.
+    </div>
   </main>
 </template>
 
@@ -77,6 +87,7 @@ export default {
       activeNavProp: 0,
       isLoading: true,
       isErrored: false,
+      statIsInvisible: false,
       postsCount: 0,
       likesCount: 0,
       dislikesCount: 0,
@@ -84,6 +95,12 @@ export default {
       firstPublication: "",
       errors: []
     };
+  },
+
+  computed: {
+    isAuth() {
+      return this.$store.getters.isAuth;
+    }
   },
 
   watch: {
@@ -98,18 +115,24 @@ export default {
     },
 
     getStats() {
+      let param;
+
+      if (this.isAuth && !this.statIsInvisible) {
+        param = this.navItems[this.activeNavProp].value;
+      } else if (this.statIsInvisible) param = "my";
+      else this.statIsInvisible = "all";
+
       axios
-        .get(
-          `${SERVER_URL}/api/statistics/${
-            this.navItems[this.activeNavProp].value
-          }`
-        )
+        .get(`${SERVER_URL}/api/statistics/${param}`)
         .then(res => {
-          this.postsCount = res.data.postsCount;
-          this.likesCount = res.data.likesCount;
-          this.dislikesCount = res.data.dislikesCount;
-          this.viewsCount = res.data.viewsCount;
-          this.firstPublication = res.data.firstPublication;
+          if (res.status === 401) this.statIsInvisible = true;
+          else {
+            this.postsCount = res.data.postsCount;
+            this.likesCount = res.data.likesCount;
+            this.dislikesCount = res.data.dislikesCount;
+            this.viewsCount = res.data.viewsCount;
+            this.firstPublication = res.data.firstPublication;
+          }
         })
         .catch(e => {
           this.errors.push(e);
@@ -131,7 +154,17 @@ export default {
 
   &-Nav {
     justify-content: flex-start;
+  }
+
+  &-Title {
+    margin-top: 25px;
     margin-bottom: 25px;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  &-Content {
+    margin-top: 25px;
   }
 
   &-Row {
@@ -142,6 +175,10 @@ export default {
 
   &-Prop {
     width: 150px;
+  }
+
+  &-Info {
+    margin-top: 45px;
   }
 }
 </style>
