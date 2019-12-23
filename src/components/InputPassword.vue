@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <div class="Form-Passwords">
     <div class="Form-Row">
       <div class="Form-Label">
         Пароль
@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-  </form>
+  </div>
 </template>
 
 <script>

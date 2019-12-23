@@ -65,6 +65,32 @@ export default new Vuex.Store({
       commit("setSearchQuery", payload);
     },
 
+    async getUser({ commit }) {
+      try {
+        const resp = await axios.get(`${SERVER_URL}/api/auth/check`);
+
+        if (resp.data.result === true) {
+          commit("setUser", resp.data.user);
+          commit("login");
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async saveUser({ commit }, payload) {
+      try {
+        const resp = await axios.post(`${SERVER_URL}/api/profile/my`, payload);
+
+        if (resp.data.result === true) {
+          commit("setUser", payload);
+          commit("clearAuthErrors");
+        } else commit("setAuthErrors", resp.data.errors);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
     async register({ commit }, { email, password, captcha, secret }) {
       try {
         const resp = await axios.post(`${SERVER_URL}/api/auth/register`, {

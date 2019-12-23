@@ -35,6 +35,9 @@
           </div>
         </div>
       </div>
+      <div v-if="authErrors.photo" class="Input-Error Avatar-Error">
+        {{ authErrors.photo }}
+      </div>
     </div>
     <form class="Profile-Form Form">
       <div class="Form-Row">
@@ -42,7 +45,22 @@
           Email
         </div>
         <div class="Form-Value">
-          <input class="Input" type="email" :placeholder="user.email" />
+          <input
+            v-model="email"
+            class="Input"
+            :class="{
+              'Input--state_invalid':
+                ($v.email.$dirty && $v.email.$invalid) || authErrors.email
+            }"
+            type="email"
+            @input="onInput('email')"
+          />
+          <div v-if="$v.email.$dirty && errorMessageEmail" class="Input-Error">
+            {{ errorMessageEmail }}
+          </div>
+          <div v-if="authErrors.email" class="Input-Error">
+            {{ authErrors.email }}
+          </div>
         </div>
       </div>
       <div class="Form-Row">
@@ -50,27 +68,74 @@
           Имя
         </div>
         <div class="Form-Value">
-          <input class="Input" type="text" :placeholder="user.name" />
+          <input
+            v-model="name"
+            class="Input"
+            :class="{
+              'Input--state_invalid':
+                ($v.name.$dirty && $v.name.$invalid) || authErrors.name
+            }"
+            type="text"
+            @input="onInput('name')"
+          />
+          <div v-if="$v.name.$dirty && errorMessageName" class="Input-Error">
+            {{ errorMessageName }}
+          </div>
+          <div v-if="authErrors.name" class="Input-Error">
+            {{ authErrors.name }}
+          </div>
         </div>
       </div>
-      <div class="Form-Row">
-        <div class="Form-Label">
-          Пароль
+      <div class="Form-Passwords">
+        <div class="Form-Row">
+          <div class="Form-Label">
+            Пароль
+          </div>
+          <div class="Form-Value">
+            <input
+              v-model="password"
+              class="Input"
+              :class="{
+                'Input--state_invalid':
+                  $v.password.$dirty && $v.password.$invalid
+              }"
+              type="password"
+              @input="onInput('password')"
+            />
+            <div
+              v-if="$v.password.$dirty && errorMessagePassword"
+              class="Input-Error"
+            >
+              {{ errorMessagePassword }}
+            </div>
+          </div>
         </div>
-        <div class="Form-Value">
-          <input class="Input" type="password" />
-        </div>
-      </div>
-      <div class="Form-Row">
-        <div class="Form-Label">
-          Повторите пароль
-        </div>
-        <div class="Form-Value">
-          <input class="Input" type="password" />
+        <div class="Form-Row">
+          <div class="Form-Label">
+            Повторите пароль
+          </div>
+          <div class="Form-Value">
+            <input
+              v-model="repeatPassword"
+              class="Input"
+              :class="{
+                'Input--state_invalid':
+                  $v.repeatPassword.$dirty && $v.repeatPassword.$invalid
+              }"
+              type="password"
+              @input="onInput('repeatPassword')"
+            />
+            <div
+              v-if="$v.repeatPassword.$dirty && errorMessageRepeat"
+              class="Input-Error"
+            >
+              {{ errorMessageRepeat }}
+            </div>
+          </div>
         </div>
       </div>
       <div class="Form-Submit">
-        <BaseButton>
+        <BaseButton :onClickButton="onSubmit" :disabled="$v.$invalid">
           Сохранить
         </BaseButton>
       </div>
@@ -80,6 +145,13 @@
 
 <script>
 import { mapGetters } from "vuex";
+import {
+  email,
+  minLength,
+  maxLength,
+  sameAs,
+  required
+} from "vuelidate/lib/validators";
 const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
@@ -90,21 +162,104 @@ export default {
 
   data() {
     return {
-      avatar: null
+      avatar: null,
+      name: "",
+      email: "",
+      password: "",
+      repeatPassword: "",
+      serverErrors: []
     };
   },
 
+  validations: {
+    email: {
+      email
+    },
+    name: {
+      maxLength: maxLength(250)
+    },
+    password: {
+      required,
+      minLength: minLength(6)
+    },
+    repeatPassword: {
+      required,
+      sameAsPassword: sameAs("password")
+    }
+  },
+
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters(["user", "authErrors"]),
+
+    errorMessageEmail() {
+      if (!this.$v.email.email) {
+        return "Введите корректный email";
+      }
+
+      return "";
+    },
+
+    errorMessageName() {
+      if (!this.$v.name.maxLength) {
+        return `Имя слишком длинное`;
+      }
+
+      return "";
+    },
+
+    errorMessagePassword() {
+      if (!this.$v.password.minLength) {
+        return `Пароль слишком короткий`;
+      }
+
+      return "";
+    },
+
+    errorMessageRepeat() {
+      if (!this.$v.repeatPassword.sameAsPassword) {
+        return "Пароли не совпадают!";
+      }
+
+      return "";
+    }
   },
 
   methods: {
     onFileLoad(event) {
       this.$refs.avatar.src = URL.createObjectURL(event.target.files[0]);
+      this.avatar = event.target.files[0];
     },
 
     onDelete() {
       this.$refs.avatar.src = require("@/assets/default-3.png");
+      this.avatar = "";
+    },
+
+    onInput(value) {
+      this.$v[value].$touch();
+    },
+
+    onSubmit() {
+      let data;
+
+      if (this.avatar) {
+        data = new FormData();
+        data.append("photo", this.avatar || this.user.photo);
+        data.append("name", this.name || this.user.name);
+        data.append("email", this.email || this.user.email);
+        data.append("password", this.password);
+      } else {
+        data = {
+          photo: this.user.photo,
+          name: this.name || this.user.name,
+          email: this.email || this.user.email,
+          password: this.password
+        };
+      }
+
+      if (this.avatar === "") data.photo = "";
+
+      this.$store.dispatch("saveUser", data).catch(e => this.errors.push(e));
     }
   }
 };
@@ -136,6 +291,11 @@ export default {
 
   @media (max-width: $screen-tablet) {
     display: block;
+  }
+
+  &-Error {
+    margin-top: 10px;
+    margin-left: 25px;
   }
 
   &-Input {

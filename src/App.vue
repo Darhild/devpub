@@ -19,9 +19,9 @@ export default {
     Footer
   },
 
-  mounted() {
+  beforeCreate() {
     this.$store.dispatch("getSettings");
-
+    this.$store.dispatch("getUser");
   }
 };
 </script>

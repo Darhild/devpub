@@ -48,11 +48,7 @@
               <use xlink:href="./../assets/icons-sprite.svg#search"></use>
             </svg>
           </div>
-          <UserSection
-            v-if="isAuth"
-            :avatar="user.photo"
-            :moderationCount="user.moderationCount"
-          />
+          <UserSection v-if="isAuth" />
           <router-link v-else to="/login" class="Link Header-Login">
             Войти
           </router-link>
@@ -82,7 +78,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["isAuth", "user"])
+    ...mapGetters(["isAuth"])
   },
 
   methods: {

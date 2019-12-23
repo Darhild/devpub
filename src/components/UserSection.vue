@@ -2,11 +2,18 @@
   <div class="UserSection">
     <div class="UserSection-Outer">
       <div class="UserSection-User">
-        Дмитрий Петров
+        {{ user.name }}
       </div>
       <img
+        v-if="this.user.photo"
         class="UserSection-Avatar"
-        :src="require(`@/assets/${avatar}`)"
+        :src="require(`@/assets/${this.user.photo}`)"
+        alt="avatar"
+      />
+      <img
+        v-else
+        class="UserSection-Avatar"
+        src="@/assets/default-2.png"
         alt="avatar"
       />
     </div>
@@ -30,8 +37,8 @@
         <div>
           Модерация
         </div>
-        <div class="UserSection-ModerationNum">
-          {{ moderationCount }}
+        <div v-if="user.moderation" class="UserSection-ModerationNum">
+          {{ user.moderationCount }}
         </div>
       </router-link>
       <router-link to="/settings" class="Link UserSection-Item">
@@ -45,18 +52,11 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  props: {
-    moderationCount: {
-      type: Number,
-      required: true,
-      default: 0
-    },
-    avatar: {
-      type: String,
-      required: false,
-      default: "default.jpg"
-    }
+  computed: {
+    ...mapGetters(["user"])
   },
 
   methods: {
