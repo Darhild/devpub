@@ -13,13 +13,17 @@
     </div>
     <div v-if="!showCommentForm" class="Comment-Send">
       <BaseButton
+        v-if="isAuth"
         :onClickButton="onReplyComment"
         :className="'Button--size_xs'"
       >
         Ответить
       </BaseButton>
     </div>
-    <AddComment v-if="showCommentForm" @comment-is-send="onSendComment" />
+    <AddComment
+      v-if="showCommentForm && isAuth"
+      @comment-is-send="onSendComment"
+    />
   </div>
 </template>
 
@@ -76,6 +80,10 @@ export default {
   computed: {
     htmlText() {
       return formatToHtml(this.text);
+    },
+
+    isAuth() {
+      return this.$store.getters.isAuth;
     }
   },
 
@@ -97,7 +105,6 @@ export default {
     },
 
     onSendComment(text) {
-      console.log(text);
       this.$emit("comment-is-send", {
         parentId: this.id,
         text

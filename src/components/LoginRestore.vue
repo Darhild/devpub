@@ -28,6 +28,10 @@ const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
 export default {
+  metaInfo: {
+    title: "Восстановление пароля | DevPub - рассказы разработчиков"
+  },
+
   components: {
     BaseButton,
     InputEmail
@@ -38,7 +42,8 @@ export default {
   data() {
     return {
       requiredFields: "email",
-      emailIsValid: false
+      emailIsValid: false,
+      errors: []
     };
   },
 
@@ -55,7 +60,7 @@ export default {
         .then(() => {
           if (!this.authErrors.restoreError) this.emailIsValid = true;
         })
-        .catch(e => console.log(e));
+        .catch(e => this.errors.push(e));
     }
   }
 };

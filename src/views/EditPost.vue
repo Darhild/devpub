@@ -50,7 +50,6 @@
           <input
             v-model="addedTag"
             @keyup.enter="onAddTag($event.target.value)"
-            @keyup.188.prevent="onAddTag($event.target.value)"
             class="Input"
             type="text"
           />

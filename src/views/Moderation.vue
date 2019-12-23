@@ -9,6 +9,10 @@ const Articles = () =>
   import(/* webpackChunkName: "articles" */ "@/components/Articles.vue");
 
 export default {
+  metaInfo: {
+    title: "Модерирование публикаций | DevPub - рассказы разработчиков"
+  },
+
   components: {
     Articles
   },

@@ -17,40 +17,38 @@
         Sorry, some error happened :(
       </div>
       <template v-else>
-        <div class="ServerInfo" v-if="isLoading">
-          Loading...
+        <div v-if="postByDate" class="Title Articles-Title">
+          Публикации {{ formatedDate }}
         </div>
-        <template v-else>
-          <div v-if="postByDate" class="Title Articles-Title">
-            Публикации {{ formatedDate }}
-          </div>
-          <BaseArticle
-            v-for="item in articles"
-            :key="item.id"
-            :className="'Articles-ArticlePreview'"
-            :isPreview="true"
-            :forModeration="forModeration"
-            :myPosts="myPosts"
-            :id="item.id"
-            :time="item.time"
-            :author="item.user.name"
-            :title="item.title"
-            :text="item.announce"
-            :likeCount="item.likeCount"
-            :dislikeCount="item.dislikeCount"
-            :commentCount="item.commentCount"
-            :viewCount="item.viewCount"
-            @moderated="onModerated"
-          />
-          <div v-if="moreArticles" class="Articles-Button">
-            <BaseButton
-              :className="'Button--mode_add-load'"
-              :onClickButton="onLoadMore"
-            >
-              Ещё публикации ({{ moreArticles }})
-            </BaseButton>
-          </div>
-        </template>
+        <div v-if="tagSelected" class="Title Articles-Title">
+          Публикации по тэгу #{{ tagSelected }}
+        </div>
+        <BaseArticle
+          v-for="item in articles"
+          :key="item.id"
+          :className="'Articles-ArticlePreview'"
+          :isPreview="true"
+          :forModeration="forModeration"
+          :myPosts="myPosts"
+          :id="item.id"
+          :time="item.time"
+          :author="item.user.name"
+          :title="item.title"
+          :text="item.announce"
+          :likeCount="item.likeCount"
+          :dislikeCount="item.dislikeCount"
+          :commentCount="item.commentCount"
+          :viewCount="item.viewCount"
+          @moderated="onModerated"
+        />
+        <div v-if="moreArticles" class="Articles-Button">
+          <BaseButton
+            :className="'Button--mode_add-load'"
+            :onClickButton="onLoadMore"
+          >
+            Ещё публикации ({{ moreArticles }})
+          </BaseButton>
+        </div>
       </template>
     </div>
   </div>
@@ -162,7 +160,9 @@ export default {
     },
 
     tagSelected() {
-      this.getArticles("tag", "/byTag", true);
+      if (this.tagSelected) {
+        this.getArticles("tag", "/byTag", true);
+      }
     },
 
     searchQuery() {
@@ -177,6 +177,7 @@ export default {
       this.articles = [];
       this.offset = 0;
       this.activeNavProp = value;
+      this.tagSelected = "";
       this.selectMethod();
     },
 
@@ -237,7 +238,7 @@ export default {
           decision: post.status
         })
         .then(() => {})
-        .catch(e => console.log(e));
+        .catch(e => this.errors.push(e));
     }
   },
 

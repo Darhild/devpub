@@ -14,7 +14,8 @@ export default new Vuex.Store({
     isSearch: false,
     search: "",
     authErrors: {},
-    settings: {}
+    settings: {},
+    errors: []
   },
 
   getters: {
@@ -28,6 +29,9 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    pushErrors: (state, payload) => {
+      state.errors = { ...state.errors, payload };
+    },
     login: state => {
       state.isAuth = true;
     },
@@ -74,7 +78,7 @@ export default new Vuex.Store({
           commit("login");
         }
       } catch (e) {
-        console.log(e);
+        commit("pushErrors", e);
       }
     },
 
@@ -87,7 +91,7 @@ export default new Vuex.Store({
           commit("clearAuthErrors");
         } else commit("setAuthErrors", resp.data.errors);
       } catch (e) {
-        console.log(e);
+        commit("pushErrors", e);
       }
     },
 
@@ -104,7 +108,7 @@ export default new Vuex.Store({
           commit("setAuthErrors", resp.data.errors);
         } else commit("clearAuthErrors");
       } catch (e) {
-        console.log(e);
+        commit("pushErrors", e);
       }
     },
 
@@ -113,7 +117,7 @@ export default new Vuex.Store({
         const resp = await axios.get(`${SERVER_URL}/api/settings`);
         commit("setSettings", resp.data);
       } catch (e) {
-        console.log(e);
+        commit("pushErrors", e);
       }
     },
 
@@ -122,14 +126,14 @@ export default new Vuex.Store({
         await axios.put(`${SERVER_URL}/api/settings`, payload);
         commit("setSettings", payload);
       } catch (e) {
-        console.log(e);
+        commit("pushErrors", e);
       }
     },
 
     async login({ commit }, { email, password }) {
       commit("clearAuthErrors");
       try {
-        const resp = await axios.post(`${SERVER_URL}/api/auth/auth`, {
+        const resp = await axios.post(`${SERVER_URL}/api/auth/login`, {
           e_mail: email,
           password
         });
@@ -144,7 +148,7 @@ export default new Vuex.Store({
           commit("setUser", resp.data.user);
         }
       } catch (e) {
-        console.log(e);
+        commit("pushErrors", e);
       }
     },
 
@@ -153,7 +157,7 @@ export default new Vuex.Store({
         const resp = await axios.get(`${SERVER_URL}/api/auth/logout`);
         if (resp.data.result === true) commit("logout");
       } catch (e) {
-        console.log(e);
+        commit("pushErrors", e);
       }
     },
 
@@ -169,7 +173,7 @@ export default new Vuex.Store({
           });
         } else commit("clearAuthErrors");
       } catch (e) {
-        console.log(e);
+        commit("pushErrors", e);
       }
     },
 
@@ -186,7 +190,7 @@ export default new Vuex.Store({
           commit("setAuthErrors", resp.data.errors);
         } else commit("clearAuthErrors");
       } catch (e) {
-        console.log(e);
+        commit("pushErrors", e);
       }
     }
   },

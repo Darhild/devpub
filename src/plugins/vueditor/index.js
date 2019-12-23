@@ -3,7 +3,6 @@ const config = {
     "link",
     "unLink",
     "|",
-    "table",
     "picture",
     "|",
     "fullscreen",

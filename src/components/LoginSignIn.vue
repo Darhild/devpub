@@ -35,6 +35,10 @@ const InputPassword = () =>
   );
 
 export default {
+  metaInfo: {
+    title: "Авторизация | DevPub - рассказы разработчиков"
+  },
+
   components: {
     BaseButton,
     InputEmail,
@@ -45,7 +49,8 @@ export default {
 
   data() {
     return {
-      requiredFields: "email,password"
+      requiredFields: "email,password",
+      errors: []
     };
   },
 
@@ -63,7 +68,7 @@ export default {
           if (this.authErrors.length) alert(this.authErrors.login);
           else this.$router.push("/");
         })
-        .catch(e => console.log(e));
+        .catch(e => this.errors.push(e));
     }
   }
 };

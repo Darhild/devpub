@@ -36,6 +36,10 @@ const InputPassword = () =>
   );
 
 export default {
+  metaInfo: {
+    title: "Регистрация | DevPub - рассказы разработчиков"
+  },
+
   components: {
     BaseButton,
     InputEmail,

@@ -85,7 +85,10 @@ const routes = [
         }
       ],
       myPosts: true,
-      className: "ArticlesContent Articles--noborder"
+      className: "ArticlesContent Articles--noborder",
+      meta: {
+        title: "Мои публикации | DevPub - рассказы разработчиков"
+      }
     }
   },
   {
@@ -153,7 +156,8 @@ const routes = [
     name: "settings",
     component: Settings,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      title: "Настройки | DevPub - рассказы разработчиков"
     }
   },
   {

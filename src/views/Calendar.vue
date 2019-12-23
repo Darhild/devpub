@@ -21,6 +21,9 @@ const CalendarTable = () =>
 
 export default {
   name: "calendar",
+  metaInfo: {
+    title: "Календарь | DevPub - рассказы разработчиков"
+  },
 
   components: {
     BaseNavbar,
@@ -31,7 +34,8 @@ export default {
     return {
       years: [],
       activeYear: 0,
-      posts: {}
+      posts: {},
+      errors: []
     };
   },
 
@@ -46,7 +50,7 @@ export default {
         .get(`${SERVER_URL}/api/calendar?year=${year}`)
         .then(res => (this.posts = res.data.posts))
         .catch(e => {
-          console.log(e);
+          this.errors.push(e);
         });
     }
   },
@@ -62,7 +66,7 @@ export default {
         this.getPostsCount(this.years[0].value);
       })
       .catch(e => {
-        console.log(e);
+        this.errors.push(e);
       });
   }
 };

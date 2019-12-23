@@ -39,7 +39,7 @@
       />
     </div>
     <AddComment
-      v-if="!isLoading && !article.comments"
+      v-if="!isLoading && !article.comments && isAuth"
       @comment-is-send="onSendComment"
     />
   </main>
@@ -56,6 +56,10 @@ const AddComment = () =>
   import(/* webpackChunkName: "addComment" */ "@/components/AddComment.vue");
 
 export default {
+  metaInfo: {
+    title: ""
+  },
+
   components: {
     BaseArticle,
     Comment,
@@ -65,10 +69,17 @@ export default {
   data() {
     return {
       article: {},
+      title: "",
       commentWithForm: 0,
       isLoading: true,
       isErrored: false
     };
+  },
+
+  computed: {
+    isAuth() {
+      return this.$store.getters.isAuth;
+    }
   },
 
   methods: {

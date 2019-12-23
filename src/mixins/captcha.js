@@ -5,7 +5,8 @@ export default {
   data() {
     return {
       image: "",
-      captchaError: ""
+      captchaError: "",
+      errors: []
     };
   },
 
@@ -17,7 +18,7 @@ export default {
         this.validatedFields.secret = res.data.secret;
       })
       .catch(e => {
-        console.log(e);
+        this.errors.push(e);
       });
   }
 };

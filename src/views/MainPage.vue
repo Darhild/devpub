@@ -18,6 +18,10 @@ const Tags = () =>
 
 export default {
   name: "mainPage",
+  metaInfo: {
+    title: "DevPub - рассказы разработчиков"
+  },
+
   components: {
     Articles,
     Tags
@@ -77,5 +81,9 @@ export default {
       display: none;
     }
   }
+}
+
+.MainPage.Wrapper {
+  margin-bottom: 0;
 }
 </style>

@@ -31,6 +31,7 @@
       v-if="forModeration || myPosts"
       className="ArticlePreview-Moderation"
       :id="id"
+      :myPosts="myPosts"
       @moderated="onModerated"
     />
     <div v-else class="Article-Footer">

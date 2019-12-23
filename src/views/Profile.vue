@@ -156,6 +156,10 @@ const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
 export default {
+  metaInfo: {
+    title: "Профиль пользователя | DevPub - рассказы разработчиков"
+  },
+
   components: {
     BaseButton
   },

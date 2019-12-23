@@ -91,6 +91,7 @@ a {
   max-width: $screen-desktop;
   width: 100%;
   margin-right: auto;
+  margin-bottom: 45px;
   margin-left: auto;
 
   @media (max-width: $screen-desktop) {
@@ -308,6 +309,26 @@ a {
   }
 }
 
+.Tag {
+  display: inline-block;
+  padding: 5px 16px;
+  line-height: 117%;
+  color: var(--color-white);
+  text-transform: uppercase;
+  text-decoration: underline;
+  background-color: var(--color-primary);
+  border-radius: 20px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-hover);
+  }
+
+  &:active {
+    background-color: var(--color-active);
+  }
+}
+
 .vueditor {
   min-width: auto;
   border: none;
@@ -352,20 +373,21 @@ a {
 
 .ve-toolbar div:nth-child(1),
 .ve-toolbar div:nth-child(4),
-.ve-toolbar div:nth-child(11),
-.ve-toolbar div:nth-child(16) {
+.ve-toolbar div:nth-child(10),
+.ve-toolbar div:nth-child(15) {
   border-radius: 5px 0 0 5px;
 }
 
 .ve-toolbar div:nth-child(2),
 .ve-toolbar div:nth-child(5),
-.ve-toolbar div:nth-child(14),
-.ve-toolbar div:nth-child(19) {
+.ve-toolbar div:nth-child(13),
+.ve-toolbar div:nth-child(18) {
   border-radius: 0 5px 5px 0;
 }
 
-.ve-toolbar div:nth-child(7),
-.ve-toolbar div:nth-child(9) {
+.ve-toolbar div:nth-child(4),
+.ve-toolbar div:nth-child(6),
+.ve-toolbar div:nth-child(8) {
   border-radius: 5px;
 }
 

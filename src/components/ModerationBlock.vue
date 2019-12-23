@@ -8,7 +8,7 @@
         Редактировать
       </router-link>
     </div>
-    <div class="ModerationBlock-Section">
+    <div v-if="!myPosts" class="ModerationBlock-Section">
       <div
         class="ModerationBlock-Link ModerationBlock-Decline"
         @click="onDeclne"
@@ -32,6 +32,11 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    myPosts: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
@@ -55,6 +60,15 @@ export default {
   &-Link {
     font-size: 1.4rem;
     color: var(--color-primary);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:visited {
+      color: var(--color-primary);
+    }
   }
 
   &-Section {

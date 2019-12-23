@@ -40,6 +40,10 @@ const InputPassword = () =>
   );
 
 export default {
+  metaInfo: {
+    title: "Смена пароля | DevPub - рассказы разработчиков"
+  },
+
   components: {
     BaseButton,
     InputPassword,
