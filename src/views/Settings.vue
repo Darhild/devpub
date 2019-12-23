@@ -7,10 +7,10 @@
       <form class="CheckForm">
         <label class="CheckForm-Label">
           <input
-            v-model="MULTIUSER_MODE"
+            v-model="settings.MULTIUSER_MODE"
             class="CheckForm-Input"
             type="checkbox"
-            @change="onCheck('MULTIUSER_MODE')"
+            @change="onCheck"
           />
           <div class="CheckForm-Value">
             <div class="CheckForm-Title">
@@ -24,10 +24,10 @@
         </label>
         <label class="CheckForm-Label">
           <input
-            v-model="POST_PREMODERATION"
+            v-model="settings.POST_PREMODERATION"
             class="CheckForm-Input"
             type="checkbox"
-            @change="onCheck('POST_PREMODERATION')"
+            @change="onCheck"
           />
           <div class="CheckForm-Value">
             <div class="CheckForm-Title">
@@ -41,10 +41,10 @@
         </label>
         <label class="CheckForm-Label">
           <input
-            v-model="STATISTICS_IS_PUBLIC"
+            v-model="settings.STATISTICS_IS_PUBLIC"
             class="CheckForm-Input"
             type="checkbox"
-            @change="onCheck('STATISTICS_IS_PUBLIC')"
+            @change="onCheck"
           />
           <div class="CheckForm-Value">
             <div class="CheckForm-Title">
@@ -61,31 +61,16 @@
 </template>
 
 <script>
-import axios from "axios";
-import { SERVER_URL } from "./../env";
+import { mapGetters } from "vuex";
 
 export default {
-  data() {
-    return {
-      MULTIUSER_MODE: false,
-      POST_PREMODERATION: false,
-      STATISTICS_IS_PUBLIC: false
-    };
-  },
-
   computed: {
-    isAuth() {
-      return this.$store.getters.isAuth;
-    }
+    ...mapGetters(["isAuth", "settings"])
   },
 
   methods: {
-    onCheck(value) {
-      axios
-        .put(`${SERVER_URL}/api/settings`, {
-          [value]: this[value]
-        })
-        .catch(e => console.log(e));
+    onCheck() {
+      this.$store.dispatch("setSettings", this.settings);
     }
   }
 };

@@ -1,19 +1,18 @@
 <template>
   <main class="Stat Wrapper">
     <BaseNavbar
-      v-if="isAuth && !statIsInvisible"
+      v-if="isAuth && settings.STATISTICS_IS_PUBLIC"
       className="Stat-Nav"
       :navItems="navItems"
-      :margin="'right'"
       @set-nav-value="selectActiveNavProp"
     />
-    <div v-if="!isAuth && !statIsInvisible" class="Stat-Title">
+    <div v-if="!isAuth && settings.STATISTICS_IS_PUBLIC" class="Stat-Title">
       Статистика по всему блогу
     </div>
-    <div v-if="isAuth && statIsInvisible" class="Stat-Title">
+    <div v-if="isAuth && !settings.STATISTICS_IS_PUBLIC" class="Stat-Title">
       Мои публикации
     </div>
-    <div v-if="isAuth || !statIsInvisible" class="Stat-Content">
+    <div v-if="isAuth || settings.STATISTICS_IS_PUBLIC" class="Stat-Content">
       <div class="Stat-Row">
         <div class="Stat-Prop">
           Постов:
@@ -55,7 +54,10 @@
         </div>
       </div>
     </div>
-    <div v-if="!isAuth && statIsInvisible" class="ServerInfo Stat-Info">
+    <div
+      v-if="!isAuth && !settings.STATISTICS_IS_PUBLIC"
+      class="ServerInfo Stat-Info"
+    >
       Извините, публичная статистика этого сайта недоступна.
     </div>
   </main>
@@ -66,6 +68,7 @@ const BaseNavbar = () =>
   import(/* webpackChunkName: "baseNavbar" */ "@/components/BaseNavbar.vue");
 import axios from "axios";
 import { SERVER_URL } from "./../env";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -87,7 +90,6 @@ export default {
       activeNavProp: 0,
       isLoading: true,
       isErrored: false,
-      statIsInvisible: false,
       postsCount: 0,
       likesCount: 0,
       dislikesCount: 0,
@@ -98,9 +100,7 @@ export default {
   },
 
   computed: {
-    isAuth() {
-      return this.$store.getters.isAuth;
-    }
+    ...mapGetters(["isAuth", "settings"])
   },
 
   watch: {
@@ -117,7 +117,7 @@ export default {
     getStats() {
       let param;
 
-      if (this.isAuth && !this.statIsInvisible) {
+      if (this.isAuth && this.settings.STATISTICS_IS_PUBLIC) {
         param = this.navItems[this.activeNavProp].value;
       } else if (this.statIsInvisible) param = "my";
       else param = "all";
@@ -125,7 +125,7 @@ export default {
       axios
         .get(`${SERVER_URL}/api/statistics/${param}`)
         .then(res => {
-          if (res.status === 401) this.statIsInvisible = true;
+          if (res.status === 401) this.settings.STATISTICS_IS_PUBLIC = true;
           else {
             this.postsCount = res.data.postsCount;
             this.likesCount = res.data.likesCount;

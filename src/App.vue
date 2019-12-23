@@ -13,9 +13,15 @@ import "vueditor/dist/style/vueditor.min.css";
 
 export default {
   name: "app",
+
   components: {
     Header,
     Footer
+  },
+
+  mounted() {
+    this.$store.dispatch("getSettings");
+
   }
 };
 </script>
@@ -185,13 +191,11 @@ a {
 
   &--like {
     fill: var(--color-primary);
-    cursor: pointer;
   }
 
   &--dislike {
     fill: var(--color-secondary);
     transform: rotate(180deg);
-    cursor: pointer;
   }
 
   &--views {

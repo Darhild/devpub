@@ -1,6 +1,6 @@
 <template>
   <div class="SocialBlock" :class="className">
-    <div class="SocialBlock-Item" @click="$emit('like')">
+    <div class="SocialBlock-Item SocialBlock-Like" @click="$emit('like')">
       <svg class="SocialBlock-Icon Icon Icon--like">
         <use xlink:href="./../assets/icons-sprite.svg#like"></use>
       </svg>
@@ -8,7 +8,7 @@
         {{ likeCount }}
       </div>
     </div>
-    <div class="SocialBlock-Item" @click="$emit('dislike')">
+    <div class="SocialBlock-Item SocialBlock-Like" @click="$emit('dislike')">
       <svg class="SocialBlock-Icon Icon Icon--dislike">
         <use xlink:href="./../assets/icons-sprite.svg#like"></use>
       </svg>
@@ -86,6 +86,10 @@ export default {
     &:last-child {
       margin-right: 0;
     }
+  }
+
+  &-Like {
+    cursor: pointer;
   }
 
   &-Icon {

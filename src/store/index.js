@@ -13,13 +13,15 @@ export default new Vuex.Store({
     commentToSend: {},
     isSearch: false,
     search: "",
-    authErrors: {}
+    authErrors: {},
+    settings: {}
   },
 
   getters: {
     isAuth: state => state.isAuth,
     authErrors: state => state.authErrors,
     user: state => state.user,
+    settings: state => state.settings,
     shouldSendComment: state => state.shouldSendComment,
     searchStatus: state => state.isSearch,
     searchQuery: state => state.search
@@ -34,6 +36,9 @@ export default new Vuex.Store({
     },
     logout: state => {
       state.isAuth = false;
+    },
+    setSettings: (state, payload) => {
+      state.settings = payload;
     },
     sendComment: state => {
       state.shouldSendComment = true;
@@ -72,6 +77,24 @@ export default new Vuex.Store({
         if (resp.data.result === false) {
           commit("setAuthErrors", resp.data.errors);
         } else commit("clearAuthErrors");
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async getSettings({ commit }) {
+      try {
+        const resp = await axios.get(`${SERVER_URL}/api/settings`);
+        commit("setSettings", resp.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async setSettings({ commit }, payload) {
+      try {
+        await axios.put(`${SERVER_URL}/api/settings`, payload);
+        commit("setSettings", payload);
       } catch (e) {
         console.log(e);
       }
