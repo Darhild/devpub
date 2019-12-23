@@ -3,7 +3,7 @@
     class="Button"
     :class="className"
     :disabled="disabled"
-    @click="onclick"
+    @click.prevent="onclick"
   >
     <slot />
   </button>
