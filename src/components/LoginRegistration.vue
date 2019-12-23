@@ -1,6 +1,6 @@
 <template>
   <form class="Login-Form Form" @submit.prevent="onSubmit">
-    <InputEmail :email="authErrors.email" @field-validated="onValidateField" />
+    <InputEmail :error="authErrors.email" @field-validated="onValidateField" />
     <InputPassword
       :error="authErrors.password"
       @field-validated="onValidateField"
@@ -62,14 +62,10 @@ export default {
       this.$store
         .dispatch("register", this.validatedFields)
         .then(() => {
-          if (!this.authErrors.length) this.$router.push("/login")
+          if (!Object.keys(this.authErrors).length) this.$router.push("/login");
         })
         .catch(e => this.serverErrors.push(e));
     }
-  },
-
-  mounted() {
-    this.validatedFields.secret = this.secret;
   }
 };
 </script>

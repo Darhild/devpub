@@ -22,6 +22,7 @@
           {{ error }}
         </div>
         <router-link
+          v-if="restoreError"
           to="/login/registration"
           class="Login-Link Login-Link--color_active"
         >
@@ -39,6 +40,10 @@ export default {
   props: {
     error: {
       type: String,
+      required: false
+    },
+    restoreError: {
+      type: Boolean,
       required: false
     }
   },

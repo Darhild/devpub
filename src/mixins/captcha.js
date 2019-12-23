@@ -4,7 +4,6 @@ import { SERVER_URL } from "../env";
 export default {
   data() {
     return {
-      secret: "",
       image: "",
       captchaError: ""
     };
@@ -14,8 +13,8 @@ export default {
     axios
       .get(`${SERVER_URL}/api/auth/captcha`)
       .then(res => {
-        this.secret = res.data.secret;
         this.image = res.data.image;
+        this.validatedFields.secret = res.data.secret;
       })
       .catch(e => {
         console.log(e);

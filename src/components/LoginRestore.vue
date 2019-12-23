@@ -2,6 +2,7 @@
   <form v-if="!emailIsValid" class="Login-Form Form" @submit.prevent="onSubmit">
     <InputEmail
       :error="authErrors.restoreError"
+      :restoreError="Boolean(authErrors.restoreError)"
       @field-validated="onValidateField"
     />
     <div class="Form-Submit">
