@@ -1,4 +1,3 @@
-
 export default {
   data() {
     return {
@@ -9,6 +8,11 @@ export default {
 
   computed: {
     submitStatus() {
+      console.log(
+        Object.keys(this.validatedFields).toString(),
+        " - ",
+        this.requiredFields
+      );
       if (
         Object.keys(this.validatedFields).toString() === this.requiredFields &&
         Object.values(this.validatedFields).every(item => item !== false)

@@ -50,7 +50,7 @@ export default {
 
   data() {
     return {
-      requiredFields: "code,password,repeatPassword,captcha"
+      requiredFields: "code,secret,password,repeatPassword,captcha"
     };
   },
 
@@ -65,7 +65,7 @@ export default {
       this.$store
         .dispatch("changePassword", this.validatedFields)
         .then(() => {
-          if (!this.authErrors.length) this.$router.push("/login");
+          if (!Object.keys(this.authErrors).length) this.$router.push("/login");
         })
         .catch(e => this.serverErrors.push(e));
     }

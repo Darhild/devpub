@@ -23,10 +23,8 @@ export default {
           return "Регистрация";
         case "/login/restore-password":
           return "Восстановление пароля";
-        case "/login/change-password":
-          return "Смена пароля";
         default:
-          return "";
+          return "Смена пароля";
       }
     }
   },
