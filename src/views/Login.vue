@@ -14,15 +14,29 @@ const LoginHeader = () =>
   import(/* webpackChunkName: "loginHeader" */ "@/components/LoginHeader.vue");
 
 export default {
+  computed: {
+    title() {
+      switch (this.$route.path) {
+        case "/login":
+          return "Вход";
+        case "/login/registration":
+          return "Регистрация";
+        case "/login/restore-password":
+          return "Восстановление пароля";
+        case "/login/change-password":
+          return "Смена пароля";
+        default:
+          return "";
+      }
+    }
+  },
+
   components: {
     LoginHeader
   },
-  computed: {
-    title() {
-      return this.$route.path.indexOf("password") !== -1
-        ? "Восстановление пароля"
-        : "Вход";
-    }
+
+  mounted() {
+    this.$store.commit("clearAuthErrors");
   }
 };
 </script>
@@ -73,6 +87,10 @@ export default {
 
   &-Text {
     font-size: 1.4rem;
+
+    a {
+      text-decoration: underline;
+    }
   }
 
   &-Errors {

@@ -1,13 +1,13 @@
 <template>
   <form v-if="!emailIsValid" class="Login-Form Form" @submit.prevent="onSubmit">
     <InputEmail
-      :restoreError="authErrors.restoreError"
+      :error="authErrors.restoreError"
       @field-validated="onValidateField"
     />
     <div class="Form-Submit">
       <BaseButton
         :onClickButton="onSubmit"
-        :disabled="submitStatus !== 'success' || authErrors.restoreError"
+        :disabled="submitStatus !== 'success'"
       >
         Далее
       </BaseButton>
@@ -52,8 +52,7 @@ export default {
       this.$store
         .dispatch("restorePassword", this.validatedFields)
         .then(() => {
-          //if (!this.authErrors.restoreError) this.emailIsValid = true;
-          this.emailIsValid = true;
+          if (!this.authErrors.restoreError) this.emailIsValid = true;
         })
         .catch(e => console.log(e));
     }

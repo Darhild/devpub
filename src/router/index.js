@@ -143,7 +143,7 @@ const routes = [
         component: LoginRestore
       },
       {
-        path: "change-password",
+        path: "change-password/:hash?",
         component: LoginChange
       }
     ]

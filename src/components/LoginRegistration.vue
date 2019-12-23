@@ -1,18 +1,15 @@
 <template>
   <form class="Login-Form Form" @submit.prevent="onSubmit">
-    <InputEmail @field-validated="onValidateField" />
-    <InputPassword @field-validated="onValidateField" />
-    <div class="Form-Row">
-      <div class="Form-Label">
-        Код с картинки
-      </div>
-      <div class="Form-Value Form-Value--captcha">
-        <div class="Form-Captcha">
-          <img src="./../assets/captcha.png" alt="" />
-        </div>
-        <input class="Input" type="text" />
-      </div>
-    </div>
+    <InputEmail :email="authErrors.email" @field-validated="onValidateField" />
+    <InputPassword
+      :error="authErrors.password"
+      @field-validated="onValidateField"
+    />
+    <Captcha
+      :src="image"
+      :error="authErrors.captcha"
+      @field-validated="onValidateField"
+    />
     <div class="Form-Submit">
       <BaseButton
         :onClickButton="onSubmit"
@@ -26,10 +23,13 @@
 
 <script>
 import formSubmit from "@/mixins/formSubmit";
+import captcha from "@/mixins/captcha";
 const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 const InputEmail = () =>
   import(/* webpackChunkName: "inputEmail" */ "@/components/InputEmail.vue");
+const Captcha = () =>
+  import(/* webpackChunkName: "captcha" */ "@/components/Captcha.vue");
 const InputPassword = () =>
   import(
     /* webpackChunkName: "inputPassword" */ "@/components/InputPassword.vue"
@@ -39,27 +39,37 @@ export default {
   components: {
     BaseButton,
     InputEmail,
-    InputPassword
+    InputPassword,
+    Captcha
   },
 
   data() {
     return {
-      requiredFields: "email,password,repeatPassword"
+      requiredFields: "secret,email,password,repeatPassword,captcha"
     };
   },
 
-  mixins: [formSubmit],
+  mixins: [formSubmit, captcha],
+
+  computed: {
+    authErrors() {
+      return this.$store.getters.authErrors;
+    }
+  },
 
   methods: {
     onSubmit() {
       this.$store
         .dispatch("register", this.validatedFields)
         .then(() => {
-          if (this.authErrors.length) alert(this.authErrors);
-          else this.$router.push("/login");
+          if (!this.authErrors.length) this.$router.push("/login")
         })
-        .catch(e => console.log(e));
+        .catch(e => this.serverErrors.push(e));
     }
+  },
+
+  mounted() {
+    this.validatedFields.secret = this.secret;
   }
 };
 </script>

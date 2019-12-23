@@ -60,24 +60,25 @@ export default new Vuex.Store({
       commit("setSearchQuery", payload);
     },
 
-    async register({ commit }, { email, password, captcha, captchaSecret }) {
+    async register({ commit }, { email, password, captcha, secret }) {
       try {
         const resp = await axios.post(`${SERVER_URL}/api/auth/register`, {
           e_mail: email,
           password,
           captcha,
-          captcha_secret: captchaSecret
+          captcha_secret: secret
         });
 
         if (resp.data.result === false) {
           commit("setAuthErrors", resp.data.errors);
-        }
+        } else commit("clearAuthErrors");
       } catch (e) {
         console.log(e);
       }
     },
 
     async login({ commit }, { email, password }) {
+      commit("clearAuthErrors");
       try {
         const resp = await axios.post(`${SERVER_URL}/api/auth/auth`, {
           e_mail: email,
@@ -117,12 +118,26 @@ export default new Vuex.Store({
           commit("setAuthErrors", {
             restoreError: "Логин не найден"
           });
-        }
+        } else commit("clearAuthErrors");
       } catch (e) {
         console.log(e);
-        commit("setAuthErrors", {
-          restoreError: "Логин не найден"
+      }
+    },
+
+    async changePassword({ commit }, { code, password, captcha, secret }) {
+      try {
+        const resp = await axios.post(`${SERVER_URL}/api/auth/password`, {
+          code,
+          password,
+          captcha,
+          captcha_secret: secret
         });
+
+        if (resp.data.result === false) {
+          commit("setAuthErrors", resp.data.errors);
+        } else commit("clearAuthErrors");
+      } catch (e) {
+        console.log(e);
       }
     }
   },

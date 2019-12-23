@@ -9,13 +9,14 @@
           v-model="password"
           class="Input"
           :class="{
-            'Input--state_invalid': $v.password.$dirty && $v.password.$invalid
+            'Input--state_invalid':
+              ($v.password.$dirty && $v.password.$invalid) || error
           }"
           type="password"
           @input="onInput('password')"
         />
         <div
-          v-if="$v.password.$dirty && errorMessagePassword"
+          v-if="($v.password.$dirty && errorMessagePassword) || error"
           class="Input-Error"
         >
           {{ errorMessagePassword }}
@@ -57,6 +58,10 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    error: {
+      type: String,
+      required: false
     }
   },
 

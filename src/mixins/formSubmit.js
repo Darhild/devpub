@@ -1,7 +1,9 @@
+
 export default {
   data() {
     return {
-      validatedFields: {}
+      validatedFields: {},
+      serverErrors: []
     };
   },
 

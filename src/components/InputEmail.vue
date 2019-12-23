@@ -8,7 +8,8 @@
         v-model="email"
         class="Input"
         :class="{
-          'Input--state_invalid': $v.email.$dirty && $v.email.$invalid
+          'Input--state_invalid':
+            ($v.email.$dirty && $v.email.$invalid) || error
         }"
         type="email"
         @input="onInput"
@@ -16,9 +17,9 @@
       <div v-if="$v.email.$dirty && errorMessage" class="Input-Error">
         {{ errorMessage }}
       </div>
-      <div v-if="restoreError" class="Login-Errors">
+      <div v-if="error" class="Login-Errors">
         <div class="Input-Error">
-          {{ restoreError }}
+          {{ error }}
         </div>
         <router-link
           to="/login/registration"
@@ -36,10 +37,9 @@ import { required, email } from "vuelidate/lib/validators";
 
 export default {
   props: {
-    restoreError: {
+    error: {
       type: String,
-      required: false,
-      default: ""
+      required: false
     }
   },
 
