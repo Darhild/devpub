@@ -71,6 +71,12 @@ export default {
     BaseButton
   },
 
+  metaInfo() {
+    return {
+      title: "Редактирование публикации | DevPub - рассказы разработчиков"
+    };
+  },
+
   props: {
     className: {
       type: String,

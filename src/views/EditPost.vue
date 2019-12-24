@@ -95,6 +95,14 @@ export default {
     }
   },
 
+  metaInfo() {
+    return {
+      title: this.editPost
+        ? "Редактирование публикации | DevPub - рассказы разработчиков"
+        : "Добавление публикации | DevPub - рассказы разработчиков"
+    };
+  },
+
   components: {
     BaseButton
   },

@@ -3,9 +3,6 @@
     <div v-if="isErrored" class="ServerInfo">
       Sorry, some error happened :(
     </div>
-    <div v-else-if="isLoading" class="ServerInfo">
-      Loading...
-    </div>
     <BaseArticle
       v-else
       :key="article.id"
@@ -56,8 +53,12 @@ const AddComment = () =>
   import(/* webpackChunkName: "addComment" */ "@/components/AddComment.vue");
 
 export default {
-  metaInfo: {
-    title: ""
+  metaInfo() {
+    return {
+      title: this.article.title
+        ? `${this.article.title} | DevPub - рассказы разработчиков`
+        : "DevPub - рассказы разработчиков"
+    };
   },
 
   components: {

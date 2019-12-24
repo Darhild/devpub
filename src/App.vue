@@ -178,6 +178,7 @@ a {
 }
 
 .ServerInfo {
+  margin-top: 25px;
   font-size: 1.4rem;
 }
 
