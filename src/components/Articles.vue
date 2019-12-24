@@ -71,12 +71,6 @@ export default {
     BaseButton
   },
 
-  metaInfo() {
-    return {
-      title: "Редактирование публикации | DevPub - рассказы разработчиков"
-    };
-  },
-
   props: {
     className: {
       type: String,
@@ -104,6 +98,21 @@ export default {
       type: String,
       required: false
     }
+  },
+
+  metaInfo() {
+    let value;
+
+    if (this.tagSelected) value = `Публикации по тэгу #${this.tagSelected}`;
+    else if (this.forModeration) value = "Модерирование публикаций";
+    else if (this.myPosts) value = "Мои публикации";
+    else if (this.postByDate) value = `Публикации за ${this.formatedDate}`;
+    else if (this.searchQuery) value = `Искать "${this.searchQuery}"`;
+    else return "DevPub - рассказы разработчиков";
+
+    return {
+      title: `${value} | DevPub - рассказы разработчиков`
+    };
   },
 
   data() {
@@ -185,6 +194,7 @@ export default {
       this.activeNavProp = value;
       this.tagSelected = "";
       this.selectMethod();
+      this.$store.commit("clearSearchQuery");
     },
 
     selectMethod() {

@@ -4,7 +4,7 @@
       Sorry, some error happened :(
     </div>
     <BaseArticle
-      v-else
+      v-if="!isLoading && !isErrored"
       :key="article.id"
       :className="'Article--full'"
       :id="article.id"

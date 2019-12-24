@@ -60,6 +60,11 @@ export default {
   methods: {
     onClickTag(value) {
       this.tagSelected = value;
+      if (this.$route.path !== "/")
+        this.$router.push({
+          path: "/",
+          props: { tagSelected: this.tagSelected }
+        });
     }
   }
 };
