@@ -13,7 +13,7 @@
     </div>
     <div v-if="!showCommentForm" class="Comment-Send">
       <BaseButton
-        v-if="isAuth"
+        v-if="isAuth && this.user.id !== authorId"
         :onClickButton="onReplyComment"
         :className="'Button--size_xs'"
       >
@@ -51,6 +51,10 @@ export default {
       required: true,
       default: ""
     },
+    authorId: {
+      type: Number,
+      required: true
+    },
     time: {
       type: String,
       required: true,
@@ -84,6 +88,10 @@ export default {
 
     isAuth() {
       return this.$store.getters.isAuth;
+    },
+
+    user() {
+      return this.$store.getters.user;
     }
   },
 

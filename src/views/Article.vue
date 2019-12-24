@@ -26,6 +26,7 @@
         v-for="comment in article.comments"
         :key="comment.id"
         :id="comment.id"
+        :authorId="comment.user.id"
         :author="comment.user.name"
         :time="comment.time"
         :text="comment.text"
@@ -45,6 +46,7 @@
 <script>
 import axios from "axios";
 import { SERVER_URL } from "./../env";
+import { formatDateTime } from "@/utils";
 const BaseArticle = () =>
   import(/* webpackChunkName: "baseArticle" */ "@/components/BaseArticle.vue");
 const Comment = () =>
@@ -80,6 +82,10 @@ export default {
   computed: {
     isAuth() {
       return this.$store.getters.isAuth;
+    },
+
+    user() {
+      return this.$store.getters.user;
     }
   },
 
@@ -90,6 +96,7 @@ export default {
 
     onSendComment(data) {
       let comment = data;
+      let date = formatDateTime(new Date());
 
       if (typeof data !== "object") {
         comment = {
@@ -98,11 +105,26 @@ export default {
         };
       }
 
-      axios.post(`${SERVER_URL}/api/comment`, {
-        parent_id: comment.parentId,
-        post_id: this.article.id,
-        text: comment.text
-      });
+      axios
+        .post(`${SERVER_URL}/api/comment`, {
+          parent_id: comment.parentId,
+          post_id: this.article.id,
+          text: comment.text
+        })
+        .then(resp => {
+          if (resp.data.result !== false) {
+            this.article.comments.push({
+              id: resp.data.id,
+              time: date,
+              user: {
+                id: this.user.id,
+                name: this.user.name
+              },
+              photo: this.user.photo,
+              text: comment.text
+            });
+          }
+        });
 
       this.$store.commit("commentIsSend");
     }
