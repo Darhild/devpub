@@ -46,7 +46,12 @@
         @dislike="onDislike"
       />
       <div v-if="!isPreview" class="Article-Tags">
-        <div v-for="(tag, index) in tags" :key="index" class="Tag Article-Tag">
+        <div
+          v-for="(tag, index) in tags"
+          :key="index"
+          class="Tag Article-Tag"
+          @click="onSelectTag(tag)"
+        >
           #{{ tag }}
         </div>
       </div>
@@ -189,6 +194,13 @@ export default {
           if (res.data.result) this.dislikes++;
         })
         .catch(e => this.errors.push(e));
+    },
+
+    onSelectTag(tag) {
+      this.$router.push({
+        name: "mainPage",
+        params: { tag }
+      });
     }
   },
 
@@ -240,11 +252,6 @@ export default {
 
   &-Tag {
     margin-right: 15px;
-    cursor: default;
-
-    &:hover {
-      background-color: var(--color-primary);
-    }
   }
 
   &-Footer {

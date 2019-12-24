@@ -41,7 +41,7 @@
           :viewCount="item.viewCount"
           @moderated="onModerated"
         />
-        <div v-if="moreArticles" class="Articles-Button">
+        <div v-if="moreArticles && !isLoading" class="Articles-Button">
           <BaseButton
             :className="'Button--mode_add-load'"
             :onClickButton="onLoadMore"
