@@ -15,6 +15,7 @@ export default new Vuex.Store({
     search: "",
     authErrors: {},
     settings: {},
+    tagSelected: "",
     errors: []
   },
 
@@ -25,7 +26,8 @@ export default new Vuex.Store({
     settings: state => state.settings,
     shouldSendComment: state => state.shouldSendComment,
     searchStatus: state => state.isSearch,
-    searchQuery: state => state.search
+    searchQuery: state => state.search,
+    tagSelected: state => state.tagSelected
   },
 
   mutations: {
@@ -55,6 +57,12 @@ export default new Vuex.Store({
     },
     clearSearchQuery: state => {
       state.search = "";
+    },
+    setSelectedTag: (state, payload) => {
+      state.tagSelected = payload;
+    },
+    clearSelectedTag: state => {
+      state.tagSelected = "";
     },
     setAuthErrors: (state, payload) => {
       state.authErrors = payload;

@@ -84,6 +84,7 @@ export default {
   methods: {
     onSearch() {
       if (this.search) {
+        this.$store.commit("clearSelectedTag");
         this.$store.commit("setSearchQuery", this.search);
         this.search = "";
         if (this.$route.name !== "mainPage") {

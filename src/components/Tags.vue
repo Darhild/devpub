@@ -15,7 +15,7 @@
           paddingLeft: padding * tag.weight + 'px',
           fontSize: fontSize * tag.weight + 'rem'
         }"
-        @click="onClickTag(tag.name)"
+        @click="onSelectTag(tag.name)"
       >
         #{{ tag.name }}
       </div>
@@ -45,8 +45,8 @@ export default {
   },
 
   methods: {
-    onClickTag(value) {
-      this.$emit("select-tag", value);
+    onSelectTag(tag) {
+      this.$store.commit("setSelectedTag", tag);
     }
   },
 

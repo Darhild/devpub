@@ -41,7 +41,7 @@
           :viewCount="item.viewCount"
           @moderated="onModerated"
         />
-        <div v-if="moreArticles" class="Articles-Button">
+        <div v-if="moreArticles && !isLoading" class="Articles-Button">
           <BaseButton
             :className="'Button--mode_add-load'"
             :onClickButton="onLoadMore"
@@ -79,10 +79,6 @@ export default {
     navItems: {
       type: Array,
       required: true
-    },
-    tagSelected: {
-      type: String,
-      required: false
     },
     forModeration: {
       type: Boolean,
@@ -151,6 +147,10 @@ export default {
       return this.$store.getters.searchQuery;
     },
 
+    tagSelected() {
+      return this.$store.getters.tagSelected;
+    },
+
     moreArticles() {
       let dif = this.articlesCount - this.offset - this.articlesNumber;
       return dif > 0 ? dif : 0;
@@ -171,46 +171,51 @@ export default {
 
   watch: {
     $route() {
+      this.$store.commit("clearSelectedTag");
+      this.$store.commit("clearSearchQuery");
       this.selectMethod();
     },
 
     tagSelected() {
       if (this.tagSelected) {
-        this.getArticles("tag", "/byTag", true);
+        this.$store.commit("clearSearchQuery");
+        this.getArticles("tag", "/byTag");
       }
     },
 
     searchQuery() {
       if (this.searchQuery) {
-        this.onSearch();
+        this.$store.commit("clearSelectedTag");
+        this.getArticles("query", "/search");
       }
     }
   },
 
   methods: {
     selectActiveNavProp(value) {
+      this.$store.commit("clearSelectedTag");
+      this.$store.commit("clearSearchQuery");
       this.articles = [];
       this.offset = 0;
       this.activeNavProp = value;
-      this.tagSelected = "";
       this.selectMethod();
-      this.$store.commit("clearSearchQuery");
     },
 
     selectMethod() {
       if (this.forModeration) this.getArticles("status", "/moderation");
       else if (this.myPosts) this.getArticles("status", "/my");
       else if (this.postByDate) this.getArticles("date", "/byDate");
-      else if (this.searchQuery) this.onSearch();
+      else if (this.searchQuery) this.getArticles("query", "/search");
+      else if (this.tagSelected) this.getArticles("tag", "/byTag");
       else this.getArticles("mode");
     },
 
-    getArticles(prop, url = "", getByTag = false) {
+    getArticles(prop, url = "") {
       this.isLoading = true;
       this.isErrored = false;
       let value;
 
-      if (getByTag) {
+      if (this.tagSelected) {
         value = this.tagSelected;
       } else if (this.postByDate) {
         value = this.postByDate;
@@ -225,19 +230,16 @@ export default {
         .then(res => {
           this.articles.push(...res.data.posts);
           this.articlesCount = res.data.count;
+          if (!this.moreArticles) {
+            this.$store.commit("clearSelectedTag");
+            this.$store.commit("clearSearchQuery");
+          }
         })
         .catch(e => {
           this.errors.push(e);
           this.isErrored = true;
         })
         .finally(() => (this.isLoading = false));
-    },
-
-    onSearch() {
-      this.getArticles("query", "/search", false);
-      if (!this.moreArticles) {
-        this.$store.commit("clearSearchQuery");
-      }
     },
 
     onLoadMore() {
@@ -314,8 +316,7 @@ export default {
   }
 
   &-Button {
-    margin-right: 112px;
-    text-align: right;
+    text-align: center;
   }
 }
 </style>

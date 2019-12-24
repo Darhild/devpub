@@ -58,9 +58,11 @@
       <div class="EditText-TagsArea">
         <div v-for="(tag, index) in tags" :key="index" class="Tag EditText-Tag">
           <span class="Tag-Text">#{{ tag }}</span>
-          <svg class="Tag-Delete" @click="onDeleteTag(tag)">
-            <use xlink:href="./../assets/icons-sprite.svg#delete"></use>
-          </svg>
+          <div class="Tag-Delete" @click="onDeleteTag(tag)">
+            <svg class="Icon Icon--delete">
+              <use xlink:href="./../assets/icons-sprite.svg#delete"></use>
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -302,9 +304,10 @@ export default {
   }
 
   &-Tag {
+    display: inline-flex;
     margin-right: 15px;
     margin-bottom: 10px;
-    padding: 8px 8px 7px 16px;
+    padding: 0 8px 0 16px;
     font-size: 1.2rem;
   }
 
@@ -319,19 +322,6 @@ export default {
 
   .ve-code {
     min-height: 250px;
-  }
-}
-
-.Tag {
-  &-Text {
-    display: inline-block;
-    margin-right: 15px;
-  }
-
-  &-Delete {
-    width: 8px;
-    height: 8px;
-    fill: var(--color-lightest);
   }
 }
 </style>

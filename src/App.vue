@@ -200,6 +200,11 @@ a {
     transform: rotate(180deg);
   }
 
+  &--delete {
+    width: 10px;
+    height: 10px;
+  }
+
   &--views {
     width: 34px;
 
@@ -312,7 +317,7 @@ a {
 
 .Tag {
   display: inline-block;
-  padding: 5px 16px;
+  padding: 5px 16px 7px;
   line-height: 117%;
   color: var(--color-white);
   text-transform: uppercase;
@@ -327,6 +332,18 @@ a {
 
   &:active {
     background-color: var(--color-active);
+  }
+
+  &-Text {
+    display: inline-block;
+    margin-right: 5px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  &-Delete {
+    padding: 8px;
+    fill: var(--color-lightest);
   }
 }
 

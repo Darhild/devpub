@@ -3,10 +3,9 @@
     <Articles
       :navItems="navItems"
       :className="'MainPage-Articles'"
-      :tagSelected="tagSelected"
       :postByDate="postByDate"
     />
-    <Tags className="MainPage-Tags" @select-tag="onClickTag" />
+    <Tags className="MainPage-Tags" />
   </main>
 </template>
 
@@ -54,17 +53,6 @@ export default {
   computed: {
     postByDate() {
       return this.$route.params.date ? this.$route.params.date : "";
-    }
-  },
-
-  methods: {
-    onClickTag(value) {
-      this.tagSelected = value;
-      if (this.$route.path !== "/")
-        this.$router.push({
-          path: "/",
-          props: { tagSelected: this.tagSelected }
-        });
     }
   }
 };
