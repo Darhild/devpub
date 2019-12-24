@@ -314,8 +314,7 @@ export default {
   }
 
   &-Button {
-    margin-right: 112px;
-    text-align: right;
+    text-align: center;
   }
 }
 </style>

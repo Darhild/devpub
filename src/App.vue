@@ -208,6 +208,11 @@ a {
     }
   }
 
+  &--delete {
+    width: 10px;
+    height: 10px;
+  }
+
   &-Google {
     width: 34px;
     height: 32px;

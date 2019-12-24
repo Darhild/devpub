@@ -58,9 +58,11 @@
       <div class="EditText-TagsArea">
         <div v-for="(tag, index) in tags" :key="index" class="Tag EditText-Tag">
           <span class="Tag-Text">#{{ tag }}</span>
-          <svg class="Tag-Delete" @click="onDeleteTag(tag)">
-            <use xlink:href="./../assets/icons-sprite.svg#delete"></use>
-          </svg>
+          <div class="Tag-Delete" @click="onDeleteTag(tag)">
+            <svg class="Icon Icon--delete">
+              <use xlink:href="./../assets/icons-sprite.svg#delete"></use>
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -93,14 +95,6 @@ export default {
       required: false,
       default: true
     }
-  },
-
-  metaInfo() {
-    return {
-      title: this.editPost
-        ? "Редактирование публикации | DevPub - рассказы разработчиков"
-        : "Добавление публикации | DevPub - рассказы разработчиков"
-    };
   },
 
   components: {
@@ -302,9 +296,10 @@ export default {
   }
 
   &-Tag {
+    display: inline-flex;
     margin-right: 15px;
     margin-bottom: 10px;
-    padding: 8px 8px 7px 16px;
+    padding: 0;
     font-size: 1.2rem;
   }
 
@@ -325,12 +320,12 @@ export default {
 .Tag {
   &-Text {
     display: inline-block;
-    margin-right: 15px;
+    padding: 8px 0 7px 16px;
   }
 
   &-Delete {
-    width: 8px;
-    height: 8px;
+    padding-left: 15px;
+    padding: 8px 8px 7px 16px;
     fill: var(--color-lightest);
   }
 }
