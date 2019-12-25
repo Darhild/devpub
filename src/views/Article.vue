@@ -74,7 +74,7 @@ export default {
       article: {},
       title: "",
       commentWithForm: 0,
-      isLoading: true,
+      isLoading: false,
       isErrored: false
     };
   },
@@ -107,12 +107,14 @@ export default {
 
       axios
         .post(`${SERVER_URL}/api/comment`, {
-          parent_id: comment.parentId,
+          parent_id: comment.parentId || "",
           post_id: this.article.id,
           text: comment.text
         })
         .then(resp => {
           if (resp.data.result !== false) {
+            if (!this.article.comments) this.article.comments = [];
+            console.log(this.article);
             this.article.comments.push({
               id: resp.data.id,
               time: date,

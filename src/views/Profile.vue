@@ -53,6 +53,7 @@
                 ($v.email.$dirty && $v.email.$invalid) || authErrors.email
             }"
             type="email"
+            placeholder="Введите, если хотите изменить email"
             @input="onInput('email')"
           />
           <div v-if="$v.email.$dirty && errorMessageEmail" class="Input-Error">
@@ -76,6 +77,7 @@
                 ($v.name.$dirty && $v.name.$invalid) || authErrors.name
             }"
             type="text"
+            placeholder="Введите, если хотите изменить имя"
             @input="onInput('name')"
           />
           <div v-if="$v.name.$dirty && errorMessageName" class="Input-Error">
@@ -100,6 +102,7 @@
                   $v.password.$dirty && $v.password.$invalid
               }"
               type="password"
+              placeholder="Введите, если хотите изменить пароль"
               @input="onInput('password')"
             />
             <div
@@ -125,10 +128,7 @@
               type="password"
               @input="onInput('repeatPassword')"
             />
-            <div
-              v-if="$v.repeatPassword.$dirty && errorMessageRepeat"
-              class="Input-Error"
-            >
+            <div v-if="errorMessageRepeat" class="Input-Error">
               {{ errorMessageRepeat }}
             </div>
           </div>
@@ -145,13 +145,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import {
-  email,
-  minLength,
-  maxLength,
-  sameAs,
-  required
-} from "vuelidate/lib/validators";
+import { email, minLength, maxLength, sameAs } from "vuelidate/lib/validators";
 const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
@@ -183,11 +177,9 @@ export default {
       maxLength: maxLength(250)
     },
     password: {
-      required,
       minLength: minLength(6)
     },
     repeatPassword: {
-      required,
       sameAsPassword: sameAs("password")
     }
   },
