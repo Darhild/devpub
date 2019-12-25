@@ -248,15 +248,30 @@ export default {
 
   &-Tags {
     margin-left: 15px;
+
+    @media (max-width: $screen-tablet) {
+      margin-left: 0;
+    }
   }
 
   &-Tag {
     margin-right: 15px;
+    margin-bottom: 5px;
+  }
+
+  &-Social {
+    @media (max-width: $screen-tablet) {
+      margin-bottom: 20px;
+    }
   }
 
   &-Footer {
     display: flex;
     align-self: flex-start;
+
+    @media (max-width: $screen-tablet) {
+      display: block;
+    }
   }
 
   &--full {

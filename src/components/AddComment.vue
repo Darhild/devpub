@@ -3,7 +3,11 @@
     <div v-if="!isReply" class="Title AddComment-Title">
       Добавить комментарий
     </div>
-    <AddText :className="'AddComment-Edit'" @comment-is-send="onSendComment" />
+    <AddText
+      :className="'AddComment-Edit'"
+      :replyTo="replyTo"
+      @comment-is-send="onSendComment"
+    />
     <div class="AddComment-Send">
       <BaseButton :onClickButton="onShouldSendComment">
         Отправить
@@ -29,6 +33,12 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    replyTo: {
+      type: String,
+      required: true,
+      default: ""
     }
   },
 

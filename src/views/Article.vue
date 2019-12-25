@@ -31,13 +31,12 @@
         :time="comment.time"
         :text="comment.text"
         :className="'Comments-Comment'"
-        :commentWithForm="commentWithForm"
-        @comment-is-send="onSendComment"
-        @form-is-opened="onShowForm"
+        @reply="onReplyComment"
       />
     </div>
     <AddComment
-      v-if="!isLoading && !article.comments && isAuth"
+      v-if="!isLoading && !formIsOpened && isAuth"
+      :replyTo="replyTo"
       @comment-is-send="onSendComment"
     />
   </main>
@@ -73,7 +72,7 @@ export default {
     return {
       article: {},
       title: "",
-      commentWithForm: 0,
+      replyTo: "",
       isLoading: false,
       isErrored: false
     };
@@ -90,8 +89,8 @@ export default {
   },
 
   methods: {
-    onShowForm(id) {
-      this.commentWithForm = id;
+    onReplyComment(name) {
+      this.replyTo = name;
     },
 
     onSendComment(data) {
@@ -112,7 +111,7 @@ export default {
           text: comment.text
         })
         .then(resp => {
-          if (resp.data.result !== false) {
+          if (resp.data.id) {
             if (!this.article.comments) this.article.comments = [];
             this.article.comments.push({
               id: resp.data.id,
@@ -124,6 +123,7 @@ export default {
               photo: this.user.photo,
               text: comment.text
             });
+            this.$forceUpdate();
           }
         });
 

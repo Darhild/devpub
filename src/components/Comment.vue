@@ -20,23 +20,16 @@
         Ответить
       </BaseButton>
     </div>
-    <AddComment
-      v-if="showCommentForm && isAuth"
-      @comment-is-send="onSendComment"
-    />
   </div>
 </template>
 
 <script>
 import { formatToHtml } from "@/utils";
-const AddComment = () =>
-  import(/* webpackChunkName: "addComment" */ "@/components/AddComment.vue");
 const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
 export default {
   components: {
-    AddComment,
     BaseButton
   },
 
@@ -65,20 +58,10 @@ export default {
       required: true,
       default: ""
     },
-    commentWithForm: {
-      type: Number,
-      required: false
-    },
     className: {
       type: String,
       required: false
     }
-  },
-
-  data() {
-    return {
-      showCommentForm: false
-    };
   },
 
   computed: {
@@ -95,21 +78,9 @@ export default {
     }
   },
 
-  watch: {
-    commentWithForm() {
-      this.toggleForm();
-    },
-
-    showCommentForm() {
-      if (this.showCommentForm) {
-        this.$emit("form-is-opened", this.id);
-      }
-    }
-  },
-
   methods: {
     onReplyComment() {
-      this.showCommentForm = true;
+      this.$emit("reply", this.author);
     },
 
     onSendComment(text) {
@@ -117,18 +88,7 @@ export default {
         parentId: this.id,
         text
       });
-
-      this.showCommentForm = false;
-    },
-
-    toggleForm() {
-      if (this.commentWithForm === this.id) this.showCommentForm = true;
-      else this.showCommentForm = false;
     }
-  },
-
-  mounted() {
-    this.toggleForm();
   }
 };
 </script>
