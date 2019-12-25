@@ -56,23 +56,12 @@
             class="Input"
             type="text"
           />
-          <div
-            class="Input-Autocomplete Autocomplete"
-            v-if="wordsForAutocomplete.length && isOpen"
-          >
-            <div
-              :class="[
-                wordsCounter === index
-                  ? 'Autocomplete-Item Autocomplete-Item--state_highlighted'
-                  : 'Autocomplete-Item'
-              ]"
-              v-for="(tag, index) in wordsForAutocomplete"
-              :key="tag.id"
-              @click="onClickWord(tag.name)"
-            >
-              {{ tag.name }}
-            </div>
-          </div>
+          <Autocomplete
+            :wordsForAutocomplete="wordsForAutocomplete"
+            :wordsCounter="wordsCounter"
+            :searched="addedTag"
+            @word-selected="onSelectWord"
+          />
         </div>
       </div>
       <div class="EditText-TagsArea">
@@ -108,6 +97,8 @@ import getTags from "@/mixins/getTags";
 import { formatDateTime, formatToHtml } from "@/utils";
 const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
+const Autocomplete = () =>
+  import(/* webpackChunkName: "baseButton" */ "@/components/Autocomplete.vue");
 
 export default {
   props: {
@@ -123,7 +114,8 @@ export default {
   },
 
   components: {
-    BaseButton
+    BaseButton,
+    Autocomplete
   },
 
   metaInfo() {
@@ -141,11 +133,10 @@ export default {
       active: 0,
       article: {},
       articleTags: [],
-      wordsForAutocomplete: [],
-      wordsCounter: 0,
-      isOpen: true,
       title: "",
       date: "",
+      wordsForAutocomplete: [],
+      wordsCounter: 0,
       addedTag: "",
       tags: [],
       errors: []
@@ -174,6 +165,11 @@ export default {
       } else this.wordsForAutocomplete = [];
     },
 
+    onSelectWord(word) {
+      this.addedTag = word;
+      this.wordsForAutocomplete = [];
+    },
+
     onArrowDown() {
       if (this.wordsCounter < this.wordsForAutocomplete.length - 1)
         this.wordsCounter++;
@@ -198,11 +194,6 @@ export default {
 
     onDeleteTag(value) {
       this.articleTags = this.articleTags.filter(tag => tag !== value);
-    },
-
-    onClickWord(value) {
-      this.addedTag = value;
-      this.wordsForAutocomplete = [];
     },
 
     onCancel() {
@@ -287,9 +278,6 @@ export default {
     &--size_half {
       width: 50%;
     }
-  }
-
-  &-AddTags {
   }
 
   &-Info {
