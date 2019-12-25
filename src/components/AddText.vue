@@ -12,6 +12,12 @@ export default {
     className: {
       type: String,
       required: false
+    },
+
+    replyTo: {
+      type: String,
+      required: true,
+      default: ""
     }
   },
 
@@ -22,6 +28,10 @@ export default {
   },
 
   watch: {
+    replyTo() {
+      this.$refs.editor.setContent(`<strong>${this.replyTo}</strong>,`);
+    },
+
     shouldSendComment() {
       if (this.shouldSendComment) {
         const text = this.$refs.editor.getContent();

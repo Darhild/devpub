@@ -11,7 +11,7 @@
     <div class="Comment-Content">
       <span v-html="htmlText"></span>
     </div>
-    <div v-if="!showCommentForm" class="Comment-Send">
+    <div class="Comment-Send">
       <BaseButton
         v-if="isAuth && this.user.id !== authorId"
         :onClickButton="onReplyComment"

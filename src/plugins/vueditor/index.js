@@ -1,3 +1,5 @@
+import { SERVER_URL } from "@/env";
+
 const config = {
   toolbar: [
     "link",
@@ -20,7 +22,9 @@ const config = {
     "outdent",
     "|",
     "element"
-  ]
+  ],
+
+  uploadUrl: `${SERVER_URL}/api/images`
 };
 
 export default config;

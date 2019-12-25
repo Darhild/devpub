@@ -35,7 +35,7 @@
       />
     </div>
     <AddComment
-      v-if="!isLoading && !formIsOpened && isAuth"
+      v-if="!isLoading && isAuth"
       :replyTo="replyTo"
       @comment-is-send="onSendComment"
     />
@@ -139,9 +139,6 @@ export default {
         this.article = res.data.posts.find(
           article => article.id == this.$route.params.id
         );
-        this.commentWithForm = this.article.comments
-          ? this.article.comments[this.article.comments.length - 1].id
-          : 0;
       })
       .catch(e => {
         this.errors.push(e);
@@ -163,7 +160,7 @@ export default {
   }
 
   &-Comment {
-    margin-bottom: 16px;
+    margin-bottom: 30px;
   }
 }
 </style>
