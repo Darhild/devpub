@@ -123,7 +123,7 @@
               class="Input"
               :class="{
                 'Input--state_invalid':
-                  $v.repeatPassword.$dirty && $v.repeatPassword.$invalid
+                  $v.password.$dirty && $v.repeatPassword.$invalid
               }"
               type="password"
               @input="onInput('repeatPassword')"
@@ -212,7 +212,9 @@ export default {
     },
 
     errorMessageRepeat() {
-      if (!this.$v.repeatPassword.sameAsPassword) {
+      if (this.$v.password.$model && !this.$v.repeatPassword.$model) {
+        return "Заполните это поле";
+      } else if (!this.$v.repeatPassword.sameAsPassword) {
         return "Пароли не совпадают!";
       }
 
