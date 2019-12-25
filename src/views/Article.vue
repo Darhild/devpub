@@ -114,7 +114,6 @@ export default {
         .then(resp => {
           if (resp.data.result !== false) {
             if (!this.article.comments) this.article.comments = [];
-            console.log(this.article);
             this.article.comments.push({
               id: resp.data.id,
               time: date,
