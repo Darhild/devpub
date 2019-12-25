@@ -172,6 +172,29 @@ a {
   }
 }
 
+.Autocomplete {
+  position: absolute;
+  width: 100%;
+  text-align-last: left;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+  &-Item {
+    padding: 5px 12px;
+    font-size: 13px;
+    line-height: 15px;
+    background-color: var(--color-lightest);
+    cursor: pointer;
+
+    &--state_highlighted {
+      background-color: var(--color-layout-primary);
+    }
+
+    &:hover {
+      background-color: var(--color-layout-primary);
+    }
+  }
+}
+
 .Title {
   font-size: 2.5rem;
   font-weight: 700;

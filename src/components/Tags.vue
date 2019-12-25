@@ -24,8 +24,7 @@
 </template>
 
 <script>
-import axios from "axios";
-import { SERVER_URL } from "./../env";
+import getTags from "@/mixins/getTags";
 
 export default {
   props: {
@@ -34,7 +33,6 @@ export default {
 
   data() {
     return {
-      tags: [],
       fontSize: 3,
       marginLeft: 50,
       marginBottom: 15,
@@ -44,22 +42,12 @@ export default {
     };
   },
 
+  mixins: [getTags],
+
   methods: {
     onClickTag(value) {
       this.$emit("select-tag", value);
     }
-  },
-
-  mounted() {
-    axios
-      .get(`${SERVER_URL}/api/tag`)
-      .then(res => {
-        this.tags = res.data.tags;
-      })
-      .catch(e => {
-        this.errors.push(e);
-      })
-      .finally(() => (this.isLoading = false));
   }
 };
 </script>

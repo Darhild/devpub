@@ -49,14 +49,38 @@
         <div class="EditText-Input">
           <input
             v-model="addedTag"
+            @input="onInput($event.target.value)"
             @keyup.enter="onAddTag($event.target.value)"
+            @keyup.up="onArrowUp"
+            @keyup.down="onArrowDown"
             class="Input"
             type="text"
           />
+          <div
+            class="Input-Autocomplete Autocomplete"
+            v-if="wordsForAutocomplete.length && isOpen"
+          >
+            <div
+              :class="[
+                wordsCounter === index
+                  ? 'Autocomplete-Item Autocomplete-Item--state_highlighted'
+                  : 'Autocomplete-Item'
+              ]"
+              v-for="(tag, index) in wordsForAutocomplete"
+              :key="tag.id"
+              @click="onClickWord(tag.name)"
+            >
+              {{ tag.name }}
+            </div>
+          </div>
         </div>
       </div>
       <div class="EditText-TagsArea">
-        <div v-for="(tag, index) in tags" :key="index" class="Tag EditText-Tag">
+        <div
+          v-for="(tag, index) in articleTags"
+          :key="index"
+          class="Tag EditText-Tag"
+        >
           <span class="Tag-Text">#{{ tag }}</span>
           <div class="Tag-Delete" @click="onDeleteTag(tag)">
             <svg class="Icon Icon--delete">
@@ -80,6 +104,7 @@
 <script>
 import axios from "axios";
 import { SERVER_URL } from "./../env";
+import getTags from "@/mixins/getTags";
 import { formatDateTime, formatToHtml } from "@/utils";
 const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
@@ -109,16 +134,28 @@ export default {
     };
   },
 
+  mixins: [getTags],
+
   data() {
     return {
       active: 0,
       article: {},
+      articleTags: [],
+      wordsForAutocomplete: [],
+      wordsCounter: 0,
+      isOpen: true,
       title: "",
       date: "",
       addedTag: "",
       tags: [],
       errors: []
     };
+  },
+
+  computed: {
+    tagNames() {
+      return this.tags.map(tag => tag.name);
+    }
   },
 
   watch: {
@@ -129,13 +166,43 @@ export default {
   },
 
   methods: {
+    onInput(value) {
+      if (value !== "") {
+        this.wordsForAutocomplete = this.tags.filter(
+          item => item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+        );
+      } else this.wordsForAutocomplete = [];
+    },
+
+    onArrowDown() {
+      if (this.wordsCounter < this.wordsForAutocomplete.length - 1)
+        this.wordsCounter++;
+    },
+
+    onArrowUp() {
+      if (this.wordsCounter > 0) this.wordsCounter--;
+    },
+
     onAddTag(value) {
-      if (!this.tags.includes(value)) this.tags.push(value.replace(",", ""));
-      this.addedTag = "";
+      if (this.wordsForAutocomplete.length) {
+        this.addedTag = this.wordsForAutocomplete[this.wordsCounter].name;
+        this.wordsCounter = -1;
+        this.wordsForAutocomplete = [];
+      } else {
+        if (!this.articleTags.includes(value)) {
+          this.articleTags.push(value.replace(",", ""));
+          this.addedTag = "";
+        }
+      }
     },
 
     onDeleteTag(value) {
-      this.tags = this.tags.filter(tag => tag !== value);
+      this.articleTags = this.articleTags.filter(tag => tag !== value);
+    },
+
+    onClickWord(value) {
+      this.addedTag = value;
+      this.wordsForAutocomplete = [];
     },
 
     onCancel() {
@@ -179,7 +246,7 @@ export default {
           this.article = article;
           this.title = article.title;
           this.date = formatDateTime(new Date(article.time));
-          this.tags = [...article.tags];
+          this.articleTags = [...article.tags];
           this.$refs.editor.setContent(formatToHtml(article.text));
         })
         .catch(e => {
@@ -222,6 +289,9 @@ export default {
     }
   }
 
+  &-AddTags {
+  }
+
   &-Info {
     @media (max-width: $screen-tablet) {
       display: block;
@@ -229,6 +299,7 @@ export default {
   }
 
   &-Input {
+    position: relative;
     width: 100%;
 
     .Input {
