@@ -5,5 +5,10 @@ module.exports = {
         prependData: `@import "~@/variables.scss";`
       }
     }
+  },
+
+  build: {
+    assetsPublicPath: "/",
+    assetsSubDirectory: "static"
   }
 };
