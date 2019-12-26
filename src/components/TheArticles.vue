@@ -4,7 +4,7 @@
       v-if="!postByDate"
       className="Articles-Nav"
       :navItems="navItems"
-      @set-nav-value="selectActiveNavProp"
+      @set-nav-value="selectActiveNavIndex"
     />
     <div
       :class="[
@@ -21,7 +21,7 @@
           Публикации {{ formatedDate }}
         </div>
         <div v-if="tagSelected" class="Title Articles-Title">
-          Публикации по тэгу #{{ tagSelected }}
+          Публикации по тэгу #{{ tagSelected.toUpperCase() }}
         </div>
         <BaseArticle
           v-for="item in articles"
@@ -101,24 +101,9 @@ export default {
     }
   },
 
-  metaInfo() {
-    let value;
-
-    if (this.tagSelected) value = `Публикации по тэгу #${this.tagSelected}`;
-    else if (this.forModeration) value = "Модерирование публикаций";
-    else if (this.myPosts) value = "Мои публикации";
-    else if (this.postByDate) value = `Публикации за ${this.formatedDate}`;
-    else if (this.searchQuery) value = `Искать "${this.searchQuery}"`;
-    else return "DevPub - рассказы разработчиков";
-
-    return {
-      title: `${value} | DevPub - рассказы разработчиков`
-    };
-  },
-
   data() {
     return {
-      activeNavProp: 0,
+      activeNavIndex: 0,
       articles: [],
       articlesCount: 0,
       articlesNumber: 10,
@@ -172,52 +157,63 @@ export default {
 
   watch: {
     $route() {
+      this.clearProps();
       this.selectMethod();
     },
 
     tagSelected() {
       if (this.tagSelected) {
+        this.articles = [];
+        this.offset = 0;
+        this.$store.commit("clearSearchQuery");
         this.getArticles("tag", "/byTag", true);
       }
     },
 
     searchQuery() {
       if (this.searchQuery) {
-        this.onSearch();
+        this.articles = [];
+        this.tagSelected = "";
+        this.offset = 0;
+        this.getArticles("query", "/search", false);
       }
     }
   },
 
   methods: {
-    selectActiveNavProp(value) {
+    clearProps() {
       this.articles = [];
       this.offset = 0;
-      this.activeNavProp = value;
       this.tagSelected = "";
-      this.selectMethod();
       this.$store.commit("clearSearchQuery");
+    },
+
+    selectActiveNavIndex(value) {
+      this.clearProps();
+      this.activeNavIndex = value;
+      this.selectMethod();
     },
 
     selectMethod() {
       if (this.forModeration) this.getArticles("status", "/moderation");
       else if (this.myPosts) this.getArticles("status", "/my");
       else if (this.postByDate) this.getArticles("date", "/byDate");
-      else if (this.searchQuery) this.onSearch();
+      else if (this.tagSelected) this.getArticles("tag", "/byTag", true);
+      else if (this.searchQuery) this.getArticles("query", "/search", false);
       else this.getArticles("mode");
     },
 
-    getArticles(prop, url = "", getByTag = false) {
+    getValue() {
+      if (this.tagSelected) return this.tagSelected;
+      if (this.postByDate) return this.postByDate;
+      if (this.searchQuery) return this.searchQuery;
+      return this.navItems[this.activeNavIndex].value;
+    },
+
+    getArticles(prop, url = "") {
       this.isLoading = true;
       this.isErrored = false;
-      let value;
-
-      if (getByTag) {
-        value = this.tagSelected;
-      } else if (this.postByDate) {
-        value = this.postByDate;
-      } else if (this.searchQuery) {
-        value = this.searchQuery;
-      } else value = this.navItems[this.activeNavProp].value;
+      const value = this.getValue();
 
       axios
         .get(
@@ -236,13 +232,6 @@ export default {
         .finally(() => (this.isLoading = false));
     },
 
-    onSearch() {
-      this.getArticles("query", "/search", false);
-      if (!this.moreArticles) {
-        this.$store.commit("clearSearchQuery");
-      }
-    },
-
     onLoadMore() {
       if (this.articlesCount > this.offset + this.articlesNumber) {
         this.offset += this.articlesNumber;
@@ -258,13 +247,30 @@ export default {
         })
         .then(res => {
           handleResponseErrors(res);
+          if (res.status === 401) this.$router.push("/");
         })
         .catch(e => this.errors.push(e));
     }
   },
 
   mounted() {
+    this.clearProps();
     this.selectMethod();
+  },
+
+  metaInfo() {
+    let value;
+
+    if (this.tagSelected) value = `Публикации по тэгу #${this.tagSelected}`;
+    else if (this.forModeration) value = "Модерирование публикаций";
+    else if (this.myPosts) value = "Мои публикации";
+    else if (this.postByDate) value = `Публикации за ${this.formatedDate}`;
+    else if (this.searchQuery) value = `Искать "${this.searchQuery}"`;
+    else return "DevPub - рассказы разработчиков";
+
+    return {
+      title: `${value} | DevPub - рассказы разработчиков`
+    };
   }
 };
 </script>

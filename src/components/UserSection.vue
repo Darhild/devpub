@@ -7,13 +7,13 @@
       <img
         v-if="this.user.photo"
         class="UserSection-Avatar"
-        :src="require(`@/assets/${this.user.photo}`)"
+        :src="require(`@/assets/img/${this.user.photo}`)"
         alt="avatar"
       />
       <img
         v-else
         class="UserSection-Avatar"
-        src="@/assets/default-2.png"
+        src="@/assets/img/default-2.png"
         alt="avatar"
       />
     </div>
@@ -31,13 +31,14 @@
         Статистика
       </router-link>
       <router-link
+        v-if="user.moderation"
         to="/moderation"
         class="Link UserSection-Item UserSection-Moderation"
       >
         <div>
           Модерация
         </div>
-        <div v-if="user.moderation" class="UserSection-ModerationNum">
+        <div class="UserSection-ModerationNum">
           {{ user.moderationCount }}
         </div>
       </router-link>

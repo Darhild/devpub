@@ -3,7 +3,7 @@
     <div class="Header-Wrapper">
       <router-link to="/" class="Header-Logo">
         <svg class="Logo">
-          <use xlink:href="./../assets/icons-sprite.svg#logo"></use>
+          <use xlink:href="@/assets/img/icons-sprite.svg#logo"></use>
         </svg>
       </router-link>
       <div class="Header-Content">
@@ -41,11 +41,11 @@
                 class="Search-Close"
                 @click="onCloseSearch"
               >
-                <use xlink:href="./../assets/icons-sprite.svg#delete"></use>
+                <use xlink:href="@/assets/img/icons-sprite.svg#delete"></use>
               </svg>
             </div>
             <svg v-if="!searchIsOpen" class="Search-Icon" @click="onOpenSearch">
-              <use xlink:href="./../assets/icons-sprite.svg#search"></use>
+              <use xlink:href="@/assets/img/icons-sprite.svg#search"></use>
             </svg>
           </div>
           <UserSection v-if="isAuth" />
@@ -112,7 +112,7 @@ export default {
 <style lang="scss">
 .Header {
   position: relative;
-  color: var(--color-white);
+  color: var(--color-lightest);
   background-color: var(--color-layout-dark);
 
   &-Wrapper {

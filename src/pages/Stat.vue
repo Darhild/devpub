@@ -72,10 +72,6 @@ import { SERVER_URL } from "./../env";
 import { mapGetters } from "vuex";
 
 export default {
-  metaInfo: {
-    title: "Статистика | DevPub - рассказы разработчиков"
-  },
-
   components: {
     BaseNavbar
   },
@@ -150,6 +146,10 @@ export default {
 
   mounted() {
     this.getStats();
+  },
+
+  metaInfo: {
+    title: "Статистика | DevPub - рассказы разработчиков"
   }
 };
 </script>

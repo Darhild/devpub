@@ -33,17 +33,13 @@ import captcha from "@/mixins/captcha";
 const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 const Captcha = () =>
-  import(/* webpackChunkName: "captcha" */ "@/components/Captcha.vue");
+  import(/* webpackChunkName: "captcha" */ "@/components/BaseCaptcha.vue");
 const InputPassword = () =>
   import(
     /* webpackChunkName: "inputPassword" */ "@/components/InputPassword.vue"
   );
 
 export default {
-  metaInfo: {
-    title: "Смена пароля | DevPub - рассказы разработчиков"
-  },
-
   components: {
     BaseButton,
     InputPassword,
@@ -77,6 +73,10 @@ export default {
 
   mounted() {
     this.validatedFields.code = this.$route.params.hash;
+  },
+
+  metaInfo: {
+    title: "Смена пароля | DevPub - рассказы разработчиков"
   }
 };
 </script>

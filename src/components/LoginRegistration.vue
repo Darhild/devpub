@@ -29,17 +29,13 @@ const BaseButton = () =>
 const InputEmail = () =>
   import(/* webpackChunkName: "inputEmail" */ "@/components/InputEmail.vue");
 const Captcha = () =>
-  import(/* webpackChunkName: "captcha" */ "@/components/Captcha.vue");
+  import(/* webpackChunkName: "captcha" */ "@/components/BaseCaptcha.vue");
 const InputPassword = () =>
   import(
     /* webpackChunkName: "inputPassword" */ "@/components/InputPassword.vue"
   );
 
 export default {
-  metaInfo: {
-    title: "Регистрация | DevPub - рассказы разработчиков"
-  },
-
   components: {
     BaseButton,
     InputEmail,
@@ -70,6 +66,10 @@ export default {
         })
         .catch(e => this.serverErrors.push(e));
     }
+  },
+
+  metaInfo: {
+    title: "Регистрация | DevPub - рассказы разработчиков"
   }
 };
 </script>

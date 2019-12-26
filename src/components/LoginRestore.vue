@@ -28,10 +28,6 @@ const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
 export default {
-  metaInfo: {
-    title: "Восстановление пароля | DevPub - рассказы разработчиков"
-  },
-
   components: {
     BaseButton,
     InputEmail
@@ -62,6 +58,10 @@ export default {
         })
         .catch(e => this.errors.push(e));
     }
+  },
+
+  metaInfo: {
+    title: "Восстановление пароля | DevPub - рассказы разработчиков"
   }
 };
 </script>

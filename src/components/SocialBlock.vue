@@ -2,7 +2,7 @@
   <div class="SocialBlock" :class="className">
     <div class="SocialBlock-Item SocialBlock-Like" @click="$emit('like')">
       <svg class="SocialBlock-Icon Icon Icon--like">
-        <use xlink:href="./../assets/icons-sprite.svg#like"></use>
+        <use xlink:href="@/assets/img/icons-sprite.svg#like"></use>
       </svg>
       <div class="SocialBlock-Text">
         {{ likeCount }}
@@ -10,7 +10,7 @@
     </div>
     <div class="SocialBlock-Item SocialBlock-Like" @click="$emit('dislike')">
       <svg class="SocialBlock-Icon Icon Icon--dislike">
-        <use xlink:href="./../assets/icons-sprite.svg#like"></use>
+        <use xlink:href="@/assets/img/icons-sprite.svg#like"></use>
       </svg>
       <div class="SocialBlock-Text">
         {{ dislikeCount }}
@@ -22,7 +22,7 @@
       title="Количество комментариев"
     >
       <svg class="SocialBlock-Icon Icon Icon--comments">
-        <use xlink:href="./../assets/icons-sprite.svg#comments"></use>
+        <use xlink:href="@/assets/img/icons-sprite.svg#comments"></use>
       </svg>
       <div class="SocialBlock-Text">
         {{ commentCount }}
@@ -30,7 +30,7 @@
     </div>
     <div class="SocialBlock-Item" title="Количество просмотров">
       <svg class="SocialBlock-Icon Icon Icon--views">
-        <use xlink:href="./../assets/icons-sprite.svg#views"></use>
+        <use xlink:href="@/assets/img/icons-sprite.svg#views"></use>
       </svg>
       <div class="SocialBlock-Text">
         {{ viewCount }}

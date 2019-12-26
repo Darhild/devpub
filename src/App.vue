@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Footer from "@/components/Footer.vue";
+import Header from "@/components/TheHeader.vue";
+import Footer from "@/components/TheFooter.vue";
 const ErrorModal = () =>
   import(/* webpackChunkName: "errorModal" */ "@/components/ErrorModal.vue");
 import "vueditor/dist/style/vueditor.min.css";
@@ -31,7 +31,72 @@ export default {
 </script>
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap");
+/* roboto-italic - cyrillic_latin_cyrillic-ext */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 400;
+  src: local("Roboto Italic"), local("Roboto-Italic"),
+    url("./assets/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-italic.woff2")
+      format("woff2")
+      url("./assets/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-italic.woff")
+      format("woff");
+}
+/* roboto-regular - cyrillic_latin_cyrillic-ext */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Roboto"), local("Roboto-Regular"),
+    url("./assets/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-regular.woff2")
+      format("woff2"),
+    url("./assets/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-regular.woff")
+      format("woff");
+}
+/* roboto-500 - cyrillic_latin_cyrillic-ext */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 500;
+  src: local("Roboto Medium"), local("Roboto-Medium"),
+    url("./assets/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-500.woff2")
+      format("woff2"),
+    url("./assets/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-500.woff")
+      format("woff");
+}
+/* roboto-700 - cyrillic_latin_cyrillic-ext */
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Roboto Bold"), local("Roboto-Bold"),
+    url("./assets/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-700.woff2")
+      format("woff2"),
+    url("./assets/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-700.woff")
+      format("woff");
+}
+/* roboto-500italic - cyrillic_latin_cyrillic-ext */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 500;
+  src: local("Roboto Medium Italic"), local("Roboto-MediumItalic"),
+    url("./assets/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-500italic.woff2")
+      format("woff2"),
+    url("./assets/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-500italic.woff")
+      format("woff");
+}
+/* roboto-700italic - cyrillic_latin_cyrillic-ext */
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 700;
+  src: local("Roboto Bold Italic"), local("Roboto-BoldItalic"),
+    url("./assets/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-700italic.woff2")
+      format("woff2"),
+    url("./assets/fonts/roboto-v20-cyrillic_latin_cyrillic-ext-700italic.woff")
+      format("woff");
+}
 
 :root {
   --color-primary: #4b4bee;
@@ -42,9 +107,7 @@ export default {
   --color-highlight: rgba(236, 65, 65, 0.4);
   --color-lightest: #fff;
   --color-light: rgba(0, 0, 0, 0.3);
-  --color-white: #fff;
   --color-darkest: #000;
-  --color-black: #000;
   --color-border: #c4c4c4;
 
   --text-faded: rgba(23, 23, 39, 0.4);
@@ -329,7 +392,7 @@ a {
   display: inline-block;
   padding: 5px 16px;
   line-height: 117%;
-  color: var(--color-white);
+  color: var(--color-lightest);
   text-transform: uppercase;
   text-decoration: underline;
   background-color: var(--color-primary);
@@ -419,85 +482,85 @@ a {
 .vueditor .icon-link {
   width: 17px;
   height: 18px;
-  background: url("./assets/vueditor/link.png");
+  background: url("./assets/img/vueditor/link.png");
 }
 
 .vueditor .icon-unlink {
   width: 17px;
   height: 18px;
-  background: url("./assets/vueditor/unlink.png");
+  background: url("./assets/img/vueditor/unlink.png");
 }
 
 .vueditor .icon-table {
   width: 30px;
   height: 24px;
-  background: url("./assets/vueditor/table.png");
+  background: url("./assets/img/vueditor/table.png");
 }
 
 .vueditor .icon-file-image-o {
   width: 22px;
   height: 22px;
-  background: url("./assets/vueditor/pic.png");
+  background: url("./assets/img/vueditor/pic.png");
 }
 
 .vueditor .icon-fullscreen {
   width: 26px;
   height: 26px;
-  background: url("./assets/vueditor/full.png");
+  background: url("./assets/img/vueditor/full.png");
 }
 
 .vueditor .icon-code {
   width: 69px;
   height: 36px;
-  background: url("./assets/vueditor/src.png");
+  background: url("./assets/img/vueditor/src.png");
 }
 
 .vueditor .icon-bold {
   width: 15px;
   height: 18px;
-  background: url("./assets/vueditor/B.png");
+  background: url("./assets/img/vueditor/B.png");
 }
 
 .vueditor .icon-italic {
   width: 13px;
   height: 18px;
-  background: url("./assets/vueditor/I.png");
+  background: url("./assets/img/vueditor/I.png");
 }
 
 .vueditor .icon-strikethrough {
   width: 17px;
   height: 36px;
-  background: url("./assets/vueditor/S.png");
+  background: url("./assets/img/vueditor/S.png");
 }
 
 .vueditor .icon-eraser {
   width: 22px;
   height: 33px;
-  background: url("./assets/vueditor/clear.png");
+  background: url("./assets/img/vueditor/clear.png");
 }
 
 .vueditor .icon-list-ul {
   width: 22px;
   height: 17px;
-  background: url("./assets/vueditor/ul.png");
+  background: url("./assets/img/vueditor/ul.png");
 }
 
 .vueditor .icon-list-ol {
   width: 23px;
   height: 23px;
-  background: url("./assets/vueditor/ol.png");
+  background: url("./assets/img/vueditor/ol.png");
 }
 
 .vueditor .icon-indent {
   width: 26px;
   height: 23px;
-  background: url("./assets/vueditor/indent.png");
+  background: url("./assets/img/vueditor/indent.png");
 }
 
 .vueditor .icon-outdent {
   width: 29px;
   height: 23px;
-  background: url("./assets/vueditor/outdent.png");
+  background: url("./assets/img/vueditor/outdent.png");
 }
 
 .ve-toolbar div .ve-select {

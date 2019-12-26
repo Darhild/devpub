@@ -12,16 +12,11 @@
 
 <script>
 const Articles = () =>
-  import(/* webpackChunkName: "articles" */ "@/components/Articles.vue");
+  import(/* webpackChunkName: "articles" */ "@/components/TheArticles.vue");
 const Tags = () =>
-  import(/* webpackChunkName: "tags" */ "@/components/Tags.vue");
+  import(/* webpackChunkName: "tags" */ "@/components/TheTags.vue");
 
 export default {
-  name: "mainPage",
-  metaInfo: {
-    title: "DevPub - рассказы разработчиков"
-  },
-
   components: {
     Articles,
     Tags
@@ -67,6 +62,10 @@ export default {
 
   mounted() {
     if (this.$route.params.tag) this.tagSelected = this.$route.params.tag;
+  },
+
+  metaInfo: {
+    title: "DevPub - рассказы разработчиков"
   }
 };
 </script>

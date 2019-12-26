@@ -12,7 +12,7 @@
           <img
             ref="avatar"
             class="Avatar-Img"
-            :src="require(`@/assets/${user.photo}`)"
+            :src="require(`@/assets/img/${user.photo}`)"
             alt=""
           />
         </div>
@@ -150,10 +150,6 @@ const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
 export default {
-  metaInfo: {
-    title: "Профиль пользователя | DevPub - рассказы разработчиков"
-  },
-
   components: {
     BaseButton
   },
@@ -229,7 +225,7 @@ export default {
     },
 
     onDelete() {
-      this.$refs.avatar.src = require("@/assets/default-3.png");
+      this.$refs.avatar.src = require("@/assets/img/default-3.png");
       this.avatar = "";
     },
 
@@ -264,6 +260,10 @@ export default {
 
       this.$store.dispatch("saveUser", data).catch(e => this.errors.push(e));
     }
+  },
+
+  metaInfo: {
+    title: "Профиль пользователя | DevPub - рассказы разработчиков"
   }
 };
 </script>

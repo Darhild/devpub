@@ -35,7 +35,7 @@
       />
     </div>
     <AddComment
-      v-if="!isLoading && isAuth"
+      v-if="!isLoading && !isErrored && isAuth"
       :replyTo="replyTo"
       @comment-is-send="onSendComment"
     />
@@ -50,19 +50,11 @@ import { formatDateTime } from "@/utils";
 const BaseArticle = () =>
   import(/* webpackChunkName: "baseArticle" */ "@/components/BaseArticle.vue");
 const Comment = () =>
-  import(/* webpackChunkName: "comment" */ "@/components/Comment.vue");
+  import(/* webpackChunkName: "comment" */ "@/components/BaseComment.vue");
 const AddComment = () =>
   import(/* webpackChunkName: "addComment" */ "@/components/AddComment.vue");
 
 export default {
-  metaInfo() {
-    return {
-      title: this.article.title
-        ? `${this.article.title} | DevPub - рассказы разработчиков`
-        : "DevPub - рассказы разработчиков"
-    };
-  },
-
   components: {
     BaseArticle,
     Comment,
@@ -137,12 +129,10 @@ export default {
   mounted() {
     this.isLoading = true;
     axios
-      .get(`${SERVER_URL}/api/post`)
+      .get(`${SERVER_URL}/api/post/${this.$route.params.id}`)
       .then(res => {
         if (!handleResponseErrors(res)) {
-          this.article = res.data.posts.find(
-            article => article.id == this.$route.params.id
-          );
+          this.article = res.data;
         }
       })
       .catch(e => {
@@ -150,6 +140,14 @@ export default {
         this.isErrored = true;
       })
       .finally(() => (this.isLoading = false));
+  },
+
+  metaInfo() {
+    return {
+      title: this.article.title
+        ? `${this.article.title} | DevPub - рассказы разработчиков`
+        : "DevPub - рассказы разработчиков"
+    };
   }
 };
 </script>

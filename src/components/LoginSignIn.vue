@@ -35,10 +35,6 @@ const InputPassword = () =>
   );
 
 export default {
-  metaInfo: {
-    title: "Авторизация | DevPub - рассказы разработчиков"
-  },
-
   components: {
     BaseButton,
     InputEmail,
@@ -70,6 +66,10 @@ export default {
         })
         .catch(e => this.errors.push(e));
     }
+  },
+
+  metaInfo: {
+    title: "Авторизация | DevPub - рассказы разработчиков"
   }
 };
 </script>

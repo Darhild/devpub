@@ -72,6 +72,10 @@ export default {
     onCheck() {
       this.$store.dispatch("setSettings", this.settings);
     }
+  },
+
+  metaInfo: {
+    title: "Настройки | DevPub - рассказы разработчиков"
   }
 };
 </script>

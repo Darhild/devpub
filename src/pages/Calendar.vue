@@ -21,11 +21,6 @@ const CalendarTable = () =>
   );
 
 export default {
-  name: "calendar",
-  metaInfo: {
-    title: "Календарь | DevPub - рассказы разработчиков"
-  },
-
   components: {
     BaseNavbar,
     CalendarTable
@@ -67,6 +62,10 @@ export default {
 
   mounted() {
     this.getPostsCount();
+  },
+
+  metaInfo: {
+    title: "Календарь | DevPub - рассказы разработчиков"
   }
 };
 </script>

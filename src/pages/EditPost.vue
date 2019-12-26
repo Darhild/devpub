@@ -61,7 +61,7 @@
           <span class="Tag-Text">#{{ tag }}</span>
           <div class="Tag-Delete" @click="onDeleteTag(tag)">
             <svg class="Icon Icon--delete">
-              <use xlink:href="./../assets/icons-sprite.svg#delete"></use>
+              <use xlink:href="@/assets/img/icons-sprite.svg#delete"></use>
             </svg>
           </div>
         </div>
@@ -87,7 +87,9 @@ import { formatDateTime, formatToHtml } from "@/utils";
 const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 const Autocomplete = () =>
-  import(/* webpackChunkName: "baseButton" */ "@/components/Autocomplete.vue");
+  import(
+    /* webpackChunkName: "baseButton" */ "@/components/BaseAutocomplete.vue"
+  );
 
 export default {
   props: {
@@ -105,14 +107,6 @@ export default {
   components: {
     BaseButton,
     Autocomplete
-  },
-
-  metaInfo() {
-    return {
-      title: this.editPost
-        ? "Редактирование публикации | DevPub - рассказы разработчиков"
-        : "Добавление новой публикации | DevPub - рассказы разработчиков"
-    };
   },
 
   mixins: [getTags],
@@ -196,17 +190,14 @@ export default {
 
     getPostContent() {
       axios
-        .get(`${SERVER_URL}/api/post`)
+        .get(`${SERVER_URL}/api/post/${this.$route.params.id}`)
         .then(res => {
           if (!handleResponseErrors(res)) {
-            const article = res.data.posts.find(
-              article => article.id == this.$route.params.id
-            );
-            this.article = article;
-            this.title = article.title;
-            this.date = formatDateTime(new Date(article.time));
-            this.articleTags = [...article.tags];
-            this.$refs.editor.setContent(formatToHtml(article.text));
+            this.article = res.data;
+            this.title = res.data.title;
+            this.date = formatDateTime(new Date(res.data.time));
+            this.articleTags = [...res.data.tags];
+            this.$refs.editor.setContent(formatToHtml(res.data.text));
           }
         })
         .catch(e => {
@@ -226,6 +217,14 @@ export default {
   mounted() {
     if (this.editPost) this.getPostContent();
     else this.clearContent();
+  },
+
+  metaInfo() {
+    return {
+      title: this.editPost
+        ? "Редактирование публикации | DevPub - рассказы разработчиков"
+        : "Добавление новой публикации | DevPub - рассказы разработчиков"
+    };
   }
 };
 </script>

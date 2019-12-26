@@ -2,21 +2,21 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "@/store";
 const MainPage = () =>
-  import(/* webpackChunkName: "mainPage" */ "@/views/MainPage.vue");
-const Login = () => import(/* webpackChunkName: "login" */ "@/views/Login.vue");
-const Stat = () => import(/* webpackChunkName: "stat" */ "@/views/Stat.vue");
+  import(/* webpackChunkName: "mainPage" */ "@/pages/MainPage.vue");
+const Login = () => import(/* webpackChunkName: "login" */ "@/pages/Login.vue");
+const Stat = () => import(/* webpackChunkName: "stat" */ "@/pages/Stat.vue");
 const Article = () =>
-  import(/* webpackChunkName: "article" */ "@/views/Article.vue");
+  import(/* webpackChunkName: "article" */ "@/pages/Article.vue");
 const Calendar = () =>
-  import(/* webpackChunkName: "calendar" */ "@/views/Calendar.vue");
+  import(/* webpackChunkName: "calendar" */ "@/pages/Calendar.vue");
 const EditPost = () =>
-  import(/* webpackChunkName: "editPost" */ "@/views/EditPost.vue");
+  import(/* webpackChunkName: "editPost" */ "@/pages/EditPost.vue");
 const Settings = () =>
-  import(/* webpackChunkName: "settings" */ "@/views/Settings.vue");
+  import(/* webpackChunkName: "settings" */ "@/pages/Settings.vue");
 const Profile = () =>
-  import(/* webpackChunkName: "profile" */ "@/views/Profile.vue");
+  import(/* webpackChunkName: "profile" */ "@/pages/Profile.vue");
 const Articles = () =>
-  import(/* webpackChunkName: "articles" */ "@/components/Articles.vue");
+  import(/* webpackChunkName: "articles" */ "@/components/TheArticles.vue");
 const LoginSignIn = () =>
   import(/* webpackChunkName: "loginSignIn" */ "@/components/LoginSignIn.vue");
 const LoginRestore = () =>
@@ -59,6 +59,10 @@ const routes = [
       ],
       forModeration: true,
       className: "ArticlesContent Articles--noborder"
+    },
+    meta: {
+      requiresAuth: true,
+      moderation: true
     }
   },
   {
@@ -87,7 +91,7 @@ const routes = [
       myPosts: true,
       className: "ArticlesContent Articles--noborder",
       meta: {
-        title: "Мои публикации | DevPub - рассказы разработчиков"
+        requiresAuth: true
       }
     }
   },
@@ -126,27 +130,31 @@ const routes = [
   },
   {
     path: "/calendar/:date",
+    name: "postsByDate",
     component: MainPage
   },
   {
     path: "/login",
-    name: "login",
     component: Login,
     children: [
       {
-        path: "",
+        path: "/",
+        name: "signIn",
         component: LoginSignIn
       },
       {
         path: "registration",
+        name: "registration",
         component: LoginRegistration
       },
       {
         path: "restore-password",
+        name: "restorePassword",
         component: LoginRestore
       },
       {
         path: "change-password/:hash?",
+        name: "changePassword",
         component: LoginChange
       }
     ]
@@ -156,8 +164,7 @@ const routes = [
     name: "settings",
     component: Settings,
     meta: {
-      requiresAuth: true,
-      title: "Настройки | DevPub - рассказы разработчиков"
+      requiresAuth: true
     }
   },
   {
@@ -168,17 +175,6 @@ const routes = [
       requiresAuth: true
     }
   }
-
-  /*
-  {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" "../views/About.vue")
-  }*/
 ];
 
 const router = new VueRouter({

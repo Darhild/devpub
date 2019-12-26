@@ -3,7 +3,7 @@
     <div v-if="isErrors" class="ErrorModal">
       <div class="ErrorModal-Close" @click="onClose">
         <svg class="Icon Icon--close">
-          <use xlink:href="./../assets/icons-sprite.svg#delete"></use>
+          <use xlink:href="@/assets/img/icons-sprite.svg#delete"></use>
         </svg>
       </div>
       <div class="ErrorModal-Errors">
