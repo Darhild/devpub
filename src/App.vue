@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <ErrorModal />
     <Header />
     <router-view />
     <Footer />
@@ -9,6 +10,8 @@
 <script>
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
+const ErrorModal = () =>
+  import(/* webpackChunkName: "errorModal" */ "@/components/ErrorModal.vue");
 import "vueditor/dist/style/vueditor.min.css";
 
 export default {
@@ -16,7 +19,8 @@ export default {
 
   components: {
     Header,
-    Footer
+    Footer,
+    ErrorModal
   },
 
   beforeCreate() {
@@ -211,6 +215,12 @@ a {
   &--delete {
     width: 10px;
     height: 10px;
+  }
+
+  &--close {
+    width: 20px;
+    height: 20px;
+    fill: var(--color-lightest);
   }
 
   &-Google {

@@ -15,7 +15,8 @@ export default new Vuex.Store({
     search: "",
     authErrors: {},
     settings: {},
-    errors: []
+    errors: [],
+    viewedErrors: {}
   },
 
   getters: {
@@ -25,7 +26,8 @@ export default new Vuex.Store({
     settings: state => state.settings,
     shouldSendComment: state => state.shouldSendComment,
     searchStatus: state => state.isSearch,
-    searchQuery: state => state.search
+    searchQuery: state => state.search,
+    viewedErrors: state => state.viewedErrors
   },
 
   mutations: {
@@ -61,6 +63,12 @@ export default new Vuex.Store({
     },
     clearAuthErrors: state => {
       state.authErrors = {};
+    },
+    setViewedErrors: (state, payload) => {
+      state.viewedErrors = { ...state.viewedErrors, ...payload };
+    },
+    clearViewedErrors: state => {
+      state.viewedErrors = {}
     }
   },
 

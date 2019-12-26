@@ -146,6 +146,10 @@ export default {
   computed: {
     tagNames() {
       return this.tags.map(tag => tag.name);
+    },
+
+    viewedErrors() {
+      return this.$store.getters.viewedErrors;
     }
   },
 
@@ -221,9 +225,12 @@ export default {
         title: this.title,
         tags: this.tags.toString(),
         text
-      });
-
-      this.$refs.editor.setContent("");
+      })
+        .then(resp => {
+          if (resp.data.result === true) this.$refs.editor.setContent("");
+          else this.$store.commit("setViewedErrors", resp.data.errors);
+        })
+        .catch(e => this.errors.push(e));
     },
 
     getPostContent() {
