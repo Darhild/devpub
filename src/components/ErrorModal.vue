@@ -36,7 +36,7 @@ export default {
       this.$store.commit("clearViewedErrors");
     }
   }
-}
+};
 </script>
 
 <style lang="scss">

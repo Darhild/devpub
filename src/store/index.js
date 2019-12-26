@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import { SERVER_URL } from "./../env";
+import { handleResponseErrors } from "@/utils";
 
 Vue.use(Vuex);
 
@@ -38,7 +39,7 @@ export default new Vuex.Store({
       state.isAuth = true;
     },
     setUser: (state, payload) => {
-      state.user = payload;
+      state.user = { ...state.user, ...payload };
     },
     logout: state => {
       state.isAuth = false;
@@ -68,7 +69,7 @@ export default new Vuex.Store({
       state.viewedErrors = { ...state.viewedErrors, ...payload };
     },
     clearViewedErrors: state => {
-      state.viewedErrors = {}
+      state.viewedErrors = {};
     }
   },
 
@@ -79,10 +80,11 @@ export default new Vuex.Store({
 
     async getUser({ commit }) {
       try {
-        const resp = await axios.get(`${SERVER_URL}/api/auth/check`);
+        const res = await axios.get(`${SERVER_URL}/api/auth/check`);
+        handleResponseErrors(res);
 
-        if (resp.data.result === true) {
-          commit("setUser", resp.data.user);
+        if (res.data.result === true) {
+          commit("setUser", res.data.user);
           commit("login");
         }
       } catch (e) {
@@ -92,12 +94,13 @@ export default new Vuex.Store({
 
     async saveUser({ commit }, payload) {
       try {
-        const resp = await axios.post(`${SERVER_URL}/api/profile/my`, payload);
+        const res = await axios.post(`${SERVER_URL}/api/profile/my`, payload);
+        handleResponseErrors(res);
 
-        if (resp.data.result === true) {
+        if (res.data.result === true) {
           commit("setUser", payload);
           commit("clearAuthErrors");
-        } else commit("setAuthErrors", resp.data.errors);
+        } else commit("setAuthErrors", res.data.errors);
       } catch (e) {
         commit("pushErrors", e);
       }
@@ -105,15 +108,17 @@ export default new Vuex.Store({
 
     async register({ commit }, { email, password, captcha, secret }) {
       try {
-        const resp = await axios.post(`${SERVER_URL}/api/auth/register`, {
+        const res = await axios.post(`${SERVER_URL}/api/auth/register`, {
           e_mail: email,
           password,
           captcha,
           captcha_secret: secret
         });
 
-        if (resp.data.result === false) {
-          commit("setAuthErrors", resp.data.errors);
+        handleResponseErrors(res);
+
+        if (res.data.result === false) {
+          commit("setAuthErrors", res.data.errors);
         } else commit("clearAuthErrors");
       } catch (e) {
         commit("pushErrors", e);
@@ -122,8 +127,8 @@ export default new Vuex.Store({
 
     async getSettings({ commit }) {
       try {
-        const resp = await axios.get(`${SERVER_URL}/api/settings`);
-        commit("setSettings", resp.data);
+        const res = await axios.get(`${SERVER_URL}/api/settings`);
+        if (!handleResponseErrors(res)) commit("setSettings", res.data);
       } catch (e) {
         commit("pushErrors", e);
       }
@@ -131,8 +136,8 @@ export default new Vuex.Store({
 
     async setSettings({ commit }, payload) {
       try {
-        await axios.put(`${SERVER_URL}/api/settings`, payload);
-        commit("setSettings", payload);
+        const res = await axios.put(`${SERVER_URL}/api/settings`, payload);
+        if (!handleResponseErrors(res)) commit("setSettings", payload);
       } catch (e) {
         commit("pushErrors", e);
       }
@@ -141,20 +146,20 @@ export default new Vuex.Store({
     async login({ commit }, { email, password }) {
       commit("clearAuthErrors");
       try {
-        const resp = await axios.post(`${SERVER_URL}/api/auth/login`, {
+        const res = await axios.post(`${SERVER_URL}/api/auth/login`, {
           e_mail: email,
           password
         });
-
-        if (resp.data.result === false) {
-          commit("setAuthErrors", {
-            login: "Логин и/или пароль введен(ы) неверно"
-          });
-        } else {
-          commit("clearAuthErrors");
-          commit("login");
-          commit("setUser", resp.data.user);
-        }
+        if (!handleResponseErrors(res))
+          if (res.data.result === false) {
+            commit("setAuthErrors", {
+              login: "Логин и/или пароль введен(ы) неверно"
+            });
+          } else {
+            commit("clearAuthErrors");
+            commit("login");
+            commit("setUser", res.data.user);
+          }
       } catch (e) {
         commit("pushErrors", e);
       }
@@ -162,8 +167,9 @@ export default new Vuex.Store({
 
     async logout({ commit }) {
       try {
-        const resp = await axios.get(`${SERVER_URL}/api/auth/logout`);
-        if (resp.data.result === true) commit("logout");
+        const res = await axios.get(`${SERVER_URL}/api/auth/logout`);
+        handleResponseErrors(res);
+        if (res.data.result === true) commit("logout");
       } catch (e) {
         commit("pushErrors", e);
       }
@@ -171,11 +177,13 @@ export default new Vuex.Store({
 
     async restorePassword({ commit }, { email }) {
       try {
-        const resp = await axios.post(`${SERVER_URL}/api/auth/restore`, {
+        const res = await axios.post(`${SERVER_URL}/api/auth/restore`, {
           email
         });
 
-        if (resp.data.result === false) {
+        handleResponseErrors(res);
+
+        if (res.data.result === false) {
           commit("setAuthErrors", {
             restoreError: "Логин не найден"
           });
@@ -187,15 +195,17 @@ export default new Vuex.Store({
 
     async changePassword({ commit }, { code, password, captcha, secret }) {
       try {
-        const resp = await axios.post(`${SERVER_URL}/api/auth/password`, {
+        const res = await axios.post(`${SERVER_URL}/api/auth/password`, {
           code,
           password,
           captcha,
           captcha_secret: secret
         });
 
-        if (resp.data.result === false) {
-          commit("setAuthErrors", resp.data.errors);
+        handleResponseErrors(res);
+
+        if (res.data.result === false) {
+          commit("setAuthErrors", res.data.errors);
         } else commit("clearAuthErrors");
       } catch (e) {
         commit("pushErrors", e);

@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import { handleResponseErrors } from "@/utils";
 import axios from "axios";
 import { SERVER_URL } from "../env";
 import { formatToHtml } from "@/utils";
@@ -180,6 +181,7 @@ export default {
           post_id: this.id
         })
         .then(res => {
+          handleResponseErrors(res);
           if (res.data.result) this.likes++;
         })
         .catch(e => this.errors.push(e));
@@ -191,6 +193,7 @@ export default {
           post_id: this.id
         })
         .then(res => {
+          handleResponseErrors(res);
           if (res.data.result) this.dislikes++;
         })
         .catch(e => this.errors.push(e));

@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import { handleResponseErrors } from "@/utils";
 const BaseNavbar = () =>
   import(/* webpackChunkName: "baseNavbar" */ "@/components/BaseNavbar.vue");
 import axios from "axios";
@@ -129,6 +130,7 @@ export default {
       axios
         .get(`${SERVER_URL}/api/statistics/${param}`)
         .then(res => {
+          handleResponseErrors(res);
           if (res.status === 401) this.settings.STATISTICS_IS_PUBLIC = true;
           else {
             this.postsCount = res.data.postsCount;

@@ -243,19 +243,24 @@ export default {
       if (this.avatar) {
         data = new FormData();
         data.append("photo", this.avatar || this.user.photo);
+        data.append("removePhoto", 0);
         data.append("name", this.name || this.user.name);
         data.append("email", this.email || this.user.email);
         data.append("password", this.password);
       } else {
         data = {
           photo: this.user.photo,
+          removePhoto: 0,
           name: this.name || this.user.name,
           email: this.email || this.user.email,
           password: this.password
         };
       }
 
-      if (this.avatar === "") data.photo = "";
+      if (this.avatar === "") {
+        data.photo = "";
+        data.removePhoto = 1;
+      }
 
       this.$store.dispatch("saveUser", data).catch(e => this.errors.push(e));
     }

@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { handleResponseErrors } from "@/utils";
 import axios from "axios";
 import { SERVER_URL } from "./../env";
 import { formatDateTime } from "@/utils";
@@ -71,6 +72,7 @@ export default {
   data() {
     return {
       article: {},
+      errors: [],
       title: "",
       replyTo: "",
       isLoading: false,
@@ -110,11 +112,12 @@ export default {
           post_id: this.article.id,
           text: comment.text
         })
-        .then(resp => {
-          if (resp.data.id) {
+        .then(res => {
+          handleResponseErrors(res);
+          if (res.data.id) {
             if (!this.article.comments) this.article.comments = [];
             this.article.comments.push({
-              id: resp.data.id,
+              id: res.data.id,
               time: date,
               user: {
                 id: this.user.id,
@@ -124,10 +127,10 @@ export default {
               text: comment.text
             });
             this.$forceUpdate();
+            this.$store.commit("commentIsSend");
           }
-        });
-
-      this.$store.commit("commentIsSend");
+        })
+        .catch(e => this.error.push(e));
     }
   },
 
@@ -136,9 +139,11 @@ export default {
     axios
       .get(`${SERVER_URL}/api/post`)
       .then(res => {
-        this.article = res.data.posts.find(
-          article => article.id == this.$route.params.id
-        );
+        if (!handleResponseErrors(res)) {
+          this.article = res.data.posts.find(
+            article => article.id == this.$route.params.id
+          );
+        }
       })
       .catch(e => {
         this.errors.push(e);

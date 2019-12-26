@@ -46,23 +46,11 @@
         <div class="EditText-Label">
           Теги:
         </div>
-        <div class="EditText-Input">
-          <input
-            v-model="addedTag"
-            @input="onInput($event.target.value)"
-            @keyup.enter="onAddTag($event.target.value)"
-            @keyup.up="onArrowUp"
-            @keyup.down="onArrowDown"
-            class="Input"
-            type="text"
-          />
-          <Autocomplete
-            :wordsForAutocomplete="wordsForAutocomplete"
-            :wordsCounter="wordsCounter"
-            :searched="addedTag"
-            @word-selected="onSelectWord"
-          />
-        </div>
+        <Autocomplete
+          :words="tags"
+          :className="'EditText-Input'"
+          @word-selected="onAddTag"
+        />
       </div>
       <div class="EditText-TagsArea">
         <div
@@ -91,6 +79,7 @@
 </template>
 
 <script>
+import { handleResponseErrors } from "@/utils";
 import axios from "axios";
 import { SERVER_URL } from "./../env";
 import getTags from "@/mixins/getTags";
@@ -135,9 +124,8 @@ export default {
       articleTags: [],
       title: "",
       date: "",
-      wordsForAutocomplete: [],
-      wordsCounter: 0,
       addedTag: "",
+      word: "",
       tags: [],
       errors: []
     };
@@ -161,38 +149,10 @@ export default {
   },
 
   methods: {
-    onInput(value) {
-      if (value !== "") {
-        this.wordsForAutocomplete = this.tags.filter(
-          item => item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1
-        );
-      } else this.wordsForAutocomplete = [];
-    },
-
-    onSelectWord(word) {
-      this.addedTag = word;
-      this.wordsForAutocomplete = [];
-    },
-
-    onArrowDown() {
-      if (this.wordsCounter < this.wordsForAutocomplete.length - 1)
-        this.wordsCounter++;
-    },
-
-    onArrowUp() {
-      if (this.wordsCounter > 0) this.wordsCounter--;
-    },
-
     onAddTag(value) {
-      if (this.wordsForAutocomplete.length) {
-        this.addedTag = this.wordsForAutocomplete[this.wordsCounter].name;
-        this.wordsCounter = -1;
-        this.wordsForAutocomplete = [];
-      } else {
-        if (!this.articleTags.includes(value)) {
-          this.articleTags.push(value.replace(",", ""));
-          this.addedTag = "";
-        }
+      if (!this.articleTags.includes(value)) {
+        this.articleTags.push(value.replace(",", ""));
+        this.addedTag = value;
       }
     },
 
@@ -221,14 +181,15 @@ export default {
 
       axios[action](url, {
         time: this.date,
-        active: this.active,
+        active: Number(!this.active),
         title: this.title,
-        tags: this.tags.toString(),
+        tags: this.articleTags,
         text
       })
-        .then(resp => {
-          if (resp.data.result === true) this.$refs.editor.setContent("");
-          else this.$store.commit("setViewedErrors", resp.data.errors);
+        .then(res => {
+          handleResponseErrors(res);
+          if (res.data.result === true) this.clearContent();
+          else this.$store.commit("setViewedErrors", res.data.errors);
         })
         .catch(e => this.errors.push(e));
     },
@@ -237,15 +198,16 @@ export default {
       axios
         .get(`${SERVER_URL}/api/post`)
         .then(res => {
-          const article = res.data.posts.find(
-            article => article.id == this.$route.params.id
-          );
-
-          this.article = article;
-          this.title = article.title;
-          this.date = formatDateTime(new Date(article.time));
-          this.articleTags = [...article.tags];
-          this.$refs.editor.setContent(formatToHtml(article.text));
+          if (!handleResponseErrors(res)) {
+            const article = res.data.posts.find(
+              article => article.id == this.$route.params.id
+            );
+            this.article = article;
+            this.title = article.title;
+            this.date = formatDateTime(new Date(article.time));
+            this.articleTags = [...article.tags];
+            this.$refs.editor.setContent(formatToHtml(article.text));
+          }
         })
         .catch(e => {
           this.errors.push(e);
@@ -284,6 +246,10 @@ export default {
 
     &--size_half {
       width: 50%;
+
+      @media (max-width: $screen-tablet) {
+        width: 100%;
+      }
     }
   }
 

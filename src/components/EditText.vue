@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import { handleResponseErrors } from "@/utils";
 import axios from "axios";
 import { SERVER_URL } from "./../env";
 import Vue from "vue";
@@ -147,20 +148,22 @@ export default {
     axios
       .get(`${SERVER_URL}/api/post`)
       .then(res => {
-        const article = res.data.find(
-          article => article.id == this.$route.params.id
-        );
-        this.article = article;
-        this.title = article.title;
-        this.date = new Date(article.time).toLocaleDateString("ru-RU", {
-          hour: "numeric",
-          minute: "numeric"
-        });
-        this.tags = [...article.tags];
+        if (!handleResponseErrors(res)) {
+          const article = res.data.find(
+            article => article.id == this.$route.params.id
+          );
+          this.article = article;
+          this.title = article.title;
+          this.date = new Date(article.time).toLocaleDateString("ru-RU", {
+            hour: "numeric",
+            minute: "numeric"
+          });
+          this.tags = [...article.tags];
 
-        const regex = /(&lt;)(.*?)(&gt;)/gi;
-        const html = article.text.replace(regex, "<$2>");
-        this.$refs.editor.setContent(html);
+          const regex = /(&lt;)(.*?)(&gt;)/gi;
+          const html = article.text.replace(regex, "<$2>");
+          this.$refs.editor.setContent(html);
+        }
       })
       .catch(e => {
         this.errors.push(e);

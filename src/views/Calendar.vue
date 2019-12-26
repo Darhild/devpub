@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { handleResponseErrors } from "@/utils";
 import axios from "axios";
 import { SERVER_URL } from "./../env";
 const BaseNavbar = () =>
@@ -46,9 +47,18 @@ export default {
     },
 
     getPostsCount(year) {
+      let query = year ? `/api/calendar?year=${year}` : "/api/calendar";
+
       axios
-        .get(`${SERVER_URL}/api/calendar?year=${year}`)
-        .then(res => (this.posts = res.data.posts))
+        .get(`${SERVER_URL}${query}`)
+        .then(res => {
+          if (!handleResponseErrors(res)) {
+            this.years = res.data.years.map(year => {
+              return { name: year, value: year };
+            });
+            this.posts = res.data.posts;
+          }
+        })
         .catch(e => {
           this.errors.push(e);
         });
@@ -56,18 +66,7 @@ export default {
   },
 
   mounted() {
-    axios
-      .get(`${SERVER_URL}/api/calendar`)
-      .then(res => {
-        this.years.push(...res.data.years);
-        this.years = this.years.map(year => {
-          return { name: year, value: year };
-        });
-        this.getPostsCount(this.years[0].value);
-      })
-      .catch(e => {
-        this.errors.push(e);
-      });
+    this.getPostsCount();
   }
 };
 </script>

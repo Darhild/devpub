@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { handleResponseErrors } from "@/utils";
 import axios from "axios";
 import { SERVER_URL } from "./../env";
 const BaseNavbar = () =>
@@ -223,8 +224,10 @@ export default {
           `${SERVER_URL}/api/post${url}?offset=${this.offset}&limit=${this.articlesNumber}&${prop}=${value}`
         )
         .then(res => {
-          this.articles.push(...res.data.posts);
-          this.articlesCount = res.data.count;
+          if (!handleResponseErrors(res)) {
+            this.articles.push(...res.data.posts);
+            this.articlesCount = res.data.count;
+          }
         })
         .catch(e => {
           this.errors.push(e);
@@ -253,7 +256,9 @@ export default {
           post_id: post.id,
           decision: post.status
         })
-        .then(() => {})
+        .then(res => {
+          handleResponseErrors(res);
+        })
         .catch(e => this.errors.push(e));
     }
   },
