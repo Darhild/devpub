@@ -7,8 +7,5 @@ module.exports = {
     }
   },
 
-  build: {
-    assetsPublicPath: "/",
-    assetsSubDirectory: "static"
-  }
+  assetsDir: "static"
 };
