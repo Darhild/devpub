@@ -1,10 +1,10 @@
 <template>
   <main class="Wrapper">
-    <div v-if="isErrored" class="ServerInfo">
+    <div v-if="articleIsErrored" class="ServerInfo">
       Sorry, some error happened :(
     </div>
     <BaseArticle
-      v-if="!isLoading && !isErrored"
+      v-if="!articleIsLoading && !articleIsErrored"
       :key="article.id"
       :className="'Article--full'"
       :id="article.id"
@@ -18,7 +18,7 @@
       :viewCount="article.viewCount"
       :tags="article.tags"
     />
-    <div v-if="!isLoading && article.comments" class="Comments">
+    <div v-if="!articleIsLoading && article.comments" class="Comments">
       <div class="Title Comments-Title">
         Комментарии
       </div>
@@ -34,19 +34,13 @@
         @reply="onReplyComment"
       />
     </div>
-    <AddComment
-      v-if="!isLoading && !isErrored && isAuth"
-      :replyTo="replyTo"
-      @comment-is-send="onSendComment"
-    />
+    <AddComment v-if="!articleIsLoading && !articleIsErrored && isAuth" />
   </main>
 </template>
 
 <script>
-import { handleResponseErrors } from "@/utils";
-import axios from "axios";
-import { SERVER_URL } from "./../env";
-import { formatDateTime } from "@/utils";
+import { mapGetters } from "vuex";
+
 const BaseArticle = () =>
   import(/* webpackChunkName: "baseArticle" */ "@/components/BaseArticle.vue");
 const Comment = () =>
@@ -73,73 +67,18 @@ export default {
   },
 
   computed: {
-    isAuth() {
-      return this.$store.getters.isAuth;
-    },
-
-    user() {
-      return this.$store.getters.user;
-    }
-  },
-
-  methods: {
-    onReplyComment(name) {
-      this.replyTo = name;
-    },
-
-    onSendComment(data) {
-      let comment = data;
-      let date = formatDateTime(new Date());
-
-      if (typeof data !== "object") {
-        comment = {
-          parent_id: "",
-          text: data
-        };
-      }
-
-      axios
-        .post(`${SERVER_URL}/api/comment`, {
-          parent_id: comment.parentId || "",
-          post_id: this.article.id,
-          text: comment.text
-        })
-        .then(res => {
-          handleResponseErrors(res);
-          if (res.data.id) {
-            if (!this.article.comments) this.article.comments = [];
-            this.article.comments.push({
-              id: res.data.id,
-              time: date,
-              user: {
-                id: this.user.id,
-                name: this.user.name
-              },
-              photo: this.user.photo,
-              text: comment.text
-            });
-            this.$forceUpdate();
-            this.$store.commit("commentIsSend");
-          }
-        })
-        .catch(e => this.error.push(e));
-    }
+    ...mapGetters([
+      "isAuth",
+      "user",
+      "article",
+      "articleIsLoading",
+      "articleIsErrored",
+      "editorContent"
+    ])
   },
 
   mounted() {
-    this.isLoading = true;
-    axios
-      .get(`${SERVER_URL}/api/post/${this.$route.params.id}`)
-      .then(res => {
-        if (!handleResponseErrors(res)) {
-          this.article = res.data;
-        }
-      })
-      .catch(e => {
-        this.errors.push(e);
-        this.isErrored = true;
-      })
-      .finally(() => (this.isLoading = false));
+    this.getArticle();
   },
 
   metaInfo() {

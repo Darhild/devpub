@@ -7,38 +7,35 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+
 export default {
   props: {
     className: {
       type: String,
       required: false
-    },
-
-    replyTo: {
-      type: String,
-      required: true,
-      default: ""
     }
   },
 
   computed: {
-    shouldSendComment() {
-      return this.$store.getters.shouldSendComment;
-    }
+    ...mapGetters(["nameToReply", "getEditorContent"])
   },
 
   watch: {
-    replyTo() {
-      this.$refs.editor.setContent(`<strong>${this.replyTo}</strong>,`);
+    nameToReply() {
+      this.$refs.editor.setContent(`<strong>${this.nameToReply}</strong>,`);
     },
 
-    shouldSendComment() {
-      if (this.shouldSendComment) {
-        const text = this.$refs.editor.getContent();
-        this.$emit("comment-is-send", text);
-        this.$refs.editor.setContent("");
+    getEditorContent() {
+      if (this.getEditorContent) {
+        this.setEditorContent(this.$refs.editor.getContent());
+        this.clearEditorContent();
       }
     }
+  },
+
+  methods: {
+    ...mapMutations(["setEditorContent", "clearEditorContent"])
   }
 };
 </script>

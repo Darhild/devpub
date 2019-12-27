@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 import { formatToHtml } from "@/utils";
 const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
@@ -69,25 +70,15 @@ export default {
       return formatToHtml(this.text);
     },
 
-    isAuth() {
-      return this.$store.getters.isAuth;
-    },
-
-    user() {
-      return this.$store.getters.user;
-    }
+    ...mapGetters(["isAuth", "user"])
   },
 
   methods: {
-    onReplyComment() {
-      this.$emit("reply", this.author);
-    },
+    ...mapMutations(["setNametoReply", "setCommentParent"]),
 
-    onSendComment(text) {
-      this.$emit("comment-is-send", {
-        parentId: this.id,
-        text
-      });
+    onReplyComment() {
+      this.setCommentParent(this.id);
+      this.setNametoReply(this.author);
     }
   }
 };

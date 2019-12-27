@@ -3,13 +3,9 @@
     <div v-if="!isReply" class="Title AddComment-Title">
       Добавить комментарий
     </div>
-    <AddText
-      :className="'AddComment-Edit'"
-      :replyTo="replyTo"
-      @comment-is-send="onSendComment"
-    />
+    <AddText :className="'AddComment-Edit'" />
     <div class="AddComment-Send">
-      <BaseButton :onClickButton="onShouldSendComment">
+      <BaseButton :onClickButton="makeComment">
         Отправить
       </BaseButton>
     </div>
@@ -17,6 +13,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 const AddText = () =>
   import(/* webpackChunkName: "addText" */ "@/components/AddText.vue");
 const BaseButton = () =>
@@ -33,22 +30,24 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    },
-
-    replyTo: {
-      type: String,
-      required: true,
-      default: ""
     }
   },
 
-  methods: {
-    onShouldSendComment() {
-      this.$store.commit("sendComment");
-    },
+  computed: {
+    ...mapGetters(["article", "commentParent"])
+  },
 
-    onSendComment(text) {
-      this.$emit("comment-is-send", text);
+  methods: {
+    ...mapActions(["sendComment"]),
+
+    makeComment() {
+      const comment = {
+        parent_id: this.commentParent,
+        post_id: this.article.id,
+        text: this.editorContent
+      };
+
+      this.sendComment(comment);
     }
   }
 };
