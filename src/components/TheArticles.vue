@@ -13,7 +13,7 @@
           : 'Articles-Content'
       ]"
     >
-      <div class="ServerInfo" v-if="isErrored">
+      <div class="ServerInfo" v-if="articlesAreErrored">
         Sorry, some error happened :(
       </div>
       <template v-else>
@@ -41,7 +41,7 @@
           :viewCount="item.viewCount"
           @moderated="onModerated"
         />
-        <div v-if="moreArticles && !isLoading" class="Articles-Button">
+        <div v-if="moreArticles && !articlesAreLoading" class="Articles-Button">
           <BaseButton
             :className="'Button--mode_add-load'"
             :onClickButton="onLoadMore"
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import { handleResponseErrors } from "@/utils";
 import axios from "axios";
 import { SERVER_URL } from "./../env";
@@ -81,10 +82,6 @@ export default {
       type: Array,
       required: true
     },
-    tagSelected: {
-      type: String,
-      required: false
-    },
     forModeration: {
       type: Boolean,
       required: false,
@@ -104,17 +101,21 @@ export default {
   data() {
     return {
       activeNavIndex: 0,
-      articles: [],
-      articlesCount: 0,
       articlesNumber: 10,
-      offset: 0,
-      isLoading: true,
-      isErrored: false,
-      errors: []
+      offset: 0
     };
   },
 
   computed: {
+    ...mapGetters([
+      "articles",
+      "articlesCount",
+      "articlesAreLoading",
+      "articlesAreErrored",
+      "tagSelected",
+      "searchQuery"
+    ]),
+
     classObject() {
       let str = "Articles";
 
@@ -127,14 +128,6 @@ export default {
       }
 
       return str;
-    },
-
-    isSearch() {
-      return this.$store.getters.searchStatus;
-    },
-
-    searchQuery() {
-      return this.$store.getters.searchQuery;
     },
 
     moreArticles() {
@@ -163,29 +156,34 @@ export default {
 
     tagSelected() {
       if (this.tagSelected) {
-        this.articles = [];
-        this.offset = 0;
+        this.clearArticles();
         this.$store.commit("clearSearchQuery");
-        this.getArticles("tag", "/byTag", true);
+        this.offset = 0;
+        let query = this.makeQuery("tag", "/byTag");
+        this.getArticles(query);
       }
     },
 
     searchQuery() {
       if (this.searchQuery) {
-        this.articles = [];
-        this.tagSelected = "";
+        this.clearArticles();
+        this.clearSelectedTag();
         this.offset = 0;
-        this.getArticles("query", "/search", false);
+        let query = this.makeQuery("query", "/search");
+        this.getArticles(query);
       }
     }
   },
 
   methods: {
+    ...mapMutations(["clearArticles", "clearSelectedTag", "clearSearchQuery"]),
+    ...mapActions(["getArticles"]),
+
     clearProps() {
-      this.articles = [];
+      this.clearArticles();
+      this.clearSelectedTag();
+      this.clearSearchQuery();
       this.offset = 0;
-      this.tagSelected = "";
-      this.$store.commit("clearSearchQuery");
     },
 
     selectActiveNavIndex(value) {
@@ -195,12 +193,16 @@ export default {
     },
 
     selectMethod() {
-      if (this.forModeration) this.getArticles("status", "/moderation");
-      else if (this.myPosts) this.getArticles("status", "/my");
-      else if (this.postByDate) this.getArticles("date", "/byDate");
-      else if (this.tagSelected) this.getArticles("tag", "/byTag", true);
-      else if (this.searchQuery) this.getArticles("query", "/search", false);
-      else this.getArticles("mode");
+      let query;
+
+      if (this.forModeration) query = this.makeQuery("status", "/moderation");
+      else if (this.myPosts) query = this.makeQuery("status", "/my");
+      else if (this.postByDate) query = this.makeQuery("date", "/byDate");
+      else if (this.tagSelected) query = this.makeQuery("tag", "/byTag");
+      else if (this.searchQuery) query = this.makeQuery("query", "/search");
+      else query = this.makeQuery("mode");
+
+      this.getArticles(query);
     },
 
     getValue() {
@@ -210,26 +212,9 @@ export default {
       return this.navItems[this.activeNavIndex].value;
     },
 
-    getArticles(prop, url = "") {
-      this.isLoading = true;
-      this.isErrored = false;
+    makeQuery(prop, url = "") {
       const value = this.getValue();
-
-      axios
-        .get(
-          `${SERVER_URL}/api/post${url}?offset=${this.offset}&limit=${this.articlesNumber}&${prop}=${value}`
-        )
-        .then(res => {
-          if (!handleResponseErrors(res)) {
-            this.articles.push(...res.data.posts);
-            this.articlesCount = res.data.count;
-          }
-        })
-        .catch(e => {
-          this.errors.push(e);
-          this.isErrored = true;
-        })
-        .finally(() => (this.isLoading = false));
+      return `${url}?offset=${this.offset}&limit=${this.articlesNumber}&${prop}=${value}`;
     },
 
     onLoadMore() {

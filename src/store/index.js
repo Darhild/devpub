@@ -22,9 +22,6 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    pushErrors: (state, payload) => {
-      state.errors = { ...state.errors, payload };
-    },
     setSettings: (state, payload) => {
       state.settings = payload;
     },
@@ -33,6 +30,9 @@ export default new Vuex.Store({
     },
     clearViewedErrors: state => {
       state.viewedErrors = {};
+    },
+    pushErrors: (state, payload) => {
+      state.errors = { ...state.errors, payload };
     }
   },
 

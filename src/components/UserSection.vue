@@ -7,7 +7,7 @@
       <img
         v-if="this.user.photo"
         class="UserSection-Avatar"
-        :src="require(`@/assets/img/${this.user.photo}`)"
+        :src="require(`@/assets/img/${user.photo}`)"
         alt="avatar"
       />
       <img
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   computed: {
@@ -61,9 +61,7 @@ export default {
   },
 
   methods: {
-    logout() {
-      this.$store.dispatch("logout");
-    }
+    ...mapActions(["logout"])
   }
 };
 </script>

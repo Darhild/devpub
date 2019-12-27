@@ -70,7 +70,6 @@ export default {
 
   data() {
     return {
-      postsForModeration: 0,
       search: "",
       searchIsOpen: false,
       windowWidth: window.innerWidth

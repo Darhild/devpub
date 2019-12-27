@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import getTags from "@/mixins/getTags";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   props: {
@@ -36,18 +36,25 @@ export default {
       fontSize: 3,
       marginLeft: 50,
       marginBottom: 15,
-      padding: 25,
-      isLoading: true,
-      errors: []
+      padding: 25
     };
   },
 
-  mixins: [getTags],
+  computed: {
+    ...mapGetters(["tags"])
+  },
 
   methods: {
+    ...mapMutations(["setSelectedTag"]),
+    ...mapActions(["getTags"]),
+
     onClickTag(value) {
-      this.$emit("select-tag", value);
+      this.setSelectedTag(value);
     }
+  },
+
+  mounted() {
+    this.getTags();
   }
 };
 </script>

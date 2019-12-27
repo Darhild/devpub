@@ -6,7 +6,7 @@ export default {
   state: {
     articleIsLoading: false,
     articleIsErrored: false,
-    article: {},
+    article: null,
     articleTags: [],
     shouldGetEditorText: false,
     editorContent: "",
@@ -80,7 +80,7 @@ export default {
       try {
         const res = await axios.get(`${SERVER_URL}/api/post/${id}`);
         if (!handleResponseErrors(res)) {
-          commit("setArticle", res.data);
+          commit("setArticle", { ...res.data });
         }
       } catch (e) {
         commit("pushErrors", e);
@@ -110,13 +110,32 @@ export default {
             text: rootGetters.editorContent
           };
 
-          console.log(comment);
           commit("addComment", comment);
         }
 
         commit("clearEditorContent");
         commit("clearNameToReply");
         commit("clearCommentParent");
+      } catch (e) {
+        commit("pushErrors", e);
+      }
+    },
+
+    async addPost({ commit }, payload) {
+      try {
+        const res = await axios.post(`${SERVER_URL}/api/post`, payload);
+        handleResponseErrors(res);
+        if (res.data.result === true) return true;
+      } catch (e) {
+        commit("pushErrors", e);
+      }
+    },
+
+    async editPost({ commit }, { post, url }) {
+      try {
+        const res = await axios.put(`${SERVER_URL}/api/post/${url}`, post);
+        handleResponseErrors(res);
+        if (res.data.result === true) return true;
       } catch (e) {
         commit("pushErrors", e);
       }

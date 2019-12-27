@@ -110,7 +110,7 @@ const routes = [
     path: "/add",
     name: "add",
     component: EditPost,
-    props: { editPost: false },
+    props: { isEditPost: false },
     meta: {
       requiresAuth: true
     }

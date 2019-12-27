@@ -79,10 +79,7 @@
 </template>
 
 <script>
-import { handleResponseErrors } from "@/utils";
-import axios from "axios";
-import { SERVER_URL } from "./../env";
-import getTags from "@/mixins/getTags";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 import { formatDateTime, formatToHtml } from "@/utils";
 const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
@@ -97,7 +94,7 @@ export default {
       type: String,
       required: false
     },
-    editPost: {
+    isEditPost: {
       type: Boolean,
       required: false,
       default: true
@@ -109,40 +106,32 @@ export default {
     Autocomplete
   },
 
-  mixins: [getTags],
-
   data() {
     return {
       active: 0,
-      article: {},
       articleTags: [],
       title: "",
       date: "",
       addedTag: "",
-      word: "",
-      tags: [],
-      errors: []
+      word: ""
     };
   },
 
   computed: {
-    tagNames() {
-      return this.tags.map(tag => tag.name);
-    },
-
-    viewedErrors() {
-      return this.$store.getters.viewedErrors;
-    }
+    ...mapGetters(["article", "articleIsErrored", "tags", "viewedErrors"])
   },
 
   watch: {
     $route() {
-      if (this.editPost) this.getPostContent();
+      if (this.isEditPost) this.getPostContent();
       else this.clearContent();
     }
   },
 
   methods: {
+    ...mapMutations(["setViewedErrors", "clearArticle"]),
+    ...mapActions(["getTags", "getArticle", "addPost", "editPost"]),
+
     onAddTag(value) {
       if (!this.articleTags.includes(value)) {
         this.articleTags.push(value.replace(",", ""));
@@ -158,64 +147,54 @@ export default {
       this.$router.go(-1);
     },
 
-    onSave() {
+    async onSave() {
       const text = this.$refs.editor.getContent();
-      let url = `${SERVER_URL}/api/post`;
-      let action = "post";
       let date = this.date;
 
-      if (this.editPost) {
-        url += `/${this.article.id}`;
-        action = "put";
-      }
-
-      if (!this.editPost && new Date(date) < new Date()) {
+      if (!this.isEditPost && new Date(date) < new Date()) {
         date = new Date();
       } else date = date.replace("T", " ");
 
-      axios[action](url, {
+      const post = {
         time: this.date,
         active: Number(!this.active),
         title: this.title,
         tags: this.articleTags,
         text
-      })
-        .then(res => {
-          handleResponseErrors(res);
-          if (res.data.result === true) this.clearContent();
-          else this.$store.commit("setViewedErrors", res.data.errors);
-        })
-        .catch(e => this.errors.push(e));
+      };
+
+      let res;
+
+      if (this.isEditPost) {
+        res = await this.editPost({ post, url: this.$route.params.id });
+      } else res = await this.addPost(post);
+
+      if (res) this.clearContent();
     },
 
-    getPostContent() {
-      axios
-        .get(`${SERVER_URL}/api/post/${this.$route.params.id}`)
-        .then(res => {
-          if (!handleResponseErrors(res)) {
-            this.article = res.data;
-            this.title = res.data.title;
-            this.date = formatDateTime(new Date(res.data.time));
-            this.articleTags = [...res.data.tags];
-            this.$refs.editor.setContent(formatToHtml(res.data.text));
-          }
-        })
-        .catch(e => {
-          this.errors.push(e);
-        });
+    async getPostContent() {
+      await this.getArticle(this.$route.params.id);
+      if (!this.articleIsErrored && this.article) {
+        this.title = this.article.title;
+        this.date = formatDateTime(new Date(this.article.time));
+        this.articleTags = [...this.article.tags];
+        this.$refs.editor.setContent(formatToHtml(this.article.text));
+      }
     },
 
     clearContent() {
-      this.article = null;
+      this.clearArticle();
+      this.articleTags = [];
       this.title = "";
       this.date = formatDateTime(new Date());
-      this.tags = [];
       this.$refs.editor.setContent("");
     }
   },
 
   mounted() {
-    if (this.editPost) this.getPostContent();
+    this.getTags();
+
+    if (this.isEditPost) this.getPostContent();
     else this.clearContent();
   },
 

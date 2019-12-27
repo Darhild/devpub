@@ -18,7 +18,10 @@
       :viewCount="article.viewCount"
       :tags="article.tags"
     />
-    <div v-if="!articleIsLoading && article.comments" class="Comments">
+    <div
+      v-if="!articleIsLoading && !articleIsErrored && article.comments"
+      class="Comments"
+    >
       <div class="Title Comments-Title">
         Комментарии
       </div>
@@ -55,14 +58,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      "isAuth",
-      "user",
-      "article",
-      "articleIsLoading",
-      "articleIsErrored",
-      "editorContent"
-    ])
+    ...mapGetters(["isAuth", "article", "articleIsLoading", "articleIsErrored"])
   },
 
   methods: {
@@ -70,12 +66,12 @@ export default {
   },
 
   mounted() {
-    this.getArticle();
+    this.getArticle(this.$route.params.id);
   },
 
   metaInfo() {
     return {
-      title: this.article.title
+      title: this.article && this.article.title
         ? `${this.article.title} | DevPub - рассказы разработчиков`
         : "DevPub - рассказы разработчиков"
     };

@@ -21,7 +21,7 @@ export default {
     },
     logout: state => {
       state.isAuth = false;
-      state.user = {}
+      state.user = {};
     },
     setAuthErrors: (state, payload) => {
       state.authErrors = payload;
