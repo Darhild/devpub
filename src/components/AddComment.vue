@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 const AddText = () =>
   import(/* webpackChunkName: "addText" */ "@/components/AddText.vue");
 const BaseButton = () =>
@@ -34,13 +34,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["article", "commentParent"])
+    ...mapGetters(["article", "commentParent", "editorContent"])
   },
 
   methods: {
+    ...mapMutations(["getEditorContent"]),
     ...mapActions(["sendComment"]),
 
-    makeComment() {
+    async makeComment() {
+      await this.getEditorContent();
+
       const comment = {
         parent_id: this.commentParent,
         post_id: this.article.id,

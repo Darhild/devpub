@@ -57,10 +57,10 @@ export default {
       state.editorContent = payload;
     },
     setNametoReply: (state, payload) => {
-      state.replyTo = payload;
+      state.nameToReply = payload;
     },
     clearNameToReply: state => {
-      state.replyTo = "";
+      state.nameToReply = "";
     },
     setCommentParent: (state, payload) => {
       state.commentParent = payload;
@@ -90,24 +90,28 @@ export default {
       }
     },
 
-    async sendComment({ commit, state }, payload) {
+    async sendComment({ commit, rootGetters }, payload) {
       let date = formatDateTime(new Date());
+      console.log(payload);
 
       try {
         const res = await axios.post(`${SERVER_URL}/api/comment`, payload);
         handleResponseErrors(res);
 
         if (res.data.id) {
-          commit("addComment", {
+          const comment = {
             id: res.data.id,
             time: date,
             user: {
-              id: state.user.id,
-              name: state.user.name
+              id: rootGetters.user.id,
+              name: rootGetters.user.name
             },
-            photo: this.user.photo,
-            text: state.editorContent
-          });
+            photo: rootGetters.user.photo,
+            text: rootGetters.editorContent
+          };
+
+          console.log(comment);
+          commit("addComment", comment);
         }
 
         commit("clearEditorContent");

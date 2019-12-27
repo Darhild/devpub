@@ -18,19 +18,18 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["nameToReply", "getEditorContent"])
+    ...mapGetters(["nameToReply", "shouldGetEditorText"])
   },
 
   watch: {
     nameToReply() {
-      this.$refs.editor.setContent(`<strong>${this.nameToReply}</strong>,`);
+      if (this.nameToReply) this.$refs.editor.setContent(`<strong>${this.nameToReply}</strong>,`);
     },
 
-    getEditorContent() {
-      if (this.getEditorContent) {
+    shouldGetEditorText() {
+      if (this.shouldGetEditorText) {
         this.setEditorContent(this.$refs.editor.getContent());
-        this.clearEditorContent();
-      }
+      } else this.$refs.editor.setContent("");
     }
   },
 

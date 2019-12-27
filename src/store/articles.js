@@ -6,7 +6,6 @@ export default {
   state: {
     articles: [],
     articlesCount: 0,
-    article: {},
     isSearch: false,
     search: "",
     tags: [],
@@ -17,7 +16,6 @@ export default {
   getters: {
     articles: state => state.articles,
     articlesCount: state => state.articlesCount,
-    article: state => state.article,
     searchStatus: state => state.isSearch,
     searchQuery: state => state.search,
     tags: state => state.tags,
@@ -62,10 +60,6 @@ export default {
       } catch (e) {
         commit("pushErrors", e);
       }
-    },
-
-    setSearchQuery({ commit }, payload) {
-      commit("setSearchQuery", payload);
     }
   }
 }

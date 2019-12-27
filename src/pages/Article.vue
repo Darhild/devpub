@@ -31,7 +31,6 @@
         :time="comment.time"
         :text="comment.text"
         :className="'Comments-Comment'"
-        @reply="onReplyComment"
       />
     </div>
     <AddComment v-if="!articleIsLoading && !articleIsErrored && isAuth" />
@@ -39,7 +38,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 const BaseArticle = () =>
   import(/* webpackChunkName: "baseArticle" */ "@/components/BaseArticle.vue");
@@ -55,17 +54,6 @@ export default {
     AddComment
   },
 
-  data() {
-    return {
-      article: {},
-      errors: [],
-      title: "",
-      replyTo: "",
-      isLoading: false,
-      isErrored: false
-    };
-  },
-
   computed: {
     ...mapGetters([
       "isAuth",
@@ -75,6 +63,10 @@ export default {
       "articleIsErrored",
       "editorContent"
     ])
+  },
+
+  methods: {
+    ...mapActions(["getArticle"])
   },
 
   mounted() {
