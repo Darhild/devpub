@@ -60,7 +60,7 @@ export default {
     }
   },
 
-  mounted() {
+  created() {
     this.getPostsCount();
   },
 

@@ -65,15 +65,16 @@ export default {
     ...mapActions(["getArticle"])
   },
 
-  mounted() {
+  created() {
     this.getArticle(this.$route.params.id);
   },
 
   metaInfo() {
     return {
-      title: this.article && this.article.title
-        ? `${this.article.title} | DevPub - рассказы разработчиков`
-        : "DevPub - рассказы разработчиков"
+      title:
+        this.article && this.article.title
+          ? `${this.article.title} | DevPub - рассказы разработчиков`
+          : "DevPub - рассказы разработчиков"
     };
   }
 };
