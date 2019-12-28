@@ -158,7 +158,7 @@ export default {
     },
 
     onSelectDay(day) {
-      this.$router.push({ path: `/calendar/${day}` });
+      this.$router.push(`${this.$route.params.year}/${day}`);
       this.setSelectedDay(String(day));
     }
   },

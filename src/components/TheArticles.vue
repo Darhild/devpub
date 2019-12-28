@@ -4,6 +4,7 @@
       v-if="!daySelected"
       className="Articles-Nav"
       :navItems="navItems"
+      :activeNavIndex="activeNavIndex"
       @set-nav-value="selectActiveNavIndex"
     />
     <div
@@ -180,9 +181,14 @@ export default {
     ...mapActions(["getArticles", "moderateArticle"]),
 
     selectActiveNavIndex(value) {
-      this.clearProps();
       this.activeNavIndex = value;
-      this.selectMethod();
+    },
+
+    clearProps() {
+      this.clearArticles();
+      this.clearSelectedTag();
+      this.clearSearchQuery();
+      this.offset = 0;
     },
 
     selectMethod() {
@@ -228,10 +234,10 @@ export default {
   },
 
   mounted() {
-    this.clearArticles();
-    this.clearSelectedTag();
-    this.clearSearchQuery();
-    this.offset = 0;
+    this.activeNavIndex = this.navItems.findIndex(
+      item => item.value === this.$route.params.pathMatch
+    );
+    this.clearProps();
     this.selectMethod();
   },
 

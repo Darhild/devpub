@@ -37,11 +37,19 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "mainPage",
+    redirect: "/post/recent"
+  },
+  {
+    path: "/post/*",
+    name: "post",
     component: MainPage
   },
   {
     path: "/moderation",
+    redirect: "/moderation/new"
+  },
+  {
+    path: "/moderation/*",
     name: "moderation",
     component: Articles,
     props: {
@@ -69,6 +77,10 @@ const routes = [
   },
   {
     path: "/my",
+    redirect: "/my/inactive"
+  },
+  {
+    path: "/my/*",
     name: "my",
     component: Articles,
     props: {
@@ -127,11 +139,15 @@ const routes = [
   },
   {
     path: "/calendar",
+    redirect: `/calendar/${new Date().getFullYear()}`
+  },
+  {
+    path: "/calendar/:year",
     name: "calendar",
     component: Calendar
   },
   {
-    path: "/calendar/:date",
+    path: "/calendar/:year/:date",
     name: "postsByDate",
     component: MainPage
   },

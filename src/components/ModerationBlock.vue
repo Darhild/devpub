@@ -10,12 +10,17 @@
     </div>
     <div v-if="!myPosts" class="ModerationBlock-Section">
       <div
-        class="ModerationBlock-Link ModerationBlock-Decline"
+        v-if="param !== 'declined'"
+        class="ModerationBlock-Link"
         @click="onDeclne"
       >
         Отклонить
       </div>
-      <div class="ModerationBlock-Link" @click="onAccept">
+      <div
+        v-if="param !== 'accepted'"
+        class="ModerationBlock-Link"
+        @click="onAccept"
+      >
         Утвердить
       </div>
     </div>
@@ -40,6 +45,12 @@ export default {
     }
   },
 
+  computed: {
+    param() {
+      return this.$route.params.pathMatch;
+    }
+  },
+
   methods: {
     onDeclne() {
       this.$emit("moderated", "decline");
@@ -58,6 +69,7 @@ export default {
   justify-content: space-between;
 
   &-Link {
+    margin-right: 22px;
     font-size: 1.4rem;
     color: var(--color-primary);
     cursor: pointer;
@@ -69,14 +81,14 @@ export default {
     &:visited {
       color: var(--color-primary);
     }
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 
   &-Section {
     display: flex;
-  }
-
-  &-Decline {
-    margin-right: 22px;
   }
 }
 </style>

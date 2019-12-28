@@ -24,7 +24,7 @@
       <router-link to="/add" class="Link UserSection-Item">
         Новая публикация
       </router-link>
-      <router-link to="/my" class="Link UserSection-Item">
+      <router-link to="/my/inactive" class="Link UserSection-Item">
         Мои публикации
       </router-link>
       <router-link to="/stat" class="Link UserSection-Item">
@@ -32,7 +32,7 @@
       </router-link>
       <router-link
         v-if="user.moderation"
-        to="/moderation"
+        to="/moderation/new"
         class="Link UserSection-Item UserSection-Moderation"
       >
         <div>

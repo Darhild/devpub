@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import Header from "@/components/TheHeader.vue";
 import Footer from "@/components/TheFooter.vue";
 const ErrorModal = () =>
@@ -40,9 +41,13 @@ export default {
     }
   },
 
-  beforeCreate() {
-    this.$store.dispatch("getSettings");
-    this.$store.dispatch("getUser");
+  methods: {
+    ...mapActions(["getSettings", "getUser", "getYears"])
+  },
+
+  created() {
+    this.getSettings();
+    this.getUser();
   }
 };
 </script>

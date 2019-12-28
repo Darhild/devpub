@@ -5,7 +5,7 @@
       :key="index"
       class="Nav-Item"
       :class="returnClassObject(index)"
-      @click="onClick(index)"
+      @click="onClick(index, item.value)"
     >
       {{ item.name }}
     </div>
@@ -23,9 +23,9 @@ export default {
       type: Array,
       required: true
     },
-    margin: {
-      type: String,
-      required: false
+    activeNavIndex: {
+      type: Number,
+      required: true
     }
   },
 
@@ -38,15 +38,19 @@ export default {
   methods: {
     returnClassObject(index) {
       return {
-        "Nav-Item--state_active": this.activeItem === index,
-        "Nav-Item--margin-right": this.margin === "right"
+        "Nav-Item--state_active": this.activeItem === index
       };
     },
 
-    onClick(index) {
+    onClick(index, value) {
       this.activeItem = index;
       this.$emit("set-nav-value", index);
+      this.$router.push(value);
     }
+  },
+
+  mounted() {
+    this.activeItem = this.activeNavIndex;
   }
 };
 </script>

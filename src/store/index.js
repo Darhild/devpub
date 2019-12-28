@@ -11,18 +11,23 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    years: [],
     settings: {},
     errors: [],
     viewedErrors: {}
   },
 
   getters: {
+    years: state => state.years,
     settings: state => state.settings,
     errors: state => state.errors,
     viewedErrors: state => state.viewedErrors
   },
 
   mutations: {
+    setYears: (state, payload) => {
+      state.years = payload;
+    },
     setSettings: (state, payload) => {
       state.settings = payload;
     },
@@ -38,6 +43,15 @@ export default new Vuex.Store({
   },
 
   actions: {
+    async getYears({ commit }) {
+      try {
+        const res = await axios.get(`${SERVER_URL}/api/calendar`);
+        if (!handleResponseErrors(res)) commit("setYears", res.data.years);
+      } catch (e) {
+        commit("pushErrors", e);
+      }
+    },
+
     async getSettings({ commit }) {
       try {
         const res = await axios.get(`${SERVER_URL}/api/settings`);

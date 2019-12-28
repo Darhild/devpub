@@ -3,9 +3,10 @@
     <BaseNavbar
       className="Calendar-Nav"
       :navItems="years"
+      :activeNavIndex="activeYearIndex"
       @set-nav-value="selectActiveYear"
     />
-    <CalendarTable :year="years[activeYear].value" :posts="posts" />
+    <CalendarTable :year="year" :posts="posts" />
   </main>
 </template>
 
@@ -28,28 +29,32 @@ export default {
 
   data() {
     return {
+      activeYearIndex: 0,
       years: [],
-      activeYear: 0,
       posts: {},
       errors: []
     };
   },
 
+  computed: {
+    year() {
+      return +this.$route.params.year;
+    }
+  },
+
   methods: {
     selectActiveYear(val) {
-      this.activeYear = val;
-      this.getPostsCount(this.years[val].value);
+      this.activeYearIndex = val;
+      this.getPostsCount();
     },
 
-    getPostsCount(year) {
-      let query = year ? `/api/calendar?year=${year}` : "/api/calendar";
-
-      axios
-        .get(`${SERVER_URL}${query}`)
+    getPostsCount() {
+      return axios
+        .get(`${SERVER_URL}/api/calendar?year=${this.year}`)
         .then(res => {
           if (!handleResponseErrors(res)) {
             this.years = res.data.years.map(year => {
-              return { name: year, value: year };
+              return { name: String(year), value: String(year) };
             });
             this.posts = res.data.posts;
           }
@@ -60,8 +65,12 @@ export default {
     }
   },
 
-  created() {
-    this.getPostsCount();
+  mounted() {
+    this.getPostsCount().then(() => {
+      this.activeYearIndex = this.years.findIndex(
+        item => item.value == this.$route.params.year
+      );
+    });
   },
 
   metaInfo: {
