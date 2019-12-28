@@ -92,7 +92,6 @@ export default {
 
     async sendComment({ commit, rootGetters }, payload) {
       let date = formatDateTime(new Date());
-      console.log(payload);
 
       try {
         const res = await axios.post(`${SERVER_URL}/api/comment`, payload);
