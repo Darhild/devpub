@@ -1,7 +1,7 @@
 <template>
   <div :class="classObject">
     <BaseNavbar
-      v-if="!postByDate"
+      v-if="!daySelected"
       className="Articles-Nav"
       :navItems="navItems"
       @set-nav-value="selectActiveNavIndex"
@@ -17,7 +17,7 @@
         Sorry, some error happened :(
       </div>
       <template v-else>
-        <div v-if="postByDate" class="Title Articles-Title">
+        <div v-if="daySelected" class="Title Articles-Title">
           Публикации {{ formatedDate }}
         </div>
         <div v-if="tagSelected" class="Title Articles-Title">
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 const BaseNavbar = () =>
   import(/* webpackChunkName: "baseNavbar" */ "@/components/BaseNavbar.vue");
 const BaseArticle = () =>
@@ -88,10 +88,6 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    },
-    postByDate: {
-      type: String,
-      required: false
     }
   },
 
@@ -110,7 +106,8 @@ export default {
       "articlesAreLoading",
       "articlesAreErrored",
       "tagSelected",
-      "searchQuery"
+      "searchQuery",
+      "daySelected"
     ]),
 
     classObject() {
@@ -133,8 +130,8 @@ export default {
     },
 
     formatedDate() {
-      if (this.postByDate) {
-        return new Date(this.postByDate).toLocaleString("ru-RU", {
+      if (this.daySelected) {
+        return new Date(this.daySelected).toLocaleString("ru-RU", {
           year: "numeric",
           month: "2-digit",
           day: "2-digit"
@@ -154,7 +151,8 @@ export default {
     tagSelected() {
       if (this.tagSelected) {
         this.clearArticles();
-        this.$store.commit("clearSearchQuery");
+        this.clearSearchQuery();
+        this.clearSelectedDay();
         this.offset = 0;
         let query = this.makeQuery("tag", "/byTag");
         this.getArticles(query);
@@ -173,15 +171,13 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["clearArticles", "clearSelectedTag", "clearSearchQuery"]),
+    ...mapMutations([
+      "clearArticles",
+      "clearSelectedTag",
+      "clearSearchQuery",
+      "clearSelectedDay"
+    ]),
     ...mapActions(["getArticles", "moderateArticle"]),
-
-    clearProps() {
-      this.clearArticles();
-      this.clearSelectedTag();
-      this.clearSearchQuery();
-      this.offset = 0;
-    },
 
     selectActiveNavIndex(value) {
       this.clearProps();
@@ -194,8 +190,8 @@ export default {
 
       if (this.forModeration) query = this.makeQuery("status", "/moderation");
       else if (this.myPosts) query = this.makeQuery("status", "/my");
-      else if (this.postByDate) query = this.makeQuery("date", "/byDate");
       else if (this.tagSelected) query = this.makeQuery("tag", "/byTag");
+      else if (this.daySelected) query = this.makeQuery("date", "/byDate");
       else if (this.searchQuery) query = this.makeQuery("query", "/search");
       else query = this.makeQuery("mode");
 
@@ -204,7 +200,7 @@ export default {
 
     getValue() {
       if (this.tagSelected) return this.tagSelected;
-      if (this.postByDate) return this.postByDate;
+      if (this.daySelected) return this.daySelected;
       if (this.searchQuery) return this.searchQuery;
       return this.navItems[this.activeNavIndex].value;
     },
@@ -232,7 +228,10 @@ export default {
   },
 
   mounted() {
-    this.clearProps();
+    this.clearArticles();
+    this.clearSelectedTag();
+    this.clearSearchQuery();
+    this.offset = 0;
     this.selectMethod();
   },
 

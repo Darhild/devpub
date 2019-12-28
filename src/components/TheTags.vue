@@ -50,6 +50,7 @@ export default {
 
     onClickTag(value) {
       this.setSelectedTag(value);
+      this.$router.push("/");
     }
   },
 

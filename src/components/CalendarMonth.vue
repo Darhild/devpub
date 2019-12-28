@@ -35,14 +35,10 @@
         class="CalendarMonth-Day"
       ></div>
       <div v-for="(day, index) in days" :key="index" class="CalendarMonth-Day">
-        <router-link
+        <div
           v-if="getPostsCountByDate(day)"
-          :to="{
-            path: formatDate(day),
-            params: { date: formatDate(day) }
-          }"
-          append
           class="CalendarMonth-Link"
+          @click="onSelectDay(formatDate(day))"
         >
           <div class="CalendarMonth-PostsCount">
             {{ getPostsCountByDate(day) }}
@@ -50,7 +46,7 @@
           <div class="CalendarMonth-DayNum">
             {{ day }}
           </div>
-        </router-link>
+        </div>
         <template v-else>
           <div class="CalendarMonth-DayNum">
             {{ day }}
@@ -68,6 +64,7 @@
 
 <script>
 import { formatDate } from "@/utils";
+import { mapMutations } from "vuex";
 
 export default {
   props: {
@@ -122,6 +119,8 @@ export default {
   },
 
   methods: {
+    ...mapMutations(["setSelectedDay"]),
+
     setDateInfo() {
       const date = new Date(this.year, this.month);
       this.offset = date.getDay() - 1 > 0 ? date.getDay() - 1 : 6;
@@ -156,6 +155,11 @@ export default {
       month = month + 1;
       const key = formatDate(year, month, day);
       return this.posts[key];
+    },
+
+    onSelectDay(day) {
+      this.$router.push({ path: `/calendar/${day}` });
+      this.setSelectedDay(String(day));
     }
   },
 
@@ -240,6 +244,10 @@ export default {
   &-DayNum {
     margin-top: auto;
     text-align: right;
+  }
+
+  &-Link {
+    cursor: pointer;
   }
 
   &-PostsCount {

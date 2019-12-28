@@ -23,7 +23,8 @@ export default {
 
   watch: {
     nameToReply() {
-      if (this.nameToReply) this.$refs.editor.setContent(`<strong>${this.nameToReply}</strong>,`);
+      if (this.nameToReply)
+        this.$refs.editor.setContent(`<strong>${this.nameToReply}</strong>,`);
     },
 
     shouldGetEditorText() {
