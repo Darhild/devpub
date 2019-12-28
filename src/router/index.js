@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "@/store";
+const error404 = () =>
+  import(/* webpackChunkName: "404" */ "@/components/404.vue");
 const MainPage = () =>
   import(/* webpackChunkName: "mainPage" */ "@/pages/MainPage.vue");
 const Login = () => import(/* webpackChunkName: "login" */ "@/pages/Login.vue");
@@ -174,6 +176,11 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: "*",
+    name: "404",
+    component: error404
   }
 ];
 

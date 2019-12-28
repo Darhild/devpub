@@ -84,6 +84,16 @@ export default {
       }
     },
 
+    async moderateArticle({ commit }, payload) {
+      try {
+        const res = await axios.post(`${SERVER_URL}/api/moderation`, payload);
+        handleResponseErrors(res);
+        if (res.status === 401) this.$router.push("/");
+      } catch (e) {
+        commit("pushErrors", e);
+      }
+    },
+
     async getTags({ commit }) {
       try {
         const res = await axios.get(`${SERVER_URL}/api/tag`);

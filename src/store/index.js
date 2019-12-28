@@ -18,6 +18,7 @@ export default new Vuex.Store({
 
   getters: {
     settings: state => state.settings,
+    errors: state => state.errors,
     viewedErrors: state => state.viewedErrors
   },
 

@@ -12,7 +12,7 @@ export default {
   getters: {
     isAuth: state => state.isAuth,
     authErrors: state => state.authErrors,
-    user: state => state.user,
+    user: state => state.user
   },
 
   mutations: {

@@ -1,3 +1,5 @@
+import router from "../router";
+
 export const formatDateTime = d => {
   return `${d.getFullYear()}-${d
     .getMonth()
@@ -31,6 +33,8 @@ export const handleResponseErrors = res => {
       message: res.data.message
     });
     return true;
+  } else if (res.status === 404) {
+    router.push("/404");
   } else if (res.status === 500) {
     this.$store.commit("setViewedErrors", {
       message:

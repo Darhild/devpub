@@ -23,6 +23,23 @@ export default {
     ErrorModal
   },
 
+  computed: {
+    errors() {
+      return this.$store.getters.errors;
+    }
+  },
+
+  watch: {
+    errors() {
+      if (
+        this.errors.payload.response &&
+        this.errors.payload.response.status === 404
+      ) {
+        this.$router.push("/404");
+      }
+    }
+  },
+
   beforeCreate() {
     this.$store.dispatch("getSettings");
     this.$store.dispatch("getUser");

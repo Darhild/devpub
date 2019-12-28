@@ -56,9 +56,6 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
-import { handleResponseErrors } from "@/utils";
-import axios from "axios";
-import { SERVER_URL } from "./../env";
 const BaseNavbar = () =>
   import(/* webpackChunkName: "baseNavbar" */ "@/components/BaseNavbar.vue");
 const BaseArticle = () =>
@@ -177,7 +174,7 @@ export default {
 
   methods: {
     ...mapMutations(["clearArticles", "clearSelectedTag", "clearSearchQuery"]),
-    ...mapActions(["getArticles"]),
+    ...mapActions(["getArticles", "moderateArticle"]),
 
     clearProps() {
       this.clearArticles();
@@ -225,16 +222,12 @@ export default {
     },
 
     onModerated(post) {
-      axios
-        .post(`${SERVER_URL}/api/moderation`, {
-          post_id: post.id,
-          decision: post.status
-        })
-        .then(res => {
-          handleResponseErrors(res);
-          if (res.status === 401) this.$router.push("/");
-        })
-        .catch(e => this.errors.push(e));
+      const payload = {
+        post_id: post.id,
+        decision: post.status
+      };
+
+      this.moderateArticle(payload);
     }
   },
 
