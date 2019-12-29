@@ -11,6 +11,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    blogInfo: {},
     years: [],
     settings: {},
     errors: [],
@@ -18,6 +19,7 @@ export default new Vuex.Store({
   },
 
   getters: {
+    blogInfo: state => state.blogInfo,
     years: state => state.years,
     settings: state => state.settings,
     errors: state => state.errors,
@@ -25,6 +27,9 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    setBlogInfo: (state, payload) => {
+      state.blogInfo = payload;
+    },
     setYears: (state, payload) => {
       state.years = payload;
     },
@@ -43,6 +48,14 @@ export default new Vuex.Store({
   },
 
   actions: {
+    async getBlogInfo({ commit }) {
+      try {
+        const res = await axios.get(`${SERVER_URL}/api/init`);
+        if (!handleResponseErrors(res)) commit("setBlogInfo", res.data);
+      } catch (e) {
+        commit("pushErrors", e);
+      }
+    },
     async getYears({ commit }) {
       try {
         const res = await axios.get(`${SERVER_URL}/api/calendar`);

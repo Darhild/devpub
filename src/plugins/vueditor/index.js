@@ -24,7 +24,7 @@ const config = {
     "element"
   ],
 
-  uploadUrl: `${SERVER_URL}/api/images`
+  uploadUrl: `${SERVER_URL}/api/image`
 };
 
 export default config;

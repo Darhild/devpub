@@ -150,7 +150,9 @@ export default {
   data() {
     return {
       likes: 0,
-      dislikes: 0
+      liked: 0,
+      dislikes: 0,
+      disliked: 0
     };
   },
 
@@ -176,27 +178,45 @@ export default {
     },
 
     onLike() {
-      axios
-        .post(`${SERVER_URL}/api/post/like`, {
-          post_id: this.id
-        })
-        .then(res => {
-          handleResponseErrors(res);
-          if (res.data.result) this.likes++;
-        })
-        .catch(e => this.errors.push(e));
+      if (this.liked === 0) {
+        axios
+          .post(`${SERVER_URL}/api/post/like`, {
+            post_id: this.id
+          })
+          .then(res => {
+            handleResponseErrors(res);
+            if (res.data.result) {
+              this.likes++;
+              this.liked++;
+              if (this.disliked === 1) {
+                this.dislikes--;
+                this.disliked = 0;
+              }
+            }
+          })
+          .catch(e => this.errors.push(e));
+      }
     },
 
     onDislike() {
-      axios
-        .post(`${SERVER_URL}/api/post/dislike`, {
-          post_id: this.id
-        })
-        .then(res => {
-          handleResponseErrors(res);
-          if (res.data.result) this.dislikes++;
-        })
-        .catch(e => this.errors.push(e));
+      if (this.disliked === 0) {
+        axios
+          .post(`${SERVER_URL}/api/post/dislike`, {
+            post_id: this.id
+          })
+          .then(res => {
+            handleResponseErrors(res);
+            if (res.data.result) {
+              this.dislikes++;
+              this.disliked++;
+              if (this.liked === 1) {
+                this.likes--;
+                this.liked = 0;
+              }
+            }
+          })
+          .catch(e => this.errors.push(e));
+      }
     },
 
     onSelectTag(tag) {

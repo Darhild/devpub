@@ -14,20 +14,54 @@
       </div>
       <div class="Footer-Info">
         <div class="Footer-Item">
-          <a href="tel:+79039566655" class="Link">+7 903 956-66-55</a>
+          <a :href="`tel:${phone}`" class="Link">{{ phone }}</a>
         </div>
         <div class="Footer-Item">
-          <a href="mailto:dmitry@kondratiev.com" class="Link"
-            >dmitry@kondratiev.com</a
-          >
+          <a :href="`mailto:${email}`" class="Link">
+            {{ email }}
+          </a>
         </div>
         <div class="Footer-Item">
-          (c) Дмитрий Кондратьев, 2010-2019
+          (c) {{ copyright }}, {{ copyrightFrom }}-{{
+            new Date().getFullYear()
+          }}
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import { mapGetters } from "vuex";
+
+export default {
+  name: "Footer",
+
+  data() {
+    return {
+      phone: "",
+      email: "",
+      copyright: "",
+      copyrightFrom: ""
+    };
+  },
+
+  watch: {
+    blogInfo() {
+      if (this.blogInfo) {
+        this.phone = this.blogInfo.phone;
+        this.email = this.blogInfo.email;
+        this.copyright = this.blogInfo.copyright;
+        this.copyrightFrom = this.blogInfo.copyrightFrom;
+      }
+    }
+  },
+
+  computed: {
+    ...mapGetters(["blogInfo"])
+  }
+};
+</script>
 
 <style lang="scss">
 .Footer {

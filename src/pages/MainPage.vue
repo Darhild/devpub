@@ -11,12 +11,15 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 const Articles = () =>
   import(/* webpackChunkName: "articles" */ "@/components/TheArticles.vue");
 const Tags = () =>
   import(/* webpackChunkName: "tags" */ "@/components/TheTags.vue");
 
 export default {
+  name: "mainPage",
+
   components: {
     Articles,
     Tags
@@ -47,6 +50,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(["blogInfo"]),
+
     postByDate() {
       return this.$route.params.date ? this.$route.params.date : "";
     }
@@ -64,8 +69,12 @@ export default {
     if (this.$route.params.tag) this.tagSelected = this.$route.params.tag;
   },
 
-  metaInfo: {
-    title: "DevPub - рассказы разработчиков"
+  metaInfo() {
+    return {
+      title: this.blogInfo
+        ? `${this.blogInfo.title} - ${this.blogInfo.subtitle}`
+        : ""
+    };
   }
 };
 </script>

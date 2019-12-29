@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { handleResponseErrors } from "@/utils";
 import axios from "axios";
 import { SERVER_URL } from "./../env";
@@ -22,6 +23,8 @@ const CalendarTable = () =>
   );
 
 export default {
+  name: "Calendar",
+
   components: {
     BaseNavbar,
     CalendarTable
@@ -37,6 +40,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(["blogInfo"]),
+
     year() {
       return +this.$route.params.year;
     }
@@ -73,8 +78,12 @@ export default {
     });
   },
 
-  metaInfo: {
-    title: "Календарь | DevPub - рассказы разработчиков"
+  metaInfo() {
+    return {
+      title: this.blogInfo
+        ? `Календарь | ${this.blogInfo.title} - ${this.blogInfo.subtitle}`
+        : "Календарь"
+    };
   }
 };
 </script>

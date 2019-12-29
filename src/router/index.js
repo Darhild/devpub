@@ -37,11 +37,11 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "/post/recent"
+    redirect: "/posts/recent"
   },
   {
-    path: "/post/*",
-    name: "post",
+    path: "/posts/*",
+    name: "posts",
     component: MainPage
   },
   {

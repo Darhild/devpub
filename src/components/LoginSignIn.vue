@@ -68,8 +68,12 @@ export default {
     }
   },
 
-  metaInfo: {
-    title: "Авторизация | DevPub - рассказы разработчиков"
+  metaInfo() {
+    return {
+      title: this.blogInfo
+        ? `Авторизация | ${this.blogInfo.title} - ${this.blogInfo.subtitle}`
+        : "Авторизация"
+    };
   }
 };
 </script>

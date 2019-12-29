@@ -64,8 +64,10 @@
 import { mapGetters } from "vuex";
 
 export default {
+  name: "Setiings",
+
   computed: {
-    ...mapGetters(["isAuth", "settings"])
+    ...mapGetters(["isAuth", "settings", "blogInfo"])
   },
 
   methods: {
@@ -74,8 +76,12 @@ export default {
     }
   },
 
-  metaInfo: {
-    title: "Настройки | DevPub - рассказы разработчиков"
+  metaInfo() {
+    return {
+      title: this.blogInfo
+        ? `Настройки | ${this.blogInfo.title} - ${this.blogInfo.subtitle}`
+        : "Настройки"
+    };
   }
 };
 </script>

@@ -9,10 +9,10 @@
       <div class="Header-Content">
         <router-link to="/" class="Header-Titles">
           <div class="Header-Title">
-            DevPub
+            {{ title }}
           </div>
           <div class="Header-Subtitle">
-            Рассказы разрабочиков
+            {{ subtitle }}
           </div>
         </router-link>
         <div class="Header-Section">
@@ -64,12 +64,16 @@ const UserSection = () =>
   import(/* webpackChunkName: "userSection" */ "@/components/UserSection.vue");
 
 export default {
+  name: "Header",
+
   components: {
     UserSection
   },
 
   data() {
     return {
+      title: "",
+      subtitle: "",
       search: "",
       searchIsOpen: false,
       windowWidth: window.innerWidth
@@ -77,7 +81,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["isAuth"])
+    ...mapGetters(["isAuth", "blogInfo"])
+  },
+
+  watch: {
+    blogInfo() {
+      if (this.blogInfo) {
+        this.title = this.blogInfo.title;
+        this.subtitle = this.blogInfo.subtitle;
+      }
+    }
   },
 
   methods: {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { SERVER_URL } from "./../env";
+import router from "./../router";
 import { handleResponseErrors, formatDateTime } from "@/utils";
 
 export default {
@@ -124,7 +125,10 @@ export default {
       try {
         const res = await axios.post(`${SERVER_URL}/api/post`, payload);
         handleResponseErrors(res);
-        if (res.data.result === true) return true;
+        if (res.data.result === true) {
+          router.go(-1);
+          return true;
+        }
       } catch (e) {
         commit("pushErrors", e);
       }
@@ -134,7 +138,10 @@ export default {
       try {
         const res = await axios.put(`${SERVER_URL}/api/post/${url}`, post);
         handleResponseErrors(res);
-        if (res.data.result === true) return true;
+        if (res.data.result === true) {
+          router.go(-1);
+          return true;
+        }
       } catch (e) {
         commit("pushErrors", e);
       }

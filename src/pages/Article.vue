@@ -51,6 +51,8 @@ const AddComment = () =>
   import(/* webpackChunkName: "addComment" */ "@/components/AddComment.vue");
 
 export default {
+  name: "Article",
+
   components: {
     BaseArticle,
     Comment,
@@ -58,7 +60,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["isAuth", "article", "articleIsLoading", "articleIsErrored"])
+    ...mapGetters([
+      "blogInfo",
+      "isAuth",
+      "article",
+      "articleIsLoading",
+      "articleIsErrored"
+    ])
   },
 
   methods: {
@@ -73,8 +81,8 @@ export default {
     return {
       title:
         this.article && this.article.title
-          ? `${this.article.title} | DevPub - рассказы разработчиков`
-          : "DevPub - рассказы разработчиков"
+          ? `${this.article.title} | ${this.blogInfo.title} - ${this.blogInfo.subtitle}`
+          : `${this.blogInfo.title} - ${this.blogInfo.subtitle}`
     };
   }
 };

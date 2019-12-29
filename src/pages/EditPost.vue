@@ -89,6 +89,8 @@ const Autocomplete = () =>
   );
 
 export default {
+  name: "EditPost",
+
   props: {
     className: {
       type: String,
@@ -118,7 +120,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["article", "articleIsErrored", "tags", "viewedErrors"])
+    ...mapGetters([
+      "article",
+      "articleIsErrored",
+      "tags",
+      "viewedErrors",
+      "blogInfo"
+    ])
   },
 
   watch: {
@@ -199,11 +207,19 @@ export default {
   },
 
   metaInfo() {
-    return {
-      title: this.editPost
-        ? "Редактирование публикации | DevPub - рассказы разработчиков"
-        : "Добавление новой публикации | DevPub - рассказы разработчиков"
-    };
+    if (this.editPost) {
+      return {
+        title: this.blogInfo
+          ? `Редактирование публикации | ${this.blogInfo.title} - ${this.blogInfo.subtitle}`
+          : "Редактирование публикации"
+      };
+    } else {
+      return {
+        title: this.blogInfo
+          ? `Добавление новой публикации | ${this.blogInfo.title} - ${this.blogInfo.subtitle}`
+          : "Добавление новой публикации"
+      };
+    }
   }
 };
 </script>

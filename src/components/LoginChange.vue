@@ -75,8 +75,12 @@ export default {
     this.validatedFields.code = this.$route.params.hash;
   },
 
-  metaInfo: {
-    title: "Смена пароля | DevPub - рассказы разработчиков"
+  metaInfo() {
+    return {
+      title: this.blogInfo
+        ? `Смена пароля | ${this.blogInfo.title} - ${this.blogInfo.subtitle}`
+        : "Смена пароля"
+    };
   }
 };
 </script>

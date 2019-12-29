@@ -68,8 +68,12 @@ export default {
     }
   },
 
-  metaInfo: {
-    title: "Регистрация | DevPub - рассказы разработчиков"
+  metaInfo() {
+    return {
+      title: this.blogInfo
+        ? `Регистрация | ${this.blogInfo.title} - ${this.blogInfo.subtitle}`
+        : "Регистрация"
+    };
   }
 };
 </script>

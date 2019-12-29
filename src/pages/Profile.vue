@@ -53,7 +53,7 @@
                 ($v.email.$dirty && $v.email.$invalid) || authErrors.email
             }"
             type="email"
-            placeholder="Введите, если хотите изменить email"
+            :placeholder="user.email"
             @input="onInput('email')"
           />
           <div v-if="$v.email.$dirty && errorMessageEmail" class="Input-Error">
@@ -77,7 +77,7 @@
                 ($v.name.$dirty && $v.name.$invalid) || authErrors.name
             }"
             type="text"
-            placeholder="Введите, если хотите изменить имя"
+            :placeholder="user.name"
             @input="onInput('name')"
           />
           <div v-if="$v.name.$dirty && errorMessageName" class="Input-Error">
@@ -150,6 +150,8 @@ const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
 
 export default {
+  name: "Profile",
+
   components: {
     BaseButton
   },
@@ -181,7 +183,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["user", "authErrors"]),
+    ...mapGetters(["user", "authErrors", "blogInfo"]),
 
     errorMessageEmail() {
       if (!this.$v.email.email) {
@@ -262,8 +264,12 @@ export default {
     }
   },
 
-  metaInfo: {
-    title: "Профиль пользователя | DevPub - рассказы разработчиков"
+  metaInfo() {
+    return {
+      title: this.blogInfo
+        ? `Профиль пользователя | ${this.blogInfo.title} - ${this.blogInfo.subtitle}`
+        : "Профиль пользователя"
+    };
   }
 };
 </script>

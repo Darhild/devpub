@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 <template>
   <div class="Autocomplete" :class="className">
     <input
@@ -43,11 +44,15 @@ export default {
     return {
       searchedWord: "",
       wordsForAutocomplete: [],
-      wordsCounter: 0
+      wordsCounter: -1
     };
   },
 
   watch: {
+    searchedWord() {
+      if (this.searchedWord === "") this.wordsCounter = -1;
+    },
+
     clearWord() {
       if (this.clearWord) this.searchedWord = "";
       this.$emit("clear-word");
@@ -64,7 +69,10 @@ export default {
     },
 
     onSelectWord() {
-      const value = this.wordsForAutocomplete[this.wordsCounter].name;
+      let value =
+        this.wordsForAutocomplete.length && this.wordsCounter > -1
+          ? this.wordsForAutocomplete[this.wordsCounter].name
+          : this.searchedWord;
       this.$emit("word-selected", value);
       this.wordsCounter = -1;
       this.wordsForAutocomplete = [];
@@ -83,7 +91,7 @@ export default {
     },
 
     onArrowUp() {
-      if (this.wordsCounter > 0) this.wordsCounter--;
+      if (this.wordsCounter > -1) this.wordsCounter--;
     }
   }
 };

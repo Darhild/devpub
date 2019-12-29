@@ -1,5 +1,9 @@
 <template>
-  <main class="Login Wrapper">
+  <main
+    :class="[
+      path === 'restorePassword' ? 'Login Login--wide Wrapper' : 'Login Wrapper'
+    ]"
+  >
     <div class="Login-Section">
       <LoginHeader>
         {{ title }}
@@ -14,7 +18,20 @@ const LoginHeader = () =>
   import(/* webpackChunkName: "loginHeader" */ "@/components/LoginHeader.vue");
 
 export default {
+  name: "Login",
+
+  props: {
+    className: {
+      type: String,
+      required: false
+    }
+  },
+
   computed: {
+    path() {
+      return this.$route.name;
+    },
+
     title() {
       switch (this.$route.path) {
         case "/login":
@@ -96,6 +113,10 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
+  }
+
+  &--wide {
+    max-width: 500px;
   }
 }
 </style>

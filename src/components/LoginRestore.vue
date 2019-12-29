@@ -60,8 +60,12 @@ export default {
     }
   },
 
-  metaInfo: {
-    title: "Восстановление пароля | DevPub - рассказы разработчиков"
+  metaInfo() {
+    return {
+      title: this.blogInfo
+        ? `Восстановление пароля | ${this.blogInfo.title} - ${this.blogInfo.subtitle}`
+        : "Восстановление пароля"
+    };
   }
 };
 </script>

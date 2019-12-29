@@ -25,7 +25,7 @@ export default {
     },
     activeNavIndex: {
       type: Number,
-      required: true
+      required: false
     }
   },
 
@@ -45,12 +45,13 @@ export default {
     onClick(index, value) {
       this.activeItem = index;
       this.$emit("set-nav-value", index);
-      this.$router.push(value);
+      if (this.activeNavIndex !== undefined) this.$router.push(value);
     }
   },
 
   mounted() {
-    this.activeItem = this.activeNavIndex;
+    if (this.activeNavIndex !== undefined)
+      this.activeItem = this.activeNavIndex;
   }
 };
 </script>

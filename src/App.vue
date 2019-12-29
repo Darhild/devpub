@@ -42,10 +42,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getSettings", "getUser", "getYears"])
+    ...mapActions(["getSettings", "getUser", "getYears", "getBlogInfo"])
   },
 
-  created() {
+  mounted() {
+    this.getBlogInfo();
     this.getSettings();
     this.getUser();
   }

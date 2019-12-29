@@ -72,6 +72,8 @@ import { SERVER_URL } from "./../env";
 import { mapGetters } from "vuex";
 
 export default {
+  name: "Stat",
+
   components: {
     BaseNavbar
   },
@@ -101,7 +103,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["isAuth", "settings"])
+    ...mapGetters(["isAuth", "settings", "blogInfo"])
   },
 
   watch: {
@@ -148,8 +150,12 @@ export default {
     this.getStats();
   },
 
-  metaInfo: {
-    title: "Статистика | DevPub - рассказы разработчиков"
+  metaInfo() {
+    return {
+      title: this.blogInfo
+        ? `Статистика | ${this.blogInfo.title} - ${this.blogInfo.subtitle}`
+        : "Статистика"
+    };
   }
 };
 </script>
