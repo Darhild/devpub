@@ -4,7 +4,6 @@
       className="Calendar-Nav"
       :navItems="years"
       :activeNavIndex="activeYearIndex"
-      @set-nav-value="selectActiveYear"
     />
     <CalendarTable :year="year" :posts="posts" />
   </main>
@@ -34,26 +33,30 @@ export default {
     return {
       activeYearIndex: 0,
       years: [],
+      year: new Date().getFullYear(),
       posts: {},
       errors: []
     };
   },
 
   computed: {
-    ...mapGetters(["blogInfo"]),
+    ...mapGetters(["blogInfo"])
+  },
 
-    year() {
-      return +this.$route.params.year;
+  watch: {
+    $route() {
+      this.getPostsCount();
     }
   },
 
-  methods: {
-    selectActiveYear(val) {
-      this.activeYearIndex = val;
-      this.getPostsCount();
-    },
+  beforeRouteUpdate(to, from, next) {
+    this.year = +to.params.year;
+    next();
+  },
 
+  methods: {
     getPostsCount() {
+      console.log(this.year);
       return axios
         .get(`${SERVER_URL}/api/calendar?year=${this.year}`)
         .then(res => {
@@ -71,6 +74,7 @@ export default {
   },
 
   mounted() {
+    this.year = +this.$route.params.year;
     this.getPostsCount().then(() => {
       this.activeYearIndex = this.years.findIndex(
         item => item.value == this.$route.params.year

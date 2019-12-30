@@ -4,7 +4,7 @@
       v-for="(item, index) in navItems"
       :key="index"
       class="Nav-Item"
-      :class="returnClassObject(index)"
+      :class="{ 'Nav-Item--state_active': activeItem === index }"
       @click="onClick(index, item.value)"
     >
       {{ item.name }}
@@ -35,13 +35,13 @@ export default {
     };
   },
 
-  methods: {
-    returnClassObject(index) {
-      return {
-        "Nav-Item--state_active": this.activeItem === index
-      };
-    },
+  watch: {
+    activeNavIndex() {
+      this.activeItem = this.activeNavIndex;
+    }
+  },
 
+  methods: {
     onClick(index, value) {
       this.activeItem = index;
       this.$emit("set-nav-value", index);
