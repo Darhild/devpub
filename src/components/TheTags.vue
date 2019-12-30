@@ -49,8 +49,7 @@ export default {
     ...mapActions(["getTags"]),
 
     onClickTag(value) {
-      this.setSelectedTag(value);
-      this.$router.push("/");
+      this.$router.push(`/tag/${value}`);
     }
   },
 

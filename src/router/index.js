@@ -45,6 +45,11 @@ const routes = [
     component: MainPage
   },
   {
+    path: "/tag/:tag",
+    name: "tags",
+    component: MainPage
+  },
+  {
     path: "/moderation",
     redirect: "/moderation/new"
   },

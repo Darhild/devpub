@@ -1,7 +1,7 @@
 <template>
   <div :class="classObject">
     <BaseNavbar
-      v-if="!daySelected"
+      v-if="!daySelected && !tagSelected"
       className="Articles-Nav"
       :navItems="navItems"
       :activeNavIndex="activeNavIndex"
@@ -106,9 +106,7 @@ export default {
       "articlesCount",
       "articlesAreLoading",
       "articlesAreErrored",
-      "tagSelected",
-      "searchQuery",
-      "daySelected"
+      "searchQuery"
     ]),
 
     classObject() {
@@ -123,6 +121,14 @@ export default {
       }
 
       return str;
+    },
+
+    tagSelected() {
+      return this.$route.params.tag;
+    },
+
+    daySelected() {
+      return this.$route.params.date;
     },
 
     moreArticles() {
@@ -145,15 +151,21 @@ export default {
 
   watch: {
     $route() {
-      this.clearProps();
-      this.selectMethod();
+      this.activeNavIndex = this.navItems.findIndex(
+        item => item.value === this.$route.params.pathMatch
+      );
+      if (!this.tagSelected) {
+        this.clearArticles();
+        this.clearSearchQuery();
+        this.offset = 0;
+        this.selectMethod();
+      }
     },
 
     tagSelected() {
       if (this.tagSelected) {
         this.clearArticles();
         this.clearSearchQuery();
-        this.clearSelectedDay();
         this.offset = 0;
         let query = this.makeQuery("tag", "/byTag");
         this.getArticles(query);
@@ -163,7 +175,6 @@ export default {
     searchQuery() {
       if (this.searchQuery) {
         this.clearArticles();
-        this.clearSelectedTag();
         this.offset = 0;
         let query = this.makeQuery("query", "/search");
         this.getArticles(query);
@@ -172,23 +183,11 @@ export default {
   },
 
   methods: {
-    ...mapMutations([
-      "clearArticles",
-      "clearSelectedTag",
-      "clearSearchQuery",
-      "clearSelectedDay"
-    ]),
+    ...mapMutations(["clearArticles", "clearSearchQuery", "clearSelectedDay"]),
     ...mapActions(["getArticles", "moderateArticle"]),
 
     selectActiveNavIndex(value) {
       this.activeNavIndex = value;
-    },
-
-    clearProps() {
-      this.clearArticles();
-      this.clearSelectedTag();
-      this.clearSearchQuery();
-      this.offset = 0;
     },
 
     selectMethod() {
@@ -237,7 +236,9 @@ export default {
     this.activeNavIndex = this.navItems.findIndex(
       item => item.value === this.$route.params.pathMatch
     );
-    this.clearProps();
+    this.clearArticles();
+    this.clearSearchQuery();
+    this.offset = 0;
     this.selectMethod();
   },
 
@@ -285,6 +286,10 @@ export default {
   &-Title {
     margin-top: 5px;
     margin-bottom: 40px;
+
+    @media (max-width: $screen-tablet) {
+      margin-top: 25px;
+    }
   }
 
   &-Content {

@@ -10,9 +10,7 @@ export default {
     articlesCount: 0,
     isSearch: false,
     search: "",
-    tags: [],
-    tagSelected: "",
-    daySelected: ""
+    tags: []
   },
 
   getters: {
@@ -22,9 +20,7 @@ export default {
     articlesCount: state => state.articlesCount,
     searchStatus: state => state.isSearch,
     searchQuery: state => state.search,
-    tags: state => state.tags,
-    tagSelected: state => state.tagSelected,
-    daySelected: state => state.daySelected
+    tags: state => state.tags
   },
 
   mutations: {
@@ -60,18 +56,6 @@ export default {
     },
     clearTags: state => {
       state.tags = [];
-    },
-    setSelectedTag: (state, payload) => {
-      state.tagSelected = payload;
-    },
-    clearSelectedTag: state => {
-      state.tagSelected = "";
-    },
-    setSelectedDay: (state, payload) => {
-      state.daySelected = payload;
-    },
-    clearSelectedDay: state => {
-      state.daySelected = "";
     }
   },
 
