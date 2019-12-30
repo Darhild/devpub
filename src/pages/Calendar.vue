@@ -56,7 +56,6 @@ export default {
 
   methods: {
     getPostsCount() {
-      console.log(this.year);
       return axios
         .get(`${SERVER_URL}/api/calendar?year=${this.year}`)
         .then(res => {
