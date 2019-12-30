@@ -1,7 +1,7 @@
 <template>
   <div :class="classObject">
     <BaseNavbar
-      v-if="!daySelected && !tagSelected"
+      v-if="!daySelected && !tagSelected && !searchQuery"
       className="Articles-Nav"
       :navItems="navItems"
       :activeNavIndex="activeNavIndex"
@@ -23,6 +23,9 @@
         </div>
         <div v-if="tagSelected" class="Title Articles-Title">
           Публикации по тэгу #{{ tagSelected.toUpperCase() }}
+        </div>
+        <div v-if="searchQuery" class="Title Articles-Title">
+          Поиск по "{{ searchQuery }}"
         </div>
         <BaseArticle
           v-for="item in articles"
@@ -105,8 +108,7 @@ export default {
       "articles",
       "articlesCount",
       "articlesAreLoading",
-      "articlesAreErrored",
-      "searchQuery"
+      "articlesAreErrored"
     ]),
 
     classObject() {
@@ -129,6 +131,10 @@ export default {
 
     daySelected() {
       return this.$route.params.date;
+    },
+
+    searchQuery() {
+      return this.$route.params.search;
     },
 
     moreArticles() {
@@ -154,31 +160,9 @@ export default {
       this.activeNavIndex = this.navItems.findIndex(
         item => item.value === this.$route.params.pathMatch
       );
-      if (!this.tagSelected) {
-        this.clearArticles();
-        this.clearSearchQuery();
-        this.offset = 0;
-        this.selectMethod();
-      }
-    },
-
-    tagSelected() {
-      if (this.tagSelected) {
-        this.clearArticles();
-        this.clearSearchQuery();
-        this.offset = 0;
-        let query = this.makeQuery("tag", "/byTag");
-        this.getArticles(query);
-      }
-    },
-
-    searchQuery() {
-      if (this.searchQuery) {
-        this.clearArticles();
-        this.offset = 0;
-        let query = this.makeQuery("query", "/search");
-        this.getArticles(query);
-      }
+      this.clearArticles();
+      this.offset = 0;
+      this.selectMethod();
     }
   },
 
@@ -237,7 +221,6 @@ export default {
       item => item.value === this.$route.params.pathMatch
     );
     this.clearArticles();
-    this.clearSearchQuery();
     this.offset = 0;
     this.selectMethod();
   },

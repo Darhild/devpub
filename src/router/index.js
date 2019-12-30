@@ -50,6 +50,11 @@ const routes = [
     component: MainPage
   },
   {
+    path: "/search/:search",
+    name: "search",
+    component: MainPage
+  },
+  {
     path: "/moderation",
     redirect: "/moderation/new"
   },

@@ -53,7 +53,6 @@
                 ($v.email.$dirty && $v.email.$invalid) || authErrors.email
             }"
             type="email"
-            :placeholder="user.email"
             @input="onInput('email')"
           />
           <div v-if="$v.email.$dirty && errorMessageEmail" class="Input-Error">
@@ -77,7 +76,6 @@
                 ($v.name.$dirty && $v.name.$invalid) || authErrors.name
             }"
             type="text"
-            :placeholder="user.name"
             @input="onInput('name')"
           />
           <div v-if="$v.name.$dirty && errorMessageName" class="Input-Error">
@@ -262,6 +260,11 @@ export default {
 
       this.$store.dispatch("saveUser", data).catch(e => this.errors.push(e));
     }
+  },
+
+  mounted() {
+    this.name = this.user.name;
+    this.email = this.user.email;
   },
 
   metaInfo() {

@@ -86,7 +86,7 @@ export default {
           value: "my"
         },
         {
-          name: "По всему блоку",
+          name: "По всему блогу",
           value: "all"
         }
       ],
