@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 const LoginHeader = () =>
   import(/* webpackChunkName: "loginHeader" */ "@/components/LoginHeader.vue");
 
@@ -28,6 +29,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(["isAuth"]),
+
     path() {
       return this.$route.name;
     },
@@ -46,12 +49,24 @@ export default {
     }
   },
 
+  watch: {
+    isAuth() {
+      if (this.isAuth) {
+        this.$router.push("/");
+      }
+    }
+  },
+
+  methods: {
+    ...mapMutations(["clearAuthErrors"])
+  },
+
   components: {
     LoginHeader
   },
 
   mounted() {
-    this.$store.commit("clearAuthErrors");
+    this.clearAuthErrors();
   }
 };
 </script>

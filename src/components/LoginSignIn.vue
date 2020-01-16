@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 import formSubmit from "@/mixins/formSubmit";
 const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
@@ -51,18 +52,18 @@ export default {
   },
 
   computed: {
-    authErrors() {
-      return this.$store.getters.authErrors;
-    }
+    ...mapGetters(["authErrors"])
   },
 
   methods: {
+    ...mapMutations(["setViewedErrors"]),
+
     onSubmit() {
       this.$store
         .dispatch("login", this.validatedFields)
         .then(() => {
-          if (this.authErrors.length) alert(this.authErrors.login);
-          else this.$router.push("/");
+          if (this.authErrors.length)
+            this.setViewedErrors(this.authErrors.login);
         })
         .catch(e => this.errors.push(e));
     }
