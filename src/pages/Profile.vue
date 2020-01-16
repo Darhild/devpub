@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { email, minLength, maxLength, sameAs } from "vuelidate/lib/validators";
 const BaseButton = () =>
   import(/* webpackChunkName: "baseButton" */ "@/components/BaseButton.vue");
@@ -219,6 +219,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(["saveUser"]),
+
     onFileLoad(event) {
       this.$refs.avatar.src = URL.createObjectURL(event.target.files[0]);
       this.avatar = event.target.files[0];
@@ -234,31 +236,28 @@ export default {
     },
 
     onSubmit() {
-      let data;
+      let payload;
 
       if (this.avatar) {
-        data = new FormData();
-        data.append("photo", this.avatar || this.user.photo);
-        data.append("removePhoto", 0);
-        data.append("name", this.name || this.user.name);
-        data.append("email", this.email || this.user.email);
-        data.append("password", this.password);
+        payload = new FormData();
+        payload.append("photo", this.avatar);
+        payload.append("removePhoto", 0);
+        if (this.name) payload.append("name", this.name);
+        if (this.email) payload.append("email", this.email);
+        if (this.password) payload.append("password", this.password);
       } else {
-        data = {
-          photo: this.user.photo,
-          removePhoto: 0,
-          name: this.name || this.user.name,
-          email: this.email || this.user.email,
-          password: this.password
-        };
+        payload = {};
+        if (this.name) payload.name = this.name;
+        if (this.email) payload.email = this.email;
+        if (this.password) payload.password = this.password;
       }
 
       if (this.avatar === "") {
-        data.photo = "";
-        data.removePhoto = 1;
+        payload.photo = "";
+        payload.removePhoto = 1;
       }
 
-      this.$store.dispatch("saveUser", data).catch(e => this.errors.push(e));
+      this.saveUser(payload);
     }
   },
 
