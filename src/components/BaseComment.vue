@@ -1,11 +1,20 @@
 <template>
   <div class="Comment" :class="className">
     <div class="Comment-Header">
-      <div class="Comment-Author">
-        {{ author }}
+      <div
+        :class="[
+          photo ? 'Comment-Avatar' : 'Comment-Avatar Comment-Avatar--default'
+        ]"
+      >
+        <img v-if="photo" :src="require(`@/${photo}`)" alt="" />
       </div>
-      <div class="Comment-Date">
-        {{ time }}
+      <div class="Comment-Data">
+        <div class="Comment-Author">
+          {{ author }}
+        </div>
+        <div class="Comment-Date">
+          {{ time }}
+        </div>
       </div>
     </div>
     <div class="Comment-Content">
@@ -44,6 +53,10 @@ export default {
       type: String,
       required: true,
       default: ""
+    },
+    photo: {
+      type: String,
+      required: false
     },
     authorId: {
       type: Number,
@@ -89,20 +102,19 @@ export default {
   font-size: 1.4rem;
 
   &-Header {
-    position: relative;
+    display: flex;
     max-width: 60%;
     margin-bottom: 17px;
-    padding-left: 47px;
 
     @media (max-width: $screen-tablet) {
       max-width: 100%;
     }
+  }
 
-    &:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
+  &-Avatar {
+    margin-right: 10px;
+
+    &--default {
       width: 36px;
       height: 36px;
       background-color: var(--color-border);

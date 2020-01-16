@@ -31,6 +31,7 @@
         :id="comment.id"
         :authorId="comment.user.id"
         :author="comment.user.name"
+        :photo="comment.user.photo"
         :time="comment.time"
         :text="comment.text"
         :className="'Comments-Comment'"
