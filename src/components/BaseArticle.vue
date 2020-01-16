@@ -220,10 +220,7 @@ export default {
     },
 
     onSelectTag(tag) {
-      this.$router.push({
-        name: "mainPage",
-        params: { tag }
-      });
+      this.$router.push(`/tag/${tag}`);
     }
   },
 
