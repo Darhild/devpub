@@ -161,10 +161,12 @@ export default {
 
       if (!this.isEditPost && new Date(date) < new Date()) {
         date = new Date();
-      } else date = date.replace("T", " ");
+      }
+
+      date = date.replace("T", " ");
 
       const post = {
-        time: this.date,
+        time: date,
         active: Number(!this.active),
         title: this.title,
         tags: this.articleTags,

@@ -37,20 +37,26 @@ export default {
     ...mapGetters(["article", "commentParent", "editorContent"])
   },
 
+  watch: {
+    editorContent() {
+      if (this.editorContent) {
+        const comment = {
+          parent_id: this.commentParent,
+          post_id: this.article.id,
+          text: this.editorContent
+        };
+
+        this.sendComment(comment);
+      }
+    }
+  },
+
   methods: {
     ...mapMutations(["getEditorContent"]),
     ...mapActions(["sendComment"]),
 
-    async makeComment() {
-      await this.getEditorContent();
-
-      const comment = {
-        parent_id: this.commentParent,
-        post_id: this.article.id,
-        text: this.editorContent
-      };
-
-      this.sendComment(comment);
+    makeComment() {
+      this.getEditorContent();
     }
   }
 };
