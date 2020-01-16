@@ -1,7 +1,7 @@
 <template>
   <main class="EditText Wrapper" :class="className">
     <div class="Title EditText-Title">
-      <template v-if="editPost">
+      <template v-if="isEditPost">
         Редактирование публикации
       </template>
       <template v-else>
